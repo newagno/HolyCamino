@@ -689,7 +689,7 @@ function startCountdown(){
 
 function buildRoute(){
   const stageHTML=buildStageProgress();
-  let h=`<h2 class="section-title">Маршрут</h2><div class="section-subtitle">15 днів · старт 11.07.2026</div>${stageHTML}`;
+  let h=`<h2 class="section-title">Маршрут</h2><div class="section-subtitle">12 днів · старт 13.07.2026</div>${stageHTML}`;
   ROUTE.forEach((d,i)=>{
     const spec=d.special==='birthday-holiday'?'birthday':d.special==='apostolo-mass'?'holiday':'';
     h+=`<div class="day-card${d.special?' special '+spec:''}" data-i="${i}">
