@@ -101,8 +101,13 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:-
 .countdown-unit{font-size:10px;text-transform:uppercase;color:var(--ink-soft);font-weight:600;letter-spacing:.05em;}
 
 /* NAV */
-.nav-tabs{position:sticky;top:0;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;padding:0 20px;background:var(--paper);z-index:101;border-bottom:1px solid var(--paper-dark);box-shadow:0 4px 12px rgba(0,0,0,0.05);}
+.nav-wrapper{position:sticky;top:0;z-index:101;background:var(--paper);border-bottom:1px solid var(--paper-dark);box-shadow:0 4px 12px rgba(0,0,0,0.05);display:flex;align-items:stretch;}
+.nav-tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;padding:0 4px;flex:1;scroll-behavior:smooth;}
 .nav-tabs::-webkit-scrollbar{display:none;}
+.nav-arrow{background:var(--paper);border:none;color:var(--terracotta);font-size:18px;font-weight:bold;padding:0 8px;cursor:pointer;display:flex;align-items:center;transition:opacity 0.2s;opacity:0;pointer-events:none;flex-shrink:0;}
+.nav-arrow.visible{opacity:1;pointer-events:auto;}
+.nav-arrow.left{box-shadow:4px 0 8px -4px rgba(0,0,0,0.1);z-index:2;}
+.nav-arrow.right{box-shadow:-4px 0 8px -4px rgba(0,0,0,0.1);z-index:2;}
 .nav-tab{background:transparent;border:none;padding:12px 14px;font-family:'Manrope',sans-serif;font-size:12px;font-weight:600;letter-spacing:.03em;color:var(--ink-soft);cursor:pointer;white-space:nowrap;position:relative;transition:all .2s;}
 .nav-tab:hover, .nav-tab:active{color:var(--terracotta);background:var(--cream);border-radius:4px;}
 .nav-tab.active{color:var(--terracotta);}
@@ -1124,6 +1129,9 @@ function checkPassword(){
 }
 
 function enterApp(id){
+  if(typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function'){
+    DeviceMotionEvent.requestPermission().catch(console.error);
+  }
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('app').classList.add('visible');
   renderApp(id);
@@ -1223,15 +1231,19 @@ function renderApp(id){
         <div class="countdown-cell"><span class="countdown-num" id="cd-s">—</span><span class="countdown-unit"> сек</span></div>
       </div>
     </div>
-    <nav class="nav-tabs">
-      <button class="nav-tab active" data-s="route">Маршрут</button>
-      <button class="nav-tab" data-s="pilgrims">Паломники</button>
-      <button class="nav-tab" data-s="dict">Словник</button>
-      <button class="nav-tab" data-s="food">Що з'їсти</button>
-      <button class="nav-tab" data-s="exercises">Вправи</button>
-      <button class="nav-tab" data-s="apps">Додатки</button>
-      <button class="nav-tab" data-s="check">Чекліст</button>
-    </nav>
+    <div class="nav-wrapper">
+      <button class="nav-arrow left" id="navArrowLeft" onclick="document.getElementById('navTabs').scrollBy(-150,0)">←</button>
+      <nav class="nav-tabs" id="navTabs">
+        <button class="nav-tab active" data-s="route">Маршрут</button>
+        <button class="nav-tab" data-s="pilgrims">Паломники</button>
+        <button class="nav-tab" data-s="dict">Словник</button>
+        <button class="nav-tab" data-s="food">Що з'їсти</button>
+        <button class="nav-tab" data-s="exercises">Вправи</button>
+        <button class="nav-tab" data-s="apps">Додатки</button>
+        <button class="nav-tab" data-s="check">Чекліст</button>
+      </nav>
+      <button class="nav-arrow right" id="navArrowRight" onclick="document.getElementById('navTabs').scrollBy(150,0)">→</button>
+    </div>
     <div class="hero"><div class="hero-greeting">Привіт, ${p.name}!</div>
       <h1 class="hero-title">Buen <span class="accent">Camino</span></h1>
       <p class="hero-subtitle">Camino Português da Costa · 261 км · 12 днів пішки</p>
@@ -1250,10 +1262,24 @@ function renderApp(id){
     document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
     t.classList.add('active');
     document.getElementById(`s-${t.dataset.s}`).classList.add('active');
-    window.scrollTo({top:document.querySelector('.nav-tabs').offsetTop-55,behavior:'smooth'});
+    window.scrollTo({top:document.querySelector('.nav-wrapper').offsetTop-55,behavior:'smooth'});
   }));
-  initDayCards(); initPilgrimCards(); initDictTabs(); initFoodRand(); initExTabs(); initCheck();
+  initDayCards(); initPilgrimCards(); initDictTabs(); initFoodRand(); initExTabs(); initCheck(); initNavArrows();
   setTimeout(initWeather, 300);
+}
+
+function initNavArrows() {
+  const tabs = document.getElementById('navTabs');
+  const left = document.getElementById('navArrowLeft');
+  const right = document.getElementById('navArrowRight');
+  if(!tabs || !left || !right) return;
+  function update() {
+    if(tabs.scrollLeft > 5) left.classList.add('visible'); else left.classList.remove('visible');
+    if(tabs.scrollWidth - tabs.clientWidth - tabs.scrollLeft > 5) right.classList.add('visible'); else right.classList.remove('visible');
+  }
+  tabs.addEventListener('scroll', update, {passive: true});
+  window.addEventListener('resize', update);
+  setTimeout(update, 100);
 }
 
 // ==================== COUNTDOWN ====================
@@ -1311,7 +1337,7 @@ function buildRoute(){
             <div class="det-info">${s.note}</div>
           </div>`).join('')}
         </div>`:''}
-        ${d.date&&d.km?`<div id="weather-${i}" class="detail-section"><div class="det-title">⛅ Погода на ${d.date}</div><div class="weather-widget"><div class="weather-loading">🌐 Завантажуємо…</div></div></div>`:''}
+        ${d.date&&CITY_COORDS[d.date]?`<div id="weather-${i}" class="detail-section"><div class="det-title">⛅ Погода на ${d.date}</div><div class="weather-widget"><div class="weather-loading">🌐 Завантажуємо…</div></div></div>`:''}
         ${i===ROUTE.length-1?`<div class="hidden-tip" id="htip"><div class="hidden-tip-title">🤫 Секрет 25.07 — як пробігти OPO</div>
           <p style="font-size:13px;line-height:1.5;">
             • Прийти за 1.5 год (не 2 — Wizz check-in швидкий)<br>
@@ -1642,15 +1668,20 @@ function initKonami(){
     if(pos===seq.length){pos=0;triggerKonami();}
   });
   // Shake for mobile
-  let shakeN=0,lastT=0,lx=0,ly=0,lz=0;
+  let shakeN=0,lastUpdate=0,lastShakeTime=0,lx=0,ly=0,lz=0;
   if(window.DeviceMotionEvent){
     window.addEventListener('devicemotion',e=>{
       const a=e.accelerationIncludingGravity;if(!a)return;
       const now=Date.now();
-      if(now-lastT>100){
-        const sp=Math.abs(a.x+a.y+a.z-lx-ly-lz)/(now-lastT)*10000;
-        if(sp>800){shakeN++;if(shakeN>=3&&now-lastT>2000){shakeN=0;triggerKonami();}}
-        lx=a.x;ly=a.y;lz=a.z;lastT=now;
+      if(now-lastUpdate>100){
+        const sp=Math.abs(a.x+a.y+a.z-lx-ly-lz)/(now-lastUpdate)*10000;
+        if(sp>800){
+           if(now - lastShakeTime > 2000) shakeN = 0;
+           shakeN++;
+           lastShakeTime = now;
+           if(shakeN>=3){shakeN=0;triggerKonami();}
+        }
+        lx=a.x;ly=a.y;lz=a.z;lastUpdate=now;
       }
     });
   }
@@ -1767,7 +1798,7 @@ function buildStageProgress(){
     {date:'2026-07-24',city:'🏆 Santiago! Fisterra!',km:261},
   ];
   const now=new Date();
-  const start=new Date('2026-07-13');
+  const start=new Date('2026-07-11T16:25:00');
   const end=new Date('2026-07-24');
   if(now<start||now>end){
     const diff=start-now;
@@ -1821,6 +1852,8 @@ let theWayActive=false;
 // ==================== WEATHER ====================
 
 const CITY_COORDS={
+  '11.07':{lat:41.15,lon:-8.61,name:'Порту'},
+  '12.07':{lat:41.15,lon:-8.61,name:'Порту'},
   '13.07':{lat:41.35,lon:-8.75,name:'Vila do Conde'},
   '14.07':{lat:41.53,lon:-8.78,name:'Esposende'},
   '15.07':{lat:41.69,lon:-8.83,name:'Viana do Castelo'},
@@ -1833,6 +1866,7 @@ const CITY_COORDS={
   '22.07':{lat:42.74,lon:-8.66,name:'Padrón'},
   '23.07':{lat:42.88,lon:-8.54,name:'Santiago'},
   '24.07':{lat:42.88,lon:-8.54,name:'Santiago + Fisterra'},
+  '25.07':{lat:42.88,lon:-8.54,name:'Santiago'},
 };
 const WMO_ICON={
   0:'☀️',1:'🌤️',2:'⛅',3:'☁️',
@@ -1882,7 +1916,6 @@ async function loadWeatherForDay(dayIdx,dateStr,coordKey){
 }
 function initWeather(){
   ROUTE.forEach((d,i)=>{
-    if(!d.km)return;
     const key=d.date;
     if(CITY_COORDS[key]){
       // lazy load when card expanded
