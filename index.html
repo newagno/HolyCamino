@@ -651,6 +651,7 @@ const ROUTE = [
     ],
     albs:[
       {n:'Best Guest Porto Hostel', p:'€25/паломника', b:'https://www.booking.com/searchresults.html?ss=Best+Guest+Porto+Hostel', c:'🏠 Ночівля 11 і 12 липня тут'},
+      {n:'Albergue de Peregrinos Porto', p:'€25/паломника', b:'https://www.booking.com/searchresults.html?ss=Albergue+de+Peregrinos+Porto', c:'🏠 Ночівля 11 і 12 липня тут'},
     ],
     stamps:[]
   },
@@ -687,6 +688,9 @@ const ROUTE = [
       {n:'Igreja e Mosteiro de Santa Clara', i:'Монастир XIV ст. — рідкісна готична печатка', m:'https://maps.google.com/?q=Mosteiro+Santa+Clara+Vila+do+Conde', stamp:true, secret:false},
       {n:'Aqueduto de Santa Clara', i:'999 арок, 4 км. Секретний ракурс: дивитися на церкву крізь арки', m:'https://maps.google.com/?q=Aqueduto+Santa+Clara+Vila+do+Conde', stamp:false, secret:true},
       {n:'Nau Quinhentista', i:'Діюча репліка корабля XVI ст. — унікальна морська печатка, символ Великих відкриттів', m:'https://maps.google.com/?q=Nau+Quinhentista+Vila+do+Conde', stamp:true, secret:false},
+      {n:'🤫 Castro de São Paio + Centro de Interpretação', i:'Залізновікове (кельтське) прибережне поселення V–I ст. до н.е. + сучасний центр інтерпретації. Дуже мало паломників заходять всередину. Обов’язково!', m:'https://maps.google.com/?q=Castro+de+São+Paio+Vila+do+Conde', stamp:false, secret:true},
+  {n:'Capela de São Paio', i:'Маленька капличка над Castro — гарний вид і спокійне місце', m:'https://maps.google.com/?q=Capela+de+São+Paio+Labruge', stamp:false, secret:true},
+  {n:'Lampião (кафе/їжа)', i:'Популярний локальний детур для кави та сніданку/обіду серед місцевих. Смачно і недорого', m:'https://maps.google.com/?q=Lampi%C3%A3o+Vila+do+Conde', stamp:false, secret:false},
     ],
     albs:[
       {n:'Albergue de Peregrinos do Mosteiro de Vairão', p:'€15/паломника', b:'https://maps.google.com/?q=Mosteiro+Vairão+albergue'},
@@ -747,6 +751,8 @@ const ROUTE = [
       {n:'Caminha Main Church (Igreja Matriz)', i:'XV ст., стеля mudéjar — XV вік прямо на площі з фонтаном', m:'https://maps.google.com/?q=Igreja+Matriz+Caminha', stamp:true, secret:false},
       {n:'Chafariz de Caminha (фонтан)', i:'Фонтан 1551 на середньовічній площі', m:'https://maps.google.com/?q=Chafariz+Caminha', stamp:false, secret:false},
       {n:'🛥️ Паромна компанія (Xacobeo Transfer)', i:'Попросити печатку перед поромом! Рідкісна. xacobeotransfer.com, WhatsApp +34 613 011 226', m:'https://maps.google.com/?q=Caminha+ferry+pier', stamp:true, secret:true},
+      {n:'Forte de São João Baptista', i:'XVII ст. форт на океані в Caminha. Гарний вид і історичне місце', m:'https://maps.google.com/?q=Forte+de+São+João+Baptista+Caminha', stamp:false, secret:false},
+  {n:'🛥️ Поїздка на човні до острова (Ilha da Ínsua)', i:'Можна домовитись з місцевими рибалками або через туристичний офіс. Дуже атмосферно', m:'https://maps.google.com/?q=Ilha+da+Ínsua+Caminha', stamp:false, secret:true},
     ],
     albs:[
       {n:'Albergue Municipal Caminha (у океана)', p:'€15/паломника', b:'https://www.booking.com/searchresults.html?ss=Albergue+Municipal+Caminha', c:'БЕЗ бронювання — приходити до 15:00!'},
@@ -760,7 +766,7 @@ const ROUTE = [
   {
     date:'17.07', day:'Пт', title:'Caminha → A Guarda → Baiona', route:'🛥️ ПОРОМ + Іспанія!', km:32, type:'walking-hard',
     desc:'🇵🇹→🇪🇸 НАЙВАЖЧИЙ ДЕНЬ! Старт о 5:30! Пором через устя Мінью → A Guarda (Іспанія!) → скелясте узбережжя Галісії → Mosteiro de Oia → Baiona. Найкрасивіший відрізок маршруту!',
-    hl:'🛥️ XACOBEO TRANSFER: €6/паломника, щодня 8:30-16:30, кожні ~30 хв. Бронювати заздалегідь: xacobeotransfer.com або WhatsApp +34 613 011 226',
+    hl: '🛥️ XACOBEO TRANSFER: €6/паломника. Розклад 2026: з Caminha 7:30–16:30 (кожні 30–60 хв). Бронювати на xacobeotransfer.com',
     places:[
       {n:'🛥️ Xacobeo Transfer (пором)', i:'€6/паломника. Капітани Miguel і Federico. Бронювати заздалегідь! Прибуття Camposancos → 6.8 км Blue Path до A Guarda', m:'https://maps.google.com/?q=Caminha+ferry+A+Guarda', stamp:false, secret:false},
       {n:'⭐ Castro de Santa Tegra', i:'Кельто-римське городище II ст. до н.е., 100+ хатин, петрогліфи. Найвидатніший castro Галісії. Вхід €1.50', m:'https://maps.google.com/?q=Castro+Santa+Tegra+A+Guarda', stamp:true, secret:true},
@@ -768,6 +774,8 @@ const ROUTE = [
       {n:'Praia América', i:'Найкрасивіший пляж Галісії на маршруті', m:'https://maps.google.com/?q=Praia+América+Nigrán', stamp:false, secret:false},
       {n:'Fortaleza de Monterreal (Baiona)', i:'Фортечні стіни на півострові, 3 км безкоштовно, вхід €1. Тут тепер Parador 5*', m:'https://maps.google.com/?q=Fortaleza+Monterreal+Baiona', stamp:true, secret:false},
       {n:'⭐ Réplica da Carabela La Pinta', i:'Точна копія корабля Колумба, що ПЕРШИМ приніс звістку про відкриття Америки в Європу 1.03.1493! Музей €2-3', m:'https://maps.google.com/?q=Carabela+La+Pinta+Baiona', stamp:true, secret:true},
+{n:'⭐ Virgen de la Roca', i:'Гігантська статуя Діви Марії (15 м) на скелі з човном у руці. Вид на океан і Baiona — один з найкращих на всьому маршруті!', m:'https://maps.google.com/?q=Virgen+de+la+Roca+Baiona', stamp:false, secret:true},
+  {n:'🤫 Monteferro Peninsula', i:'Півострів з фантастичним видом на острови Cíes. Мало хто з паломників доходить. Дикий, вітряний, дуже красивий', m:'https://maps.google.com/?q=Monteferro+Baiona', stamp:false, secret:true},    
     ],
     albs:[
       {n:'Public Pilgrims Hostel of A Guarda', p:'€10/паломника (якщо зупинка в A Guarda)', b:'https://maps.google.com/?q=Albergue+Peregrinos+A+Guarda'},
@@ -788,6 +796,9 @@ const ROUTE = [
       {n:'Basílica de Santa María la Mayor (Vigo)', i:'Важлива відмітка — початок останніх 100 км для Compostela', m:'https://maps.google.com/?q=Concatedral+Santa+María+Vigo', stamp:true, secret:false},
       {n:'Senda da Foz (літоральний шлях)', i:'Через пляжі Praia América, Patos, Samil — найкрасивіше', m:'https://maps.google.com/?q=Senda+da+Foz+Vigo', stamp:false, secret:false},
       {n:'🤫 Устриці на Rúa Pescadería (Pedra)', i:'€1 за устрицю, відкривають при тобі. Місцева традиція, мало туристів знає', m:'https://maps.google.com/?q=Rúa+Pescadería+Vigo', stamp:false, secret:true},
+      {n:'Rúa Pescadería (устриці)', i:'Місцеві приходять їсти свіжі устриці (€1/шт). Автентично і смачно', m:'https://maps.google.com/?q=Rúa+Pescadería+Vigo', stamp:false, secret:true},
+      {n:'Viaduto de Redondela', i:'Величезний залізничний віадук — архітектурна ікона міста', m:'https://maps.google.com/?q=Viaduto+Redondela', stamp:false, secret:false},
+],
     ],
     albs:[
       {n:'Albergue далеко від центру', p:'€10/паломника', b:'https://maps.google.com/?q=Albergue+Peregrinos+Vigo', c:'Xunta, 93 ліжка, без бронювання — до 14:00!'},
@@ -843,6 +854,8 @@ const ROUTE = [
       {n:'Iglesia de Santo Tomás Becket', i:'ЄДИНА в Галісії, присвячена Томасу Бекету', m:'https://maps.google.com/?q=Iglesia+Santo+Tomás+Caldas+de+Reis', stamp:true, secret:true},
       {n:'⭐ Fonte das Burgas', i:'БЕЗКОШТОВНІ гарячі джерела на вулиці! Вода 40-50°C — попросити печатку в альберге біля джерела', m:'https://maps.google.com/?q=Fonte+das+Burgas+Caldas+de+Reis', stamp:true, secret:true},
       {n:'Середньовічний міст Caldas', i:'Поряд з альберге', m:'https://maps.google.com/?q=Caldas+de+Reis+medieval+bridge', stamp:false, secret:false},
+      {n:'🏰 Castelo de Soutomaior (детур)', i:'Красивий середньовічний замок + чудові камелії в саду. 10–12 км в обидві сторони від маршруту, але дуже варте для тих, хто любить історію', m:'https://maps.google.com/?q=Castelo+de+Soutomaior', stamp:false, secret:true},
+],
     ],
     albs:[
       {n:'Albergue Público de Peregrinos de Caldas de Reis', p:'€15/паломника', b:'https://maps.google.com/?q=Albergue+Caldas+de+Reis', c:'Біля мосту, 80 ліжок'},
@@ -1905,6 +1918,10 @@ async function loadWeatherForDay(dayIdx,dateStr,coordKey){
       <a href="${extLink}" target="_blank" style="text-decoration:none;color:inherit;display:block;">
         <div class="weather-title">🏹 ${coords.name}</div>
         <div style="font-size:13px;opacity:0.8;font-style:italic;text-align:center;padding:10px 0;">Погода недоступна, з'явиться ближче до дати.<br><span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Переглянути прогноз в Google ↗</span></div>
+         const ponchoAdvice = (tmax > 22 || wc >= 61) ? 
+        '<div style="margin-top:8px;font-size:13px;color:#fff;background:rgba(200,85,61,0.8);padding:6px 10px;border-radius:4px;">🌧️ Рекомендуємо пончо в рюкзаку!</div>' : '';
+
+      wdg.innerHTML += ponchoAdvice;
       </a>`;
     return;
   }
