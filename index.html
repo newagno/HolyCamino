@@ -170,11 +170,11 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:-
 .pilgrim-card-arrow{color:var(--terracotta);font-size:20px;}
 
 /* MODAL */
-.modal{position:fixed;inset:0;background:rgba(44,24,16,.6);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.modal{position:fixed;inset:0;background:rgba(44,24,16,.6);z-index:10000;display:none;align-items:flex-end;justify-content:center;padding-top:60px;}
 .modal.show{display:flex;animation:fadeIn .25s;}
-.modal-content{background:var(--cream);width:100%;max-width:600px;max-height:90vh;border-radius:16px 16px 0 0;padding:22px 18px;overflow-y:auto;animation:slideUp .3s ease;position:relative;}
+.modal-content{background:var(--cream);width:100%;max-width:600px;max-height:100%;border-radius:16px 16px 0 0;padding:40px 18px 24px;overflow-y:auto;animation:slideUp .3s ease;position:relative;}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-close{position:absolute;top:14px;right:14px;background:var(--paper-dark);border:none;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--ink);display:flex;align-items:center;justify-content:center;}
+.modal-close{position:absolute;top:12px;right:12px;z-index:100;background:var(--paper-dark);border:none;width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer;color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
 .modal-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;margin-bottom:3px;}
 .modal-subtitle{font-family:'Caveat',cursive;color:var(--terracotta);font-size:17px;margin-bottom:16px;}
 .gear-section-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--paper-dark);display:flex;align-items:center;gap:7px;}
@@ -376,6 +376,12 @@ body.the-way-mode .user-badge { background: #FFF !important; color: #000 !import
 body.the-way-mode .user-menu { background: #000; border: 2px solid #FFF; }
 body.the-way-mode .user-menu button { color: #FFF; }
 body.the-way-mode .user-menu button:hover { background: #FFF; color: #000; }
+body.the-way-mode .modal-content { background: #000; border: 2px solid #FFF; border-radius: 0; box-shadow: none; }
+body.the-way-mode .modal-close { background: #FFF; color: #000; border-radius: 0; box-shadow: 4px 4px 0px #FFF; }
+body.the-way-mode .gear-item { background: #000; border: 1px solid #FFF; border-left-width: 4px; }
+body.the-way-mode .gear-item-check { border-color: #FFF; border-radius: 0; }
+body.the-way-mode .gear-item-check.checked { background: #FFF; }
+body.the-way-mode .gear-item-check.checked::after { color: #000; }
 
 /* Modal label link */
 .the-way-link {
@@ -500,7 +506,7 @@ const TRIP_START = new Date('2026-07-11T16:25:00');
 
 const PILGRIMS = {
   mykola: {
-    name: 'Микола', initial: 'М', password: 'тьотя',
+    name: 'Микола', initial: 'М', password: 'тьоте',
     hint: 'Скажи … 👩🏽‍🦰(кому?)',
     has: [
       {name:'Квитки', model:''},
@@ -1071,8 +1077,8 @@ const EXERCISES={
 // ==================== LOGIN ====================
 
 let selectedPilgrim=null;
-let pwVisible=false;
 let pwAttempts=0;
+let pwVisible=false;
 
 function setSavedPilgrim(id){try{localStorage.setItem('camino-pilgrim',id);}catch(e){}}
 function getSavedPilgrim(){try{return localStorage.getItem('camino-pilgrim');}catch(e){return null;}}
@@ -1098,8 +1104,8 @@ function initLogin(){
     });
   });
   document.getElementById('backBtn').addEventListener('click',()=>{
-    document.getElementById('step-choose').style.display='block';
     document.getElementById('step-password').classList.remove('active');
+    document.getElementById('step-choose').style.display='grid';
     selectedPilgrim=null;
   });
   document.getElementById('submitBtn').addEventListener('click',checkPassword);
