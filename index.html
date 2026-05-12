@@ -1129,9 +1129,6 @@ function checkPassword(){
 }
 
 function enterApp(id){
-  if(typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function'){
-    DeviceMotionEvent.requestPermission().catch(console.error);
-  }
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('app').classList.add('visible');
   renderApp(id);
@@ -1670,6 +1667,12 @@ function initKonami(){
   // Shake for mobile
   let shakeN=0,lastUpdate=0,lastShakeTime=0,lx=0,ly=0,lz=0;
   if(window.DeviceMotionEvent){
+    // Request permission on first interaction if iOS 13+
+    if(typeof DeviceMotionEvent.requestPermission === 'function'){
+      document.body.addEventListener('click',()=>{
+        DeviceMotionEvent.requestPermission().catch(()=>{});
+      },{once:true, passive:true});
+    }
     window.addEventListener('devicemotion',e=>{
       const a=e.accelerationIncludingGravity;if(!a)return;
       const now=Date.now();
@@ -1802,7 +1805,7 @@ function buildStageProgress(){
   const end=new Date('2026-07-24');
   if(now<start||now>end){
     const diff=start-now;
-    const days=Math.ceil(diff/86400000);
+    const days=Math.floor(diff/86400000);
     if(diff>0)return `<div class="stage-progress"><div class="stage-progress-label">До старту: ${days} дн. • Маршрут 261 км</div></div>`;
     return `<div class="stage-progress"><div class="stage-progress-label">🏆 Kamiño завершено! Buen Camino!</div></div>`;
   }
