@@ -798,7 +798,6 @@ const ROUTE = [
       {n:'🤫 Устриці на Rúa Pescadería (Pedra)', i:'€1 за устрицю, відкривають при тобі. Місцева традиція, мало туристів знає', m:'https://maps.google.com/?q=Rúa+Pescadería+Vigo', stamp:false, secret:true},
       {n:'Rúa Pescadería (устриці)', i:'Місцеві приходять їсти свіжі устриці (€1/шт). Автентично і смачно', m:'https://maps.google.com/?q=Rúa+Pescadería+Vigo', stamp:false, secret:true},
       {n:'Viaduto de Redondela', i:'Величезний залізничний віадук — архітектурна ікона міста', m:'https://maps.google.com/?q=Viaduto+Redondela', stamp:false, secret:false},
-],
     ],
     albs:[
       {n:'Albergue далеко від центру', p:'€10/паломника', b:'https://maps.google.com/?q=Albergue+Peregrinos+Vigo', c:'Xunta, 93 ліжка, без бронювання — до 14:00!'},
@@ -855,7 +854,6 @@ const ROUTE = [
       {n:'⭐ Fonte das Burgas', i:'БЕЗКОШТОВНІ гарячі джерела на вулиці! Вода 40-50°C — попросити печатку в альберге біля джерела', m:'https://maps.google.com/?q=Fonte+das+Burgas+Caldas+de+Reis', stamp:true, secret:true},
       {n:'Середньовічний міст Caldas', i:'Поряд з альберге', m:'https://maps.google.com/?q=Caldas+de+Reis+medieval+bridge', stamp:false, secret:false},
       {n:'🏰 Castelo de Soutomaior (детур)', i:'Красивий середньовічний замок + чудові камелії в саду. 10–12 км в обидві сторони від маршруту, але дуже варте для тих, хто любить історію', m:'https://maps.google.com/?q=Castelo+de+Soutomaior', stamp:false, secret:true},
-],
     ],
     albs:[
       {n:'Albergue Público de Peregrinos de Caldas de Reis', p:'€15/паломника', b:'https://maps.google.com/?q=Albergue+Caldas+de+Reis', c:'Біля мосту, 80 ліжок'},
@@ -1918,10 +1916,6 @@ async function loadWeatherForDay(dayIdx,dateStr,coordKey){
       <a href="${extLink}" target="_blank" style="text-decoration:none;color:inherit;display:block;">
         <div class="weather-title">🏹 ${coords.name}</div>
         <div style="font-size:13px;opacity:0.8;font-style:italic;text-align:center;padding:10px 0;">Погода недоступна, з'явиться ближче до дати.<br><span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Переглянути прогноз в Google ↗</span></div>
-         const ponchoAdvice = (tmax > 22 || wc >= 61) ? 
-        '<div style="margin-top:8px;font-size:13px;color:#fff;background:rgba(200,85,61,0.8);padding:6px 10px;border-radius:4px;">🌧️ Рекомендуємо пончо в рюкзаку!</div>' : '';
-
-      wdg.innerHTML += ponchoAdvice;
       </a>`;
     return;
   }
@@ -1936,6 +1930,9 @@ async function loadWeatherForDay(dayIdx,dateStr,coordKey){
     const tmin=Math.round(data.daily.temperature_2m_min[0]);
     const icon=WMO_ICON[wc]||'🌤️';
     const desc=WMO_DESC[wc]||'';
+    const ponchoAdvice = (tmax > 22 || wc >= 61) ? 
+      '<div style="margin-top:8px;font-size:12px;color:#fff;background:rgba(200,85,61,0.8);padding:6px 10px;border-radius:4px;text-align:center;">🌧️ Рекомендуємо пончо в рюкзаку!</div>' : '';
+
     if(wdg)wdg.innerHTML=`
       <a href="${extLink}" target="_blank" style="text-decoration:none;color:inherit;display:block;">
         <div class="weather-title">🏹 ${coords.name}</div>
@@ -1944,6 +1941,7 @@ async function loadWeatherForDay(dayIdx,dateStr,coordKey){
           <div class="weather-cell"><span class="weather-icon">🌕</span><div class="weather-temp">${tmax}°</div><div class="weather-desc">День</div></div>
           <div class="weather-cell"><span class="weather-icon">🌑</span><div class="weather-temp">${tmin}°</div><div class="weather-desc">Ніч</div></div>
         </div>
+        ${ponchoAdvice}
       </a>`;
   }catch(e){
     if(wdg)wdg.innerHTML=`
