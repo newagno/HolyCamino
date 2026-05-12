@@ -1676,9 +1676,9 @@ function initKonami(){
     window.addEventListener('devicemotion',e=>{
       const a=e.accelerationIncludingGravity;if(!a)return;
       const now=Date.now();
-      if(now-lastUpdate>100){
-        const sp=Math.abs(a.x+a.y+a.z-lx-ly-lz)/(now-lastUpdate)*10000;
-        if(sp>800){
+      if(now-lastUpdate>50){
+        const diff=Math.abs(a.x+a.y+a.z-lx-ly-lz);
+        if(diff>12){
            if(now - lastShakeTime > 2000) shakeN = 0;
            shakeN++;
            lastShakeTime = now;
@@ -1889,15 +1889,20 @@ async function loadWeatherForDay(dayIdx,dateStr,coordKey){
   
   const targetDate=new Date(isoDate);
   const diffDays=(targetDate-new Date())/86400000;
-  let url;
-  let isHist=false;
-  if(diffDays>14||diffDays<0){
-    const histDate=`2025-${coordKey.split('.').reverse().join('-')}`;
-    url=`https://archive-api.open-meteo.com/v1/archive?latitude=${coords.lat}&longitude=${coords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLisbon&start_date=${histDate}&end_date=${histDate}`;
-    isHist=true;
-  } else {
-    url=`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
+  
+  const extLink=`https://www.google.com/search?q=погода+${encodeURIComponent(coords.name)}+${dateStr}`;
+  const wdg=container.querySelector('.weather-widget');
+  
+  if(diffDays>14){
+    if(wdg)wdg.innerHTML=`
+      <a href="${extLink}" target="_blank" style="text-decoration:none;color:inherit;display:block;">
+        <div class="weather-title">🏹 ${coords.name}</div>
+        <div style="font-size:13px;opacity:0.8;font-style:italic;text-align:center;padding:10px 0;">Погода недоступна, з'явиться ближче до дати.<br><span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Переглянути прогноз в Google ↗</span></div>
+      </a>`;
+    return;
   }
+  
+  let url=`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
   
   try{
     const r=await fetch(url);
@@ -1907,15 +1912,22 @@ async function loadWeatherForDay(dayIdx,dateStr,coordKey){
     const tmin=Math.round(data.daily.temperature_2m_min[0]);
     const icon=WMO_ICON[wc]||'🌤️';
     const desc=WMO_DESC[wc]||'';
-    const wdg=container.querySelector('.weather-widget');
     if(wdg)wdg.innerHTML=`
-      <div class="weather-title">🏹 ${coords.name} ${isHist?'<span style="font-size:12px;opacity:0.7">(типова для цього дня)</span>':''}</div>
-      <div class="weather-grid">
-        <div class="weather-cell"><span class="weather-icon">${icon}</span><div class="weather-temp">${tmax}°</div><div class="weather-desc">${desc}</div></div>
-        <div class="weather-cell"><span class="weather-icon">🌕</span><div class="weather-temp">${tmax}°</div><div class="weather-desc">День</div></div>
-        <div class="weather-cell"><span class="weather-icon">🌑</span><div class="weather-temp">${tmin}°</div><div class="weather-desc">Ніч</div></div>
-      </div>`;
-  }catch(e){const wdg=container.querySelector('.weather-widget');if(wdg)wdg.innerHTML='<span style="opacity:.5;font-size:12px">Погода не завантажилась</span>';}
+      <a href="${extLink}" target="_blank" style="text-decoration:none;color:inherit;display:block;">
+        <div class="weather-title">🏹 ${coords.name}</div>
+        <div class="weather-grid">
+          <div class="weather-cell"><span class="weather-icon">${icon}</span><div class="weather-temp">${tmax}°</div><div class="weather-desc">${desc}</div></div>
+          <div class="weather-cell"><span class="weather-icon">🌕</span><div class="weather-temp">${tmax}°</div><div class="weather-desc">День</div></div>
+          <div class="weather-cell"><span class="weather-icon">🌑</span><div class="weather-temp">${tmin}°</div><div class="weather-desc">Ніч</div></div>
+        </div>
+      </a>`;
+  }catch(e){
+    if(wdg)wdg.innerHTML=`
+      <a href="${extLink}" target="_blank" style="text-decoration:none;color:inherit;display:block;">
+        <div class="weather-title">🏹 ${coords.name}</div>
+        <div style="font-size:13px;opacity:0.8;text-align:center;padding:10px 0;">Помилка завантаження.<br><span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Переглянути в Google ↗</span></div>
+      </a>`;
+  }
 }
 function initWeather(){
   ROUTE.forEach((d,i)=>{
