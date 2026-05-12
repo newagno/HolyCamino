@@ -909,30 +909,102 @@ function applyNightMode(on){ document.body.classList.toggle('night-mode',on); co
 
 function buildStageProgress(){ return ''; }
 
-async function loadWeatherForDay(dayIdx,dateStr,coordKey){
-  const coords=CITY_COORDS[coordKey]; if(!coords)return;
-  const container=document.getElementById(`weather-${dayIdx}`); if(!container)return;
-  const isoDate=`2026-${coordKey.split('.').reverse().join('-')}`;
-  const targetDate=new Date(isoDate); const diffDays=(targetDate-new Date())/86400000;
-  const extLink=`https://www.google.com/search?q=погода+${encodeURIComponent(coords.name)}+${dateStr}`;
-  const wdg=container.querySelector('.weather-widget');
-  
-  if(diffDays>14){
-    if(wdg)wdg.innerHTML=`<a href="${extLink}" target="_blank" style="text-decoration:none;color:inherit;display:block;"><div class="weather-title">🏹 ${coords.name}</div><div style="font-size:13px;opacity:0.8;font-style:italic;text-align:center;padding:10px 0;">Погода недоступна, з'явиться ближче до дати.<br><span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Переглянути в Google ↗</span></div></a>`; return;
+// Словники для відображення погодних умов
+const WMO_ICON = {
+  0:'☀️', 1:'🌤️', 2:'⛅', 3:'☁️', 45:'🌫️', 48:'🌫️',
+  51:'🌦️', 53:'🌦️', 55:'🌦️', 61:'🌧️', 63:'🌧️', 65:'🌧️',
+  80:'🌦️', 81:'🌧️', 82:'⛈️', 95:'⚡', 96:'⚡', 99:'⚡'
+};
+const WMO_DESC = {
+  0:'Ясно', 1:'Майже ясно', 2:'Мінливо', 3:'Хмарно', 45:'Туман', 
+  51:'Мряка', 61:'Дощ', 65:'Сильний дощ', 80:'Зливи', 95:'Гроза'
+};
+
+async function loadWeatherForDay(dayIdx, dateStr, coordKey) {
+  const coords = CITY_COORDS[coordKey];
+  const container = document.getElementById(`weather-${dayIdx}`);
+  if (!coords || !container) return;
+
+  // 1. Жорстка перевірка наявності мережі
+  if (!navigator.onLine) {
+    container.style.display = 'none'; // Приховуємо блок повністю, якщо немає інтернету
+    return;
   }
-  let url=`https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
-  try{
-    const r=await fetch(url); const data=await r.json();
-    const tmax=Math.round(data.daily.temperature_2m_max[0]); const tmin=Math.round(data.daily.temperature_2m_min[0]);
-    if(wdg)wdg.innerHTML=`<a href="${extLink}" target="_blank" style="text-decoration:none;color:inherit;display:block;"><div class="weather-title">🏹 ${coords.name}</div><div class="weather-grid"><div class="weather-cell"><span class="weather-icon">☀️</span><div class="weather-temp">${tmax}°</div></div></div></a>`;
-  }catch(e){}
+
+  const wdg = container.querySelector('.weather-widget');
+  const isoDate = `2026-${coordKey.split('.').reverse().join('-')}`;
+  
+  // 2. Розрахунок різниці в днях (відкидаємо години для точності)
+  const targetDate = new Date(isoDate);
+  targetDate.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const diffDays = Math.round((targetDate - today) / 86400000);
+  const extLink = `https://www.google.com/search?q=погода+${encodeURIComponent(coords.name)}+${dateStr}`;
+
+  // 3. Блокуємо запити до API для дат, що минули, або тих, що далі ніж 2 дні
+  if (diffDays < 0 || diffDays > 2) {
+    if (wdg) wdg.innerHTML = `
+      <a href="${extLink}" target="_blank" style="text-decoration:none;color:inherit;display:block;">
+        <div class="weather-title">🏹 ${coords.name}</div>
+        <div style="font-size:13px;opacity:0.8;font-style:italic;text-align:center;padding:10px 0;">
+          ${diffDays < 0 ? 'Дата минула.' : 'Прогноз доступний за 2 дні до прибуття.'}<br>
+          <span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Пошук в Google ↗</span>
+        </div>
+      </a>`;
+    return;
+  }
+
+  // 4. Запит до API (лише для сьогодні, завтра, післязавтра)
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
+  
+  try {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error('API request failed');
+    const data = await r.json();
+    
+    const wc = data.daily.weathercode[0];
+    const tmax = Math.round(data.daily.temperature_2m_max[0]);
+    const tmin = Math.round(data.daily.temperature_2m_min[0]);
+    
+    const icon = WMO_ICON[wc] || '🌤️';
+    const desc = WMO_DESC[wc] || 'Невідомо';
+
+    if (wdg) wdg.innerHTML = `
+      <a href="${extLink}" target="_blank" style="text-decoration:none;color:inherit;display:block;">
+        <div class="weather-title">🏹 ${coords.name}</div>
+        <div class="weather-grid">
+          <div class="weather-cell"><span class="weather-icon">${icon}</span><div class="weather-temp">${tmax}°</div><div class="weather-desc">${desc}</div></div>
+          <div class="weather-cell"><span class="weather-icon">🌕</span><div class="weather-temp">${tmax}°</div><div class="weather-desc">День</div></div>
+          <div class="weather-cell"><span class="weather-icon">🌑</span><div class="weather-temp">${tmin}°</div><div class="weather-desc">Ніч</div></div>
+        </div>
+      </a>`;
+  } catch (e) {
+    // 5. Тихий фейл: якщо API не відповідає, приховуємо блок, щоб не ламати UI
+    container.style.display = 'none';
+  }
 }
-function initWeather(){
-  ROUTE.forEach((d,i)=>{
-    const key=d.date;
-    if(CITY_COORDS[key]){
-      const card=document.querySelector(`.day-card[data-i="${i}"]`); if(!card)return;
-      card.addEventListener('click',()=>{ setTimeout(()=>loadWeatherForDay(i,d.date,key),200); },{once:true});
+
+function initWeather() {
+  // Прослуховувач подій online/offline для динамічного оновлення без перезавантаження сторінки
+  window.addEventListener('offline', () => {
+    document.querySelectorAll('[id^="weather-"]').forEach(el => el.style.display = 'none');
+  });
+
+  ROUTE.forEach((d, i) => {
+    const key = d.date;
+    if (CITY_COORDS[key]) {
+      const card = document.querySelector(`.day-card[data-i="${i}"]`); 
+      if (!card) return;
+      // Відкладене завантаження: спрацьовує лише коли користувач відкриває картку дня
+      card.addEventListener('click', () => { 
+        if (navigator.onLine) {
+          const container = document.getElementById(`weather-${i}`);
+          if (container) container.style.display = 'block';
+          setTimeout(() => loadWeatherForDay(i, d.date, key), 200); 
+        }
+      }, { once: true });
     }
   });
 }
