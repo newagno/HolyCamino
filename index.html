@@ -175,6 +175,27 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:-
   vertical-align: middle;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+.booked-badge:hover { opacity: 0.9; transform: scale(1.02); }
+.det-book-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--terracotta);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 99px;
+  text-decoration: none;
+  transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(200,85,61,0.2);
+}
+.det-book-btn:hover {
+  background: var(--terracotta-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(200,85,61,0.3);
+}
 .hidden-tip{display:none;background:linear-gradient(135deg,#c9a64b,#d4b95c);padding:18px;border-radius:4px;margin:12px 0;border:2px dashed var(--ink);}
 .hidden-tip.revealed{display:block;animation:shake .4s;}
 .hidden-tip-title{font-family:'Caveat',cursive;font-size:20px;font-weight:700;margin-bottom:8px;}
@@ -402,6 +423,8 @@ body.the-way-mode .gear-item-check.checked { background: #FFF; }
 body.the-way-mode .gear-item-check.checked::after { color: #000; }
 body.the-way-mode .det-item.booked { border-left-color: #FFF; background: #111; }
 body.the-way-mode .booked-badge { background: #FFF; color: #000; box-shadow: none; border: 1px solid #000; }
+body.the-way-mode .det-book-btn { background: #000; border: 1px solid #FFF; box-shadow: 3px 3px 0px #FFF; border-radius: 0; }
+body.the-way-mode .det-book-btn:hover { background: #FFF; color: #000; box-shadow: none; transform: translate(3px, 3px); }
 
 /* Modal label link */
 .the-way-link {
@@ -781,9 +804,9 @@ const ROUTE = [
   {n:'Lampião (кафе/їжа)', i:'Популярний локальний детур для кави та сніданку/обіду серед місцевих. Смачно і недорого', m:'https://maps.google.com/?q=Lampi%C3%A3o+Vila+do+Conde', stamp:false, secret:false},
     ],
     albs:[
-      {n:'Albergue de Peregrinos do Mosteiro de Vairão', p:'€15/паломника', b:'https://maps.google.com/?q=Mosteiro+Vairão+albergue'},
-      {n:'Albergue de Peregrinos São José de Ribamar', p:'€15/паломника', b:'https://www.booking.com/searchresults.html?ss=Albergue+São+José+Ribamar+Vila+do+Conde'},
-      {n:'Pousada de Juventude Vila do Conde', p:'€56 за 4-місну кімнату', b:'https://www.booking.com/searchresults.html?ss=Pousada+Juventude+Vila+do+Conde', c:'⭐ Ідеально для компанії'},
+      {n:'Albergue de Peregrinos do Mosteiro de Vairão', p:'€15/паломника', b:'https://mosteirodevairao.blogspot.com/', m:'https://maps.app.goo.gl/KzQLHniwY8ut3eAu5'},
+      {n:'Albergue de Peregrinos São José de Ribamar', p:'€15/паломника', b:'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-peregrinos-povoa-de-varzim/', m:'https://maps.app.goo.gl/RMPZGymJkSvGbVbV7'},
+      {n:'Pousada de Juventude Vila do Conde', p:'€56 за 4-місну кімнату', b:'https://www.pousadasjuventude.pt/pt/pousadas/pousada-de-vila-do-conde/', m:'https://maps.app.goo.gl/pVxiECVHUio7PtGx5',c:'⭐ Ідеально для компанії'},
     ],
     stamps:[
       {place:'Mosteiro de Santa Clara', note:'Монастир XIV ст. — рідкісна готична печатка'},
@@ -801,8 +824,8 @@ const ROUTE = [
       {n:'Forte de São João Baptista', i:'Океанський форт XVII ст.', m:'https://maps.google.com/?q=Forte+São+João+Esposende', stamp:false, secret:false},
     ],
     albs:[
-      {n:'Albergue de Peregrinos de Marinhas', p:'€15/паломника', b:'https://www.booking.com/searchresults.html?ss=Marinhas+albergue+peregrinos'},
-      {n:'InnEsposende Sports Hostel', p:'€14+/€37+ кімната', b:'https://www.booking.com/searchresults.html?ss=InnEsposende'},
+      {n:'Albergue de Peregrinos de Marinhas', p:'€15/паломника', b:'https://www.viaveteris.pt/', m:'https://maps.app.goo.gl/oA78VugY6eNwwK9b9'},
+      {n:'InnEsposende Sports Hostel', p:'€14+/€37+ кімната', b:'https://www.innesposende.com/', m:'https://maps.app.goo.gl/3UNxL4wVthtoqafNA'},
     ],
     stamps:[{place:'Igreja Matriz de Esposende', note:'Маленькі міста — найколоритніші печатки!'}]
   },
@@ -819,9 +842,9 @@ const ROUTE = [
       {n:'🤫 Citânia de Santa Luzia', i:'Залізновіковий castro VII ст. до н.е. поруч з базилікою', m:'https://maps.google.com/?q=Citânia+Santa+Luzia+Viana', stamp:false, secret:true},
     ],
     albs:[
-      {n:'Albergue S. João dos Caminhos (церква)', p:'€15/паломника', b:'https://maps.google.com/?q=Albergue+S+João+Caminhos+Viana'},
-      {n:'Albergue de Santa Luzia', p:'€20/паломника', b:'https://www.booking.com/searchresults.html?ss=Albergue+Santa+Luzia+Viana'},
-      {n:'Pousada de Juventude de Viana', p:'€44+ дабл, зі сніданком', b:'https://www.booking.com/searchresults.html?ss=Pousada+Juventude+Viana', c:'⭐ Рекомендовано'},
+      {n:'Albergue S. João dos Caminhos (церква)', p:'€15/паломника', b:'https://viana.carmelitas.pt/?page_id=158', m:'https://maps.app.goo.gl/dq92pDpd5zJyzvJE8'},
+      {n:'Albergue de Santa Luzia', p:'€20/паломника', b:'https://confrariadesantaluzia.pt/', m:'https://maps.app.goo.gl/1kjixMaEuU8dPynp7'},
+      {n:'Pousada de Juventude', p:'€44+ дабл, зі сніданком', b:'https://www.pousadasjuventude.pt/pt/pousadas/pousada-de-viana-do-castelo/', m:'https://maps.app.goo.gl/UF1b3BtsXbL5nNbZ6', c:'⭐ Рекомендовано'},
     ],
     stamps:[
       {place:'Santuário de Santa Luzia (Monte)', note:'Вид на місто і океан — краєвид National Geographic'},
@@ -843,8 +866,8 @@ const ROUTE = [
   {n:'🛥️ Поїздка на човні до острова (Ilha da Ínsua)', i:'Можна домовитись з місцевими рибалками або через туристичний офіс. Дуже атмосферно', m:'https://maps.google.com/?q=Ilha+da+Ínsua+Caminha', stamp:false, secret:true},
     ],
     albs:[
-      {n:'Albergue Municipal Caminha (у океана)', p:'€15/паломника', b:'https://www.booking.com/searchresults.html?ss=Albergue+Municipal+Caminha', c:'БЕЗ бронювання — приходити до 15:00!'},
-      {n:'Albergue Bom Caminha', p:'€16-17 дорм', b:'https://www.booking.com/searchresults.html?ss=Albergue+Bom+Caminha'},
+      {n:'Albergue de Peregrinos Santiago de Caminha (у океана)', p:'€15/паломника', b:'https://www.booking.com/Share-PPxPBEo', m:'https://maps.app.goo.gl/m13j2rS1jSVrc6Xv5A', c:'БЕЗ бронювання — приходити до 15:00!'},
+      {n:'Albergue Bom Caminha', p:'€16-17 дорм', b:'https://www.booking.com/Share-lv5fip', m:'https://maps.app.goo.gl/JnYZEufi1TtENu376'},
     ],
     stamps:[
       {place:'Caminha Main Church', note:'XV ст. — прямо на площі з фонтаном'},
@@ -866,9 +889,9 @@ const ROUTE = [
   {n:'🤫 Monteferro Peninsula', i:'Півострів з фантастичним видом на острови Cíes. Мало хто з паломників доходить. Дикий, вітряний, дуже красивий', m:'https://maps.google.com/?q=Monteferro+Baiona', stamp:false, secret:true},    
     ],
     albs:[
-      {n:'Public Pilgrims Hostel of A Guarda', p:'€10/паломника (якщо зупинка в A Guarda)', b:'https://maps.google.com/?q=Albergue+Peregrinos+A+Guarda'},
-      {n:'Albergue чистенько (15 євро)', p:'€15/паломника', b:'https://maps.google.com/?q=Albergue+Baiona'},
-      {n:'Albergue на березі (18 євро)', p:'€18/паломника', b:'https://www.booking.com/searchresults.html?ss=albergue+Baiona'},
+      {n:'Public Pilgrims Hostel of A Guarda', p:'€10/паломника (якщо зупинка в A Guarda)', b:'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-peregrinos-a-guarda/', m:'https://maps.app.goo.gl/yaq9DpGZ7EcTcNuQ7'},
+      {n:'Albergue Playa de Sabarís', p:'€15/паломника', b:'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-playa-de-sabaris-baiona/', m:'https://maps.app.goo.gl/NYyhYdF7SVxgiJURA' },
+      {n:'Albergue Estela do Mar (на березі)', p:'€18/паломника', b:'https://esteladomar.com/', m:'https://maps.app.goo.gl/jtrM1JZMUd9miS8J9'},
     ],
     stamps:[
       {place:'Castro de Santa Tegra', note:'Кельтське городище — екзотична печатка!'},
@@ -888,9 +911,9 @@ const ROUTE = [
       {n:'Viaduto de Redondela', i:'Величезний залізничний віадук — архітектурна ікона міста', m:'https://maps.google.com/?q=Viaduto+Redondela', stamp:false, secret:false},
     ],
     albs:[
-      {n:'Albergue далеко від центру', p:'€10/паломника', b:'https://maps.google.com/?q=Albergue+Peregrinos+Vigo', c:'Xunta, 93 ліжка, без бронювання — до 14:00!'},
-      {n:'Хостел в центрі', p:'€15/паломника', b:'https://www.booking.com/searchresults.html?ss=hostel+Vigo+casco+vello'},
-    ],
+      {n:'R4 Vigo Hostel', p:'€10/паломника', b:'https://maps.google.com/?q=Albergue+Peregrinos+Vigo', m:'https://maps.app.goo.gl/EppV4ujM28vVSmhh6' c:'красиве історичне місце біля церкви'},
+      {n:'Albergue Publico de Peregrinos de Vigo', p:'€15/паломника', b:'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-peregrinos-vigo/', m:'https://maps.app.goo.gl/6Ceupq4kyS1sY1c68'},
+      ],
     stamps:[
       {place:'Basílica de Santa María la Mayor', note:'⚠️ З цього моменту — 2 штампи на день!'},
       {place:'Будь-яке кафе на маршруті', note:'2-й щоденний штамп'},
@@ -907,8 +930,9 @@ const ROUTE = [
       {n:'🤫 Albergue O Refuxio da Jeruxa', i:'Donativo, господарі співають для паломників — найтепліший прийом маршруту', m:'https://maps.google.com/?q=Albergue+O+Refuxio+da+Jeruxa+Redondela', stamp:false, secret:true},
     ],
     albs:[
-      {n:'Albergue de peregrinos Casa da Torre (Xunta)', p:'€15/паломника', b:'https://maps.google.com/?q=Albergue+Casa+da+Torre+Redondela', c:'Стара кам\'яна вежа в центрі, 50 ліжок'},
-      {n:'🤫 O Refuxio da Jeruxa (donativo)', p:'€5-10 пожертва', b:'https://maps.google.com/?q=Albergue+O+Refuxio+da+Jeruxa+Redondela', c:'Найтепліший прийом'},
+      {n:'Albergue de peregrinos Casa da Torre (Xunta)', p:'€15/паломника', b:'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-redondela/',m:'https://maps.app.goo.gl/i2EYWJSnxAfsJPF76', c:'Стара кам\'яна вежа в центрі, 50 ліжок'},
+      {n:'O Refuxio de la Jerezan`a', p:'€5-10 пожертва', b:'https://orefuxio.org/en/home/', m;'https://maps.app.goo.gl/QMLcKaiPgksKse247'},
+      {n:'🤫O Refuxio D\Anton', p:'€5-10 пожертва', b:'https://menuyvinos.com/orefuxio/',m;'https://maps.app.goo.gl/bmBpAhkC5Zgy171J7', c:'Найтепліший прийом'},
     ],
     stamps:[{place:'Igrexa de Santiago de Redondela', note:'Злиття Coastal і Central маршрутів'}]
   },
@@ -925,8 +949,8 @@ const ROUTE = [
       {n:'⭐ Igrexa da Virxe Peregrina', i:'XVIII ст. — ЄДИНА в Іспанії церква у формі мушлі Якова! Меса для паломників 19:30', m:'https://maps.google.com/?q=Igrexa+Virxe+Peregrina+Pontevedra', stamp:true, secret:true},
     ],
     albs:[
-      {n:'ACOLÁ hostel', p:'€15-25 ліжко / €55-110 кімната', b:'https://www.booking.com/searchresults.html?ss=Acola+Hostel+Pontevedra', c:'⭐ Приватніше для компанії'},
-      {n:'Albergue Virxe Peregrina (Xunta)', p:'€10/паломника', b:'https://maps.google.com/?q=Albergue+Virxe+Peregrina+Pontevedra', c:'56-86 ліжок, без бронювання'},
+      {n:'ACOLÁ hostel', p:'€15-25 ліжко / €55-110 кімната', b:'https://acolahostel.com/', m:'https://maps.app.goo.gl/nE9dgoyWdMzyBAsP6', c:'⭐ Приватніше для компанії'},
+      {n:'Albergue público Virxe Peregrina', p:'€10/паломника', b:'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-pontevedra/', m:'https://maps.app.goo.gl/drf9iPX17miJBMfo9', c:'56-86 ліжок, без бронювання'},
     ],
     stamps:[
       {place:'Igrexa da Virxe Peregrina', note:'Меса 19:30 — особлива печатка у формі мушлі!'},
@@ -944,8 +968,8 @@ const ROUTE = [
       {n:'🏰 Castelo de Soutomaior (детур)', i:'Красивий середньовічний замок + чудові камелії в саду. 10–12 км в обидві сторони від маршруту, але дуже варте для тих, хто любить історію', m:'https://maps.google.com/?q=Castelo+de+Soutomaior', stamp:false, secret:true},
     ],
     albs:[
-      {n:'Albergue Público de Peregrinos de Caldas de Reis', p:'€15/паломника', b:'https://maps.google.com/?q=Albergue+Caldas+de+Reis', c:'Біля мосту, 80 ліжок'},
-      {n:'Albergue Urraca', p:'€15', b:'https://www.booking.com/searchresults.html?ss=Albergue+Urraca+Caldas'},
+      {n:'Albergue Público de Peregrinos de Caldas de Reis', p:'€15/паломника', b:'https://www.roomreserve.online/es/albergue-de-caldas-de-reis-urraca-caldas-de-reis/', m;'https://maps.app.goo.gl/vNePZsTgTY6bneLv6', c:'Біля мосту, 80 ліжок'},
+      {n:'ALBERGUE de Caldas de Reis URRACA ', p:'€15', b:'https://www.google.com/maps/place/ALBERGUE+de+Caldas+de+Reis+URRACA+-+Bunk+Bed+in+Mixed+Dormitory+Room/@42.6055856,-8.6452004,19.32z/data=!4m11!3m10!1s0xd2f0de589e2f67f:0x9da57689ec7cc40e!5m3!1s2026-05-21!4m1!1i2!8m2!3d42.6055984!4d-8.6453305!16s%2Fg%2F11x1qfkf4k!17BQ0FF?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D', m:'https://www.google.com/maps/place/ALBERGUE+de+Caldas+de+Reis+URRACA+-+Bunk+Bed+in+Mixed+Dormitory+Room/@42.6055984,-8.6453305,17z/data=!4m11!3m10!1s0xd2f0de589e2f67f:0x9da57689ec7cc40e!5m3!1s2026-05-21!4m1!1i2!8m2!3d42.6055984!4d-8.6453305!16s%2Fg%2F11x1qfkf4k!17BQ0FF?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D'},
     ],
     stamps:[
       {place:'Fonte das Burgas', note:'Попросити печатку в альберге — особлива!'},
@@ -962,8 +986,8 @@ const ROUTE = [
       {n:'🌶️ Pimientos de Padrón', i:'"Uns pican e outros non" — лотерея! Одні гострі, інші ні. Замовляти всім €4-6', m:'https://maps.google.com/?q=restaurante+Padrón', stamp:false, secret:false},
     ],
     albs:[
-      {n:'Albergue Municipal Padrón', p:'€15/паломника', b:'https://maps.google.com/?q=Albergue+Municipal+Padrón'},
-      {n:'🤫 Convento de San Antonio de Herbón', p:'donativo', b:'https://maps.google.com/?q=Convento+San+Antonio+Herbón', c:'3 км від Padrón — вечеря, молитва, спільне святкування. Особливий досвід!'},
+      {n:'Albergue de peregrinos de Padrón', p:'€15/паломника', b:'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-padron/', m:'https://maps.app.goo.gl/udndMuGKrNG43Fw99'},
+      {n:'🤫 Convento Padres Franciscanos ~ San Antonio de Herbón', p:'donativo', b:'https://maps.app.goo.gl/nXz4d6aBjqtoTjYK8', m:'https://maps.app.goo.gl/nXz4d6aBjqtoTjYK8', c:'3 км від Padrón — вечеря, молитва, спільне святкування. Особливий досвід!'},
     ],
     stamps:[
       {place:'Iglesia de Santiago de Padrón', note:'Місце прибуття мощів! Одна з головних печаток'},
@@ -983,8 +1007,8 @@ const ROUTE = [
       {n:'Mercado de Abastos', i:'Закритий неділю. У Nave 5/Abastos 2.0 приготують куплене вами', m:'https://maps.google.com/?q=Mercado+Abastos+Santiago', stamp:false, secret:false},
     ],
     albs:[
-      {n:'Albergue Seminario Menor (красивий, €24)', p:'€24-40/паломника (приватна кімната)', b:'https://albergueseminario.com/', c:'🔴 Бронювати ПРЯМО через сайт, НЕ через Booking!'},
-      {n:'Великий алберге (€10)', p:'€10/паломника', b:'https://www.booking.com/searchresults.html?ss=albergue+Santiago+de+Compostela'},
+      {n:'Albergue Seminario Menor', p:'€24-40/паломника (приватна кімната)', b:'https://seminariomenorsantiago.com/', m:'https://maps.app.goo.gl/XR4o3RkZ2RE6v21M6', c:'🔴 Бронювати ПРЯМО через сайт, НЕ через Booking!'},
+      {n:'Albergue Peregrinos San Lázaro', p:'€10/паломника', b:'https://www.alberguescaminosantiago.com/albergue-san-lazaro-santiago/', m:'https://maps.app.goo.gl/xGw2o1wvFmRTdmqP7'},
     ],
     stamps:[{place:"🏆 Pilgrim's Reception Office", note:'ОСТАННЯ ПЕЧАТКА перед Compostela!'}]
   },
@@ -1000,7 +1024,8 @@ const ROUTE = [
       {n:'🎆 Fuegos del Apóstolo 23:30', i:'Praza do Obradoiro. Феєрверки "підпалюють" собор. Унікально раз на рік!', m:'https://maps.google.com/?q=Praza+do+Obradoiro+Santiago', stamp:false, secret:false},
     ],
     albs:[
-      {n:'Albergue Seminario Menor', p:'€40-70 приватна кімната', b:'https://albergueseminario.com/', c:'Та сама що 23.07'},
+      {n:'Albergue Seminario Menor', p:'€24-40/паломника (приватна кімната)', b:'https://seminariomenorsantiago.com/', m:'https://maps.app.goo.gl/XR4o3RkZ2RE6v21M6', c:'🔴 Бронювати ПРЯМО через сайт, НЕ через Booking!'},
+      {n:'Albergue Peregrinos San Lázaro', p:'€10/паломника', b:'https://www.alberguescaminosantiago.com/albergue-san-lazaro-santiago/', m:'https://maps.app.goo.gl/xGw2o1wvFmRTdmqP7'},
     ],
     stamps:[{place:'Faro de Fisterra (маяк)', note:'Унікальна печатка маяка — 0,00 km від Fisterra!'}]
   },
@@ -1445,9 +1470,23 @@ function buildRoute(){
           ${d.albs.map(a=>{
             const isBooked = a.c && a.c.includes('ЗАБРОНЬОВАНО');
             const cleanComment = isBooked ? a.c.replace('(ЗАБРОНЬОВАНО)', '').replace('ЗАБРОНЬОВАНО', '').trim() : a.c;
+            const mapLink = a.m || `https://www.google.com/maps/search/${encodeURIComponent(a.n)}`;
+            const bookLink = a.b;
             return `<div class="det-item ${isBooked?'booked':''}">
-              <a class="det-name" href="${a.b}" target="_blank">${a.n}${isBooked?'<span class="booked-badge">✓ Заброньовано</span>':''}</a>
-              <div class="det-info"><strong>${a.p}</strong>${cleanComment?' — '+cleanComment:''}</div>
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+                <div style="flex:1;">
+                  <a class="det-name" href="${mapLink}" target="_blank">📍 ${a.n}</a>
+                  <div class="det-info"><strong>${a.p}</strong>${cleanComment?' — '+cleanComment:''}</div>
+                </div>
+                ${bookLink ? `
+                  <div style="flex-shrink:0;">
+                    ${isBooked 
+                      ? `<a class="booked-badge" href="${bookLink}" target="_blank" style="text-decoration:none; cursor:pointer;" title="Перейти до бронювання">✓ Заброньовано</a>`
+                      : `<a class="det-book-btn" href="${bookLink}" target="_blank">🎫 Book</a>`
+                    }
+                  </div>
+                ` : ''}
+              </div>
             </div>`;
           }).join('')}
         </div>`:''}
