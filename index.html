@@ -1347,7 +1347,7 @@ function renderApp(id){
     <div class="hero"><div class="hero-greeting">Привіт, ${p.name}!</div>
       <h1 class="hero-title" style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 10px; margin-bottom: 20px;">
         <span>Buen <span class="accent">Camino</span></span>
-        <img src="files/logo.png" alt="Buen Camino" style="max-height: 1.2em; width: auto; object-fit: contain;">
+        <img id="heroLogoEgg" src="files/logo.png" alt="Buen Camino" style="max-height: 1.2em; width: auto; object-fit: contain; cursor: pointer; -webkit-touch-callout: none; user-select: none;">
       </h1>
       <p class="hero-subtitle">Camino Português da Costa · 261 км · 12 днів пішки</p>
     </div>
@@ -1845,73 +1845,34 @@ function initKonami(){
     if(k===seq[pos])pos++;else pos=0;
     if(pos===seq.length){pos=0;triggerKonami();}
   });
-  // Shake for mobile — потряси 3 рази → дощ із зірок!!
+  
+  // Довге утримання (3 сек) саме на логотипі в Hero
   (function(){
-    let shakes = 0, lastShakeTime = 0, lastUpdate = 0;
-    let lastX = null, lastY = null, lastZ = null;
-    const SHAKE_THRESHOLD = 800; // Чутливість: чим менше, тим легше спрацьовує (норма: 600-1000)
+    let pressTimer;
+    const logo = document.getElementById('heroLogoEgg');
+    
+    if (!logo) return;
 
-    function requestMotion(){
-      if(typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function'){
-        const ask = () => {
-          DeviceMotionEvent.requestPermission().then(r => {if(r === 'granted') listenMotion();}).catch(()=>{});
-          document.removeEventListener('click', ask);
-        };
-        document.addEventListener('click', ask);
-      } else { listenMotion(); }
+    function startPress(e) {
+      pressTimer = setTimeout(() => {
+        triggerKonami();
+      }, 3000); 
     }
 
-    function listenMotion(){
-      window.addEventListener('devicemotion', e => {
-        const a = e.accelerationIncludingGravity; 
-        if(!a || a.x == null) return;
-        
-        const now = Date.now();
-        // Рахуємо швидкість не частіше ніж раз на 100мс (нівелює різницю між 60Hz та 120Hz екранами)
-        if ((now - lastUpdate) > 100) {
-          const diffTime = (now - lastUpdate);
-          lastUpdate = now;
-
-          if (lastX !== null) {
-            // Класична формула визначення струшування, прив'язана до часу
-            const speed = Math.abs(a.x + a.y + a.z - lastX - lastY - lastZ) / diffTime * 10000;
-
-            if (speed > SHAKE_THRESHOLD) {
-              if (now - lastShakeTime > 2000) shakes = 0; // Скидання, якщо перерва > 2 сек
-              shakes++;
-              lastShakeTime = now;
-              showShakeFeedback(shakes);
-              
-              if(shakes >= 3){ 
-                shakes = 0; 
-                hideShakeFeedback(); 
-                triggerKonami(); 
-              }
-            }
-          }
-          lastX = a.x; lastY = a.y; lastZ = a.z;
-        }
-      }, {passive: true});
+    function cancelPress() {
+      clearTimeout(pressTimer);
     }
 
-    function showShakeFeedback(n){
-      let el = document.getElementById('shakeFb');
-      if(!el){
-        el = document.createElement('div'); el.id = 'shakeFb';
-        el.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--terracotta);color:#fff;padding:8px 18px;border-radius:99px;font-family:"Caveat",cursive;font-size:20px;z-index:999;pointer-events:none;transition:opacity .4s;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2);';
-        document.body.appendChild(el);
-      }
-      const remain = 3 - n;
-      el.textContent = remain === 2 ? '🌀 Ще 2 рази...' : remain === 1 ? '🌟 Ще 1 раз!' : '💥 Ось зараз!!!';
-      el.style.opacity = '1';
-      clearTimeout(el._t); el._t = setTimeout(()=>el.style.opacity = '0', 1500);
-    }
+    logo.addEventListener('touchstart', startPress, {passive: true});
+    logo.addEventListener('touchend', cancelPress, {passive: true});
+    logo.addEventListener('touchmove', cancelPress, {passive: true});
+    logo.addEventListener('touchcancel', cancelPress, {passive: true});
 
-    function hideShakeFeedback(){
-      const el = document.getElementById('shakeFb'); if(el) el.style.opacity = '0';
-    }
-
-    requestMotion();
+    logo.addEventListener('mousedown', startPress);
+    logo.addEventListener('mouseup', cancelPress);
+    logo.addEventListener('mouseleave', cancelPress);
+    
+    logo.addEventListener('contextmenu', e => e.preventDefault());
   })();
 }
 function triggerKonami(){
