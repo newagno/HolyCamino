@@ -175,27 +175,6 @@ h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:-
   vertical-align: middle;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.booked-badge:hover { opacity: 0.9; transform: scale(1.02); }
-.det-book-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--terracotta);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 99px;
-  text-decoration: none;
-  transition: all 0.2s;
-  box-shadow: 0 2px 6px rgba(200,85,61,0.2);
-}
-.det-book-btn:hover {
-  background: var(--terracotta-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(200,85,61,0.3);
-}
 .hidden-tip{display:none;background:linear-gradient(135deg,#c9a64b,#d4b95c);padding:18px;border-radius:4px;margin:12px 0;border:2px dashed var(--ink);}
 .hidden-tip.revealed{display:block;animation:shake .4s;}
 .hidden-tip-title{font-family:'Caveat',cursive;font-size:20px;font-weight:700;margin-bottom:8px;}
@@ -423,8 +402,6 @@ body.the-way-mode .gear-item-check.checked { background: #FFF; }
 body.the-way-mode .gear-item-check.checked::after { color: #000; }
 body.the-way-mode .det-item.booked { border-left-color: #FFF; background: #111; }
 body.the-way-mode .booked-badge { background: #FFF; color: #000; box-shadow: none; border: 1px solid #000; }
-body.the-way-mode .det-book-btn { background: #000; border: 1px solid #FFF; box-shadow: 3px 3px 0px #FFF; border-radius: 0; }
-body.the-way-mode .det-book-btn:hover { background: #FFF; color: #000; box-shadow: none; transform: translate(3px, 3px); }
 
 /* Modal label link */
 .the-way-link {
@@ -503,6 +480,54 @@ body.the-way-mode .the-way-link { display:block; }
 .peixe-lb.open{display:flex;animation:fadeIn .2s;}
 .peixe-lb img{max-width:90vw;max-height:85vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.6);cursor:default;}
 .peixe-lb-close{position:absolute;top:14px;right:14px;color:#fff;font-size:28px;background:rgba(0,0,0,.5);border:none;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* MAIL STYLES */
+.mail-toggle{background:transparent;border:none;font-size:22px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;color:var(--ink);transition:transform .2s;padding:5px;}
+.mail-toggle:hover{transform:scale(1.1);}
+.mail-badge{position:absolute;top:0;right:0;background:var(--terracotta);color:#fff;font-size:10px;font-weight:700;padding:1px 5px;border-radius:99px;border:1.5px solid var(--paper);display:none;min-width:18px;height:18px;text-align:center;}
+.mail-badge.show{display:flex;align-items:center;justify-content:center;}
+
+.mail-modal{position:fixed;inset:0;background:rgba(44,24,16,.7);backdrop-filter:blur(4px);z-index:10001;display:none;align-items:center;justify-content:center;padding:20px;}
+.mail-modal.show{display:flex;animation:fadeIn .3s;}
+.mail-content{background:var(--paper);width:100%;max-width:500px;max-height:85vh;border-radius:16px;padding:24px;overflow:hidden;position:relative;box-shadow:0 20px 50px rgba(0,0,0,0.3);border:1px solid var(--paper-dark);display:flex;flex-direction:column;}
+.mail-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.mail-title{font-family:'Caveat',cursive;font-size:28px;color:var(--terracotta);margin:0;}
+
+.mail-tabs{display:flex;gap:20px;margin-bottom:20px;border-bottom:1px solid var(--paper-dark);}
+.mail-tab{background:none;border:none;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;color:var(--ink-soft);cursor:pointer;padding:8px 0;position:relative;text-transform:uppercase;letter-spacing:0.05em;}
+.mail-tab.active{color:var(--ink);}
+.mail-tab.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--terracotta);}
+
+.mail-body{flex:1;overflow-y:auto;display:none;}
+.mail-body.active{display:block;}
+
+.mail-list{display:flex;flex-direction:column;gap:12px;padding-right:5px;}
+.mail-item{background:var(--cream);padding:14px;border-radius:10px;border-left:4px solid var(--sand);position:relative;transition:all 0.2s;}
+.mail-item:hover{transform:translateX(3px);box-shadow:0 4px 12px rgba(0,0,0,0.05);}
+.mail-item.from-spirit{border-left-color:var(--gold);background:linear-gradient(135deg,#fffdf5,#fff9e6);border-style:dashed;}
+.mail-item-header{display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px;color:var(--ink-soft);font-weight:700;text-transform:uppercase;}
+.mail-item-from{color:var(--terracotta);font-weight:800;font-size:13px;}
+.mail-item-body{font-size:14px;line-height:1.5;color:var(--ink);white-space:pre-wrap;}
+
+.mail-form{display:flex;flex-direction:column;gap:15px;}
+.mail-input-group{display:flex;flex-direction:column;gap:5px;}
+.mail-label{font-size:12px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;}
+.mail-select, .mail-textarea{padding:12px;border:1.5px solid var(--paper-dark);border-radius:8px;background:var(--cream);font-family:'Manrope',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+.mail-textarea{min-height:150px;resize:none;}
+.mail-select:focus, .mail-textarea:focus{border-color:var(--terracotta);background:#fff;}
+.mail-send-btn{background:var(--terracotta);color:#fff;border:none;padding:12px;border-radius:8px;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:0.1em;transition:all 0.2s;}
+.mail-send-btn:hover{background:var(--terracotta-dark);transform:translateY(-2px);box-shadow:0 4px 15px rgba(200,85,61,0.3);}
+
+.mail-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--ink-soft);padding:5px;}
+
+body.the-way-mode .mail-content { background: #000; border: 2px solid #FFF; border-radius: 0; }
+body.the-way-mode .mail-item { background: #111; border: 1px solid #FFF; border-left-width: 4px; border-radius: 0; color: #FFF; }
+body.the-way-mode .mail-item-body { color: #DDD; }
+body.the-way-mode .mail-badge { background: #FFF; color: #000; border-radius: 0; }
+body.the-way-mode .mail-tab.active { color: #FFF; }
+body.the-way-mode .mail-tab.active::after { background: #FFF; }
+body.the-way-mode .mail-select, body.the-way-mode .mail-textarea { background: #000; border-color: #FFF; color: #FFF; border-radius: 0; }
+body.the-way-mode .mail-send-btn { background: #FFF; color: #000; border-radius: 0; }
 
 </style>
 </head>
@@ -761,7 +786,6 @@ const ROUTE = [
       {n:'Café Santiago — francesinha', i:'Класика з 1959. Замовляти з розрахунком, черги. Приходити після 17:00', m:'https://maps.google.com/?q=Café+Santiago+Porto', stamp:false, secret:false},
     ],
     albs:[
-      //{n:'Best Guest Porto Hostel', p:'€25/паломника', b:'https://www.booking.com/searchresults.html?ss=Best+Guest+Porto+Hostel', c:'🏠 Ночівля 11 і 12 липня тут'},
       {n:'Albergue Peregrinos Porto', p:'€32,5/паломника', b:'https://albergueperegrinosporto.pt/', m:'https://maps.app.goo.gl/yCtDPjanBnhahxEg9', c:'🏠 Ночівля 11 і 12 липня тут(ЗАБРОНЬОВАНО)'},
     ],
     stamps:[]
@@ -800,13 +824,13 @@ const ROUTE = [
       {n:'Aqueduto de Santa Clara', i:'999 арок, 4 км. Секретний ракурс: дивитися на церкву крізь арки', m:'https://maps.google.com/?q=Aqueduto+Santa+Clara+Vila+do+Conde', stamp:false, secret:true},
       {n:'Nau Quinhentista', i:'Діюча репліка корабля XVI ст. — унікальна морська печатка, символ Великих відкриттів', m:'https://maps.google.com/?q=Nau+Quinhentista+Vila+do+Conde', stamp:true, secret:false},
       {n:'🤫 Castro de São Paio + Centro de Interpretação', i:'Залізновікове (кельтське) прибережне поселення V–I ст. до н.е. + сучасний центр інтерпретації. Дуже мало паломників заходять всередину. Обов’язково!', m:'https://maps.google.com/?q=Castro+de+São+Paio+Vila+do+Conde', stamp:false, secret:true},
-  {n:'Capela de São Paio', i:'Маленька капличка над Castro — гарний вид і спокійне місце', m:'https://maps.google.com/?q=Capela+de+São+Paio+Labruge', stamp:false, secret:true},
-  {n:'Lampião (кафе/їжа)', i:'Популярний локальний детур для кави та сніданку/обіду серед місцевих. Смачно і недорого', m:'https://maps.google.com/?q=Lampi%C3%A3o+Vila+do+Conde', stamp:false, secret:false},
+      {n:'Capela de São Paio', i:'Маленька капличка над Castro — гарний вид і спокійне місце', m:'https://maps.google.com/?q=Capela+de+São+Paio+Labruge', stamp:false, secret:true},
+      {n:'Lampião (кафе/їжа)', i:'Популярний локальний детур для кави та сніданку/обіду серед місцевих. Смачно і недорого', m:'https://maps.google.com/?q=Lampi%C3%A3o+Vila+do+Conde', stamp:false, secret:false},
     ],
     albs:[
       {n:'Albergue de Peregrinos do Mosteiro de Vairão', p:'€15/паломника', b:'https://mosteirodevairao.blogspot.com/', m:'https://maps.app.goo.gl/KzQLHniwY8ut3eAu5'},
       {n:'Albergue de Peregrinos São José de Ribamar', p:'€15/паломника', b:'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-peregrinos-povoa-de-varzim/', m:'https://maps.app.goo.gl/RMPZGymJkSvGbVbV7'},
-      {n:'Pousada de Juventude Vila do Conde', p:'€56 за 4-місну кімнату', b:'https://www.pousadasjuventude.pt/pt/pousadas/pousada-de-vila-do-conde/', m:'https://maps.app.goo.gl/pVxiECVHUio7PtGx5',c:'⭐ Ідеально для компанії'},
+      {n:'Pousada de Juventude Vila do Conde', p:'€56 за 4-місну кімнату', b:'https://www.pousadasjuventude.pt/pt/pousadas/pousada-de-vila-do-conde/', m:'https://maps.app.goo.gl/pVxiECVHUio7PtGx5', c:'⭐ Ідеально для компанії'},
     ],
     stamps:[
       {place:'Mosteiro de Santa Clara', note:'Монастир XIV ст. — рідкісна готична печатка'},
@@ -863,7 +887,7 @@ const ROUTE = [
       {n:'Chafariz de Caminha (фонтан)', i:'Фонтан 1551 на середньовічній площі', m:'https://maps.google.com/?q=Chafariz+Caminha', stamp:false, secret:false},
       {n:'🛥️ Паромна компанія (Xacobeo Transfer)', i:'Попросити печатку перед поромом! Рідкісна. xacobeotransfer.com, WhatsApp +34 613 011 226', m:'https://maps.google.com/?q=Caminha+ferry+pier', stamp:true, secret:true},
       {n:'Forte de São João Baptista', i:'XVII ст. форт на океані в Caminha. Гарний вид і історичне місце', m:'https://maps.google.com/?q=Forte+de+São+João+Baptista+Caminha', stamp:false, secret:false},
-  {n:'🛥️ Поїздка на човні до острова (Ilha da Ínsua)', i:'Можна домовитись з місцевими рибалками або через туристичний офіс. Дуже атмосферно', m:'https://maps.google.com/?q=Ilha+da+Ínsua+Caminha', stamp:false, secret:true},
+      {n:'🛥️ Поїздка на човні до острова (Ilha da Ínsua)', i:'Можна домовитись з місцевими рибалками або через туристичний офіс. Дуже атмосферно', m:'https://maps.google.com/?q=Ilha+da+Ínsua+Caminha', stamp:false, secret:true},
     ],
     albs:[
       {n:'Albergue de Peregrinos Santiago de Caminha (у океана)', p:'€15/паломника', b:'https://www.booking.com/Share-PPxPBEo', m:'https://maps.app.goo.gl/m13j2rS1jSVrc6Xv5A', c:'БЕЗ бронювання — приходити до 15:00!'},
@@ -885,8 +909,8 @@ const ROUTE = [
       {n:'Praia América', i:'Найкрасивіший пляж Галісії на маршруті', m:'https://maps.google.com/?q=Praia+América+Nigrán', stamp:false, secret:false},
       {n:'Fortaleza de Monterreal (Baiona)', i:'Фортечні стіни на півострові, 3 км безкоштовно, вхід €1. Тут тепер Parador 5*', m:'https://maps.google.com/?q=Fortaleza+Monterreal+Baiona', stamp:true, secret:false},
       {n:'⭐ Réplica da Carabela La Pinta', i:'Точна копія корабля Колумба, що ПЕРШИМ приніс звістку про відкриття Америки в Європу 1.03.1493! Музей €2-3', m:'https://maps.google.com/?q=Carabela+La+Pinta+Baiona', stamp:true, secret:true},
-{n:'⭐ Virgen de la Roca', i:'Гігантська статуя Діви Марії (15 м) на скелі з човном у руці. Вид на океан і Baiona — один з найкращих на всьому маршруті!', m:'https://maps.google.com/?q=Virgen+de+la+Roca+Baiona', stamp:false, secret:true},
-  {n:'🤫 Monteferro Peninsula', i:'Півострів з фантастичним видом на острови Cíes. Мало хто з паломників доходить. Дикий, вітряний, дуже красивий', m:'https://maps.google.com/?q=Monteferro+Baiona', stamp:false, secret:true},    
+      {n:'⭐ Virgen de la Roca', i:'Гігантська статуя Діви Марії (15 м) на скелі з човном у руці. Вид на океан і Baiona — один з найкращих на всьому маршруті!', m:'https://maps.google.com/?q=Virgen+de+la+Roca+Baiona', stamp:false, secret:true},
+      {n:'🤫 Monteferro Peninsula', i:'Півострів з фантастичним видом на острови Cíes. Мало хто з паломників доходить. Дикий, вітряний, дуже красивий', m:'https://maps.google.com/?q=Monteferro+Baiona', stamp:false, secret:true},    
     ],
     albs:[
       {n:'Public Pilgrims Hostel of A Guarda', p:'€10/паломника (якщо зупинка в A Guarda)', b:'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-peregrinos-a-guarda/', m:'https://maps.app.goo.gl/yaq9DpGZ7EcTcNuQ7'},
@@ -911,9 +935,9 @@ const ROUTE = [
       {n:'Viaduto de Redondela', i:'Величезний залізничний віадук — архітектурна ікона міста', m:'https://maps.google.com/?q=Viaduto+Redondela', stamp:false, secret:false},
     ],
     albs:[
-      {n:'R4 Vigo Hostel', p:'€10/паломника', b:'https://maps.google.com/?q=Albergue+Peregrinos+Vigo', m:'https://maps.app.goo.gl/EppV4ujM28vVSmhh6' c:'красиве історичне місце біля церкви'},
+      {n:'R4 Vigo Hostel', p:'€10/паломника', b:'https://maps.google.com/?q=Albergue+Peregrinos+Vigo', m:'https://maps.app.goo.gl/EppV4ujM28vVSmhh6', c:'красиве історичне місце біля церкви'},
       {n:'Albergue Publico de Peregrinos de Vigo', p:'€15/паломника', b:'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-peregrinos-vigo/', m:'https://maps.app.goo.gl/6Ceupq4kyS1sY1c68'},
-      ],
+    ],
     stamps:[
       {place:'Basílica de Santa María la Mayor', note:'⚠️ З цього моменту — 2 штампи на день!'},
       {place:'Будь-яке кафе на маршруті', note:'2-й щоденний штамп'},
@@ -930,9 +954,9 @@ const ROUTE = [
       {n:'🤫 Albergue O Refuxio da Jeruxa', i:'Donativo, господарі співають для паломників — найтепліший прийом маршруту', m:'https://maps.google.com/?q=Albergue+O+Refuxio+da+Jeruxa+Redondela', stamp:false, secret:true},
     ],
     albs:[
-      {n:'Albergue de peregrinos Casa da Torre (Xunta)', p:'€15/паломника', b:'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-redondela/',m:'https://maps.app.goo.gl/i2EYWJSnxAfsJPF76', c:'Стара кам\'яна вежа в центрі, 50 ліжок'},
-      {n:'O Refuxio de la Jerezan`a', p:'€5-10 пожертва', b:'https://orefuxio.org/en/home/', m;'https://maps.app.goo.gl/QMLcKaiPgksKse247'},
-      {n:'🤫O Refuxio D\Anton', p:'€5-10 пожертва', b:'https://menuyvinos.com/orefuxio/',m;'https://maps.app.goo.gl/bmBpAhkC5Zgy171J7', c:'Найтепліший прийом'},
+      {n:'Albergue de peregrinos Casa da Torre (Xunta)', p:'€15/паломника', b:'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-redondela/', m:'https://maps.app.goo.gl/i2EYWJSnxAfsJPF76', c:'Стара кам\'яна вежа в центрі, 50 ліжок'},
+      {n:'O Refuxio de la Jerezana', p:'€5-10 пожертва', b:'https://orefuxio.org/en/home/', m:'https://maps.app.goo.gl/QMLcKaiPgksKse247'},
+      {n:'🤫O Refuxio D\'Anton', p:'€5-10 пожертва', b:'https://menuyvinos.com/orefuxio/', m:'https://maps.app.goo.gl/bmBpAhkC5Zgy171J7', c:'Найтепліший прийом'},
     ],
     stamps:[{place:'Igrexa de Santiago de Redondela', note:'Злиття Coastal і Central маршрутів'}]
   },
@@ -968,7 +992,7 @@ const ROUTE = [
       {n:'🏰 Castelo de Soutomaior (детур)', i:'Красивий середньовічний замок + чудові камелії в саду. 10–12 км в обидві сторони від маршруту, але дуже варте для тих, хто любить історію', m:'https://maps.google.com/?q=Castelo+de+Soutomaior', stamp:false, secret:true},
     ],
     albs:[
-      {n:'Albergue Público de Peregrinos de Caldas de Reis', p:'€15/паломника', b:'https://www.roomreserve.online/es/albergue-de-caldas-de-reis-urraca-caldas-de-reis/', m;'https://maps.app.goo.gl/vNePZsTgTY6bneLv6', c:'Біля мосту, 80 ліжок'},
+      {n:'Albergue Público de Peregrinos de Caldas de Reis', p:'€15/паломника', b:'https://www.roomreserve.online/es/albergue-de-caldas-de-reis-urraca-caldas-de-reis/', m:'https://maps.app.goo.gl/vNePZsTgTY6bneLv6', c:'Біля мосту, 80 ліжок'},
       {n:'ALBERGUE de Caldas de Reis URRACA ', p:'€15', b:'https://www.google.com/maps/place/ALBERGUE+de+Caldas+de+Reis+URRACA+-+Bunk+Bed+in+Mixed+Dormitory+Room/@42.6055856,-8.6452004,19.32z/data=!4m11!3m10!1s0xd2f0de589e2f67f:0x9da57689ec7cc40e!5m3!1s2026-05-21!4m1!1i2!8m2!3d42.6055984!4d-8.6453305!16s%2Fg%2F11x1qfkf4k!17BQ0FF?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D', m:'https://www.google.com/maps/place/ALBERGUE+de+Caldas+de+Reis+URRACA+-+Bunk+Bed+in+Mixed+Dormitory+Room/@42.6055984,-8.6453305,17z/data=!4m11!3m10!1s0xd2f0de589e2f67f:0x9da57689ec7cc40e!5m3!1s2026-05-21!4m1!1i2!8m2!3d42.6055984!4d-8.6453305!16s%2Fg%2F11x1qfkf4k!17BQ0FF?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D'},
     ],
     stamps:[
@@ -1017,7 +1041,7 @@ const ROUTE = [
     desc:'Ранком — Pilgrim Mass (Botafumeiro!). Автобус Monbus до Fisterra (~90 хв, €13). Захід сонця на маяку Faro de Fisterra. Повернення до Сантьяго. 🎆 23:30 — FUEGOS DEL APÓSTOLO на Praza do Obradoiro!',
     hl:'🎆 Fuegos del Apóstolo — піротехнічний мультимедійний спектакль, що "підпалює" собор. 30,000+ людей! Приходити на Praza за 1.5 год (з 21:30). Унікальний раз на рік!',
     places:[
-      {n:'Pilgrim Mass у соборі', i:'Botafumeiro — кадильниця 53 кг летить на 65 м. Меси: 9:30, 12:00, 19:30', m:'https://maps.google.com/?q=Catedral+Santiago', stamp:false, secret:false},
+      {n:'Pilgrim Mass (у соборі)', i:'Botafumeiro — кадильниця 53 кг летить на 65 м. Меси: 9:30, 12:00, 19:30', m:'https://maps.google.com/?q=Catedral+Santiago', stamp:false, secret:false},
       {n:'🚌 Автобус Monbus → Fisterra', i:'~90 хв, €13. Розклад: monbus.es', m:'https://maps.google.com/?q=Santiago+de+Compostela+bus+station', stamp:false, secret:false},
       {n:'⭐ Faro de Fisterra (маяк)', i:'Найзахідніша точка континентальної Європи. Унікальний штемпель маяка — 0,00 km!', m:'https://maps.google.com/?q=Faro+de+Fisterra', stamp:true, secret:true},
       {n:'🌅 Захід сонця в Fisterra', i:'~22:00 у липні. Головна причина їхати. Паломники спалюють старий одяг (традиція)', m:'https://maps.google.com/?q=Cabo+Fisterra', stamp:false, secret:false},
@@ -1341,6 +1365,10 @@ function renderApp(id){
       <div class="header-title"><span class="shell-icon" id="shellEgg">🐚</span> Твою ж Каміно!</div>
       <div style="display:flex;align-items:center;gap:10px;">
         <button class="night-toggle-header" id="nightToggleH" title="Нічний режим" onclick="applyNightMode(!document.body.classList.contains('night-mode'))">${document.body.classList.contains('night-mode')?'☀️':'🌙'}</button>
+        <button class="mail-toggle" onclick="openMailModal()" title="Пошта">
+          <span>✉️</span>
+          <span class="mail-badge" id="mailBadge">0</span>
+        </button>
         <div class="user-badge" onclick="toggleUserMenu()">${p.name}
           <div class="user-menu" id="userMenu">
             <button onclick="logout()">Вийти з акаунту</button>
@@ -1348,6 +1376,42 @@ function renderApp(id){
         </div>
       </div>
     </header>
+
+    <div class="mail-modal" id="mailModal" onclick="if(event.target===this) closeMailModal()">
+      <div class="mail-content">
+        <div class="mail-header">
+          <h2 class="mail-title">📩 Пошта Каміно</h2>
+          <button class="mail-close" onclick="closeMailModal()">✕</button>
+        </div>
+        
+        <div class="mail-tabs">
+          <button class="mail-tab active" id="tabInbox" onclick="switchMailTab('inbox')">Вхідні</button>
+          <button class="mail-tab" id="tabSend" onclick="switchMailTab('send')">Написати</button>
+        </div>
+
+        <div class="mail-body active" id="bodyInbox">
+          <div class="mail-list" id="mailList">
+            <!-- Листи будуть тут -->
+          </div>
+        </div>
+
+        <div class="mail-body" id="bodySend">
+          <div class="mail-form">
+            <div class="mail-input-group">
+              <label class="mail-label">Кому</label>
+              <select class="mail-select" id="mailTo">
+                <!-- Отримувачі будуть тут -->
+              </select>
+            </div>
+            <div class="mail-input-group">
+              <label class="mail-label">Послання</label>
+              <textarea class="mail-textarea" id="mailText" placeholder="Напишіть щось тепле..."></textarea>
+            </div>
+            <button class="mail-send-btn" onclick="sendMail()">Надіслати листа</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="countdown">
       <div class="countdown-label">До старту ✈️</div>
       <div class="countdown-grid">
@@ -1470,23 +1534,9 @@ function buildRoute(){
           ${d.albs.map(a=>{
             const isBooked = a.c && a.c.includes('ЗАБРОНЬОВАНО');
             const cleanComment = isBooked ? a.c.replace('(ЗАБРОНЬОВАНО)', '').replace('ЗАБРОНЬОВАНО', '').trim() : a.c;
-            const mapLink = a.m || `https://www.google.com/maps/search/${encodeURIComponent(a.n)}`;
-            const bookLink = a.b;
             return `<div class="det-item ${isBooked?'booked':''}">
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
-                <div style="flex:1;">
-                  <a class="det-name" href="${mapLink}" target="_blank">📍 ${a.n}</a>
-                  <div class="det-info"><strong>${a.p}</strong>${cleanComment?' — '+cleanComment:''}</div>
-                </div>
-                ${bookLink ? `
-                  <div style="flex-shrink:0;">
-                    ${isBooked 
-                      ? `<a class="booked-badge" href="${bookLink}" target="_blank" style="text-decoration:none; cursor:pointer;" title="Перейти до бронювання">✓ Заброньовано</a>`
-                      : `<a class="det-book-btn" href="${bookLink}" target="_blank">🎫 Book</a>`
-                    }
-                  </div>
-                ` : ''}
-              </div>
+              <a class="det-name" href="${a.b}" target="_blank">${a.n}${isBooked?'<span class="booked-badge">✓ Заброньовано</span>':''}</a>
+              <div class="det-info"><strong>${a.p}</strong>${cleanComment?' — '+cleanComment:''}</div>
             </div>`;
           }).join('')}
         </div>`:''}
