@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Твою ж Каміно! 🐚</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐚</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Caveat:wght@600&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #f5ecd9; --paper: #faf4e3; --paper-dark: #ede0c2;
+  --terracotta: #c8553d; --terracotta-dark: #9c3e2c;
+  --olive: #6b7d3a; --olive-dark: #4a5a25;
+  --sand: #d4a574; --ocean: #5a7d8c;
+  --ink: #2c1810; --ink-soft: #4a3825;
+  --gold: #c9a64b; --shadow: rgba(44,24,16,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Manrope',sans-serif;background:var(--cream);color:var(--ink);
+  min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(at 20% 30%,rgba(212,165,116,.15) 0,transparent 50%),
+    radial-gradient(at 80% 70%,rgba(107,125,58,.12) 0,transparent 50%);
+  background-attachment:fixed;
+}
+h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:-.02em;}
+
+/* SHELL BG */
+.shell-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.shell-bg svg{position:absolute;opacity:.07;fill:var(--terracotta);}
+.shell-1{top:5%;right:-5%;width:400px;transform:rotate(15deg);}
+.shell-2{bottom:10%;left:-8%;width:500px;opacity:.05!important;transform:rotate(-25deg);}
+.shell-3{top:50%;right:20%;width:200px;opacity:.04!important;transform:rotate(60deg);}
+
+/* LOGIN */
+.login-screen{position:fixed;inset:0;background:linear-gradient(135deg,var(--paper),var(--cream),var(--paper-dark));z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
+.login-screen.hidden{display:none;}
+.login-card{margin:auto;background:var(--paper);padding:40px 28px;border-radius:4px;max-width:420px;width:100%;box-shadow:0 1px 2px rgba(0,0,0,.1),0 20px 40px var(--shadow),inset 0 1px 0 rgba(255,255,255,.5);border:1px solid var(--paper-dark);position:relative;}
+.login-shell{text-align:center;margin-bottom:20px;animation:shellFloat 4s ease-in-out infinite;}
+.login-shell svg{width:65px;height:65px;fill:var(--terracotta);}
+@keyframes shellFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.login-title{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,8vw,46px);text-align:center;line-height:1;margin-bottom:4px;font-weight:700;}
+.login-subtitle{font-family:'Caveat',cursive;font-size:22px;text-align:center;color:var(--terracotta);margin-bottom:28px;transform:rotate(-1deg);}
+.login-step-label{text-transform:uppercase;letter-spacing:.15em;font-size:11px;color:var(--ink-soft);margin-bottom:12px;text-align:center;font-weight:600;}
+.pilgrim-list{display:grid;gap:10px;margin-bottom:20px;}
+.pilgrim-btn{background:var(--cream);border:1.5px solid var(--paper-dark);padding:14px 18px;font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:var(--ink);cursor:pointer;border-radius:2px;transition:all .25s;text-align:left;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden;}
+.pilgrim-btn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--terracotta);transform:scaleY(0);transition:transform .25s;}
+.pilgrim-btn:hover,.pilgrim-btn:active{background:var(--paper-dark);transform:translateX(4px);}
+.pilgrim-btn:hover::before{transform:scaleY(1);}
+.pilgrim-btn .arrow{color:var(--terracotta);font-size:18px;opacity:.5;}
+.password-form{display:none;}
+.password-form.active{display:block;animation:slideIn .35s ease-out;}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+.password-hint{background:var(--cream);padding:12px 14px;border-left:3px solid var(--terracotta);margin-bottom:14px;font-style:italic;font-size:14px;color:var(--ink-soft);border-radius:0 2px 2px 0;}
+.pw-wrap{position:relative;}
+.password-input{width:100%;padding:14px 46px 14px 14px;border:1.5px solid var(--paper-dark);background:var(--cream);font-family:'Manrope',sans-serif;font-size:17px;color:var(--ink);border-radius:2px;outline:none;transition:border-color .2s;}
+.password-input:focus{border-color:var(--terracotta);}
+.pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:20px;color:var(--ink-soft);padding:4px;}
+.password-error{color:var(--terracotta-dark);font-size:14px;margin-top:8px;display:none;font-style:italic;}
+.password-error.show{display:block;animation:shake .4s;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.password-actions{display:flex;gap:10px;margin-top:14px;}
+.btn{padding:12px 22px;border:none;cursor:pointer;font-family:'Manrope',sans-serif;font-weight:600;font-size:14px;letter-spacing:.05em;border-radius:2px;transition:all .2s;text-transform:uppercase;}
+.btn-primary{background:var(--terracotta);color:var(--paper);flex:1;}
+.btn-primary:hover{background:var(--terracotta-dark);}
+.btn-secondary{background:transparent;color:var(--ink-soft);border:1.5px solid var(--paper-dark);}
+
+/* BIRTHDAY OVERLAY */
+.birthday-overlay{position:fixed;inset:0;z-index:2000;display:none;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(200,85,61,.95),rgba(107,125,58,.92));pointer-events:all;}
+.birthday-overlay.show{display:flex;animation:fadeIn .6s;}
+.birthday-msg{text-align:center;color:#fff;padding:30px 24px;}
+.birthday-msg h1{font-family:'Caveat',cursive;font-size:clamp(42px,12vw,72px);line-height:1;margin-bottom:12px;text-shadow:0 2px 12px rgba(0,0,0,.3);}
+.birthday-msg p{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,5vw,28px);font-style:italic;margin-bottom:24px;opacity:.95;}
+.birthday-close{background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.5);color:#fff;padding:14px 32px;font-family:'Manrope',sans-serif;font-weight:700;font-size:15px;letter-spacing:.1em;cursor:pointer;border-radius:2px;text-transform:uppercase;}
+.birthday-close:hover{background:rgba(255,255,255,.35);}
+
+/* APP */
+.app{display:none;position:relative;z-index:2;padding-bottom:80px;}
+.app.visible{display:block;}
+
+/* HEADER */
+.header{background:var(--paper);z-index:100;padding:12px 20px;border-bottom:1px solid var(--paper-dark);display:flex;align-items:center;justify-content:space-between;}
+/* CHANGE 7: Logo in header */
+.header-logo{height:36px;width:auto;display:block;cursor:pointer;}
+.header-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.header-title .shell-icon{display:inline-block;cursor:pointer;user-select:none;transition:transform .2s;}
+.header-title .shell-icon:active{transform:scale(1.2) rotate(20deg);}
+/* CHANGE 3: Mail button + user badge */
+.user-badge{background:var(--terracotta);color:var(--paper);padding:5px 13px;border-radius:99px;font-family:'Caveat',cursive;font-size:17px;font-weight:700;cursor:pointer;position:relative;}
+.mail-btn{background:var(--cream);border:1.5px solid var(--paper-dark);color:var(--ink);width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:all .2s;}
+.mail-btn:hover{background:var(--terracotta);color:#fff;border-color:var(--terracotta);}
+.mail-badge-count{position:absolute;top:-4px;right:-4px;background:var(--terracotta);color:#fff;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;display:none;}
+.mail-badge-count.show{display:flex;}
+.user-menu{position:absolute;top:110%;right:0;background:var(--paper);border:1px solid var(--paper-dark);border-radius:4px;box-shadow:0 8px 24px var(--shadow);min-width:160px;z-index:200;display:none;overflow:hidden;}
+.user-menu.show{display:block;}
+.user-menu button{display:block;width:100%;padding:10px 14px;background:none;border:none;text-align:left;font-family:'Manrope',sans-serif;font-size:13px;color:var(--ink);cursor:pointer;}
+.user-menu button:hover{background:var(--cream);}
+
+/* MAIL MODAL */
+.mail-modal{position:fixed;inset:0;background:rgba(44,24,16,.6);z-index:300;display:none;align-items:flex-end;justify-content:center;}
+.mail-modal.show{display:flex;animation:fadeIn .25s;}
+.mail-content{background:var(--cream);width:100%;max-width:600px;max-height:90vh;border-radius:16px 16px 0 0;padding:22px 18px;overflow-y:auto;animation:slideUp .3s ease;position:relative;display:flex;flex-direction:column;gap:0;}
+.mail-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.mail-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;}
+.mail-close-btn{background:var(--paper-dark);border:none;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.mail-tabs{display:flex;gap:8px;margin-bottom:16px;}
+.mail-tab{padding:7px 14px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--paper-dark);background:transparent;font-family:'Manrope',sans-serif;color:var(--ink-soft);transition:all .2s;}
+.mail-tab.active{background:var(--terracotta);color:#fff;border-color:var(--terracotta);}
+.mail-list{display:flex;flex-direction:column;gap:8px;}
+.mail-item{background:var(--paper);border-radius:4px;padding:12px 14px;border:1px solid var(--paper-dark);cursor:pointer;transition:all .2s;}
+.mail-item:hover{border-color:var(--terracotta);}
+.mail-item.unread{border-left:3px solid var(--terracotta);}
+.mail-item-from{font-weight:700;font-size:13px;margin-bottom:3px;display:flex;align-items:center;gap:6px;}
+.mail-item-preview{font-size:12px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mail-item-date{font-size:10px;color:var(--ink-soft);margin-left:auto;flex-shrink:0;}
+.mail-compose{display:flex;flex-direction:column;gap:10px;}
+.mail-compose-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:600;color:var(--ink-soft);margin-bottom:2px;}
+.mail-compose select,.mail-compose input,.mail-compose textarea{width:100%;padding:10px 12px;border:1.5px solid var(--paper-dark);background:var(--cream);font-family:'Manrope',sans-serif;font-size:14px;color:var(--ink);border-radius:2px;outline:none;}
+.mail-compose textarea{height:120px;resize:vertical;}
+.mail-compose select:focus,.mail-compose input:focus,.mail-compose textarea:focus{border-color:var(--terracotta);}
+.mail-send-btn{background:var(--terracotta);color:#fff;border:none;padding:12px 24px;font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;border-radius:2px;cursor:pointer;align-self:flex-end;letter-spacing:.05em;}
+.mail-open-msg{background:var(--paper);border-radius:4px;padding:16px;border:1px solid var(--paper-dark);}
+.mail-open-subject{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin-bottom:6px;}
+.mail-open-meta{font-size:12px;color:var(--ink-soft);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--paper-dark);}
+.mail-open-body{font-size:14px;line-height:1.7;white-space:pre-wrap;}
+.reminder-banner{background:linear-gradient(135deg,#fff8e7,#fdefd6);border:1.5px solid var(--gold);border-radius:4px;padding:12px 14px;margin-bottom:12px;font-size:13px;display:flex;gap:10px;align-items:flex-start;}
+.reminder-banner strong{color:var(--terracotta-dark);}
+
+/* COUNTDOWN */
+.countdown{background:var(--paper);border-bottom:1px solid var(--paper-dark);padding:10px 20px;display:flex;align-items:center;gap:16px;overflow-x:auto;scrollbar-width:none;}
+.countdown::-webkit-scrollbar{display:none;}
+.countdown-label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-soft);font-weight:600;white-space:nowrap;flex-shrink:0;}
+.countdown-grid{display:flex;gap:12px;flex-shrink:0;}
+.countdown-cell{display:flex;align-items:baseline;gap:3px;}
+.countdown-num{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,6vw,30px);font-weight:700;color:var(--terracotta);line-height:1;}
+.countdown-unit{font-size:10px;text-transform:uppercase;color:var(--ink-soft);font-weight:600;letter-spacing:.05em;}
+
+/* NAV */
+.nav-tabs{position:sticky;top:0;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;padding:0 20px;background:var(--paper);z-index:101;border-bottom:1px solid var(--paper-dark);box-shadow:0 4px 12px rgba(0,0,0,0.05);}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.nav-tab{background:transparent;border:none;padding:12px 14px;font-family:'Manrope',sans-serif;font-size:12px;font-weight:600;letter-spacing:.03em;color:var(--ink-soft);cursor:pointer;white-space:nowrap;position:relative;transition:all .2s;}
+.nav-tab:hover,.nav-tab:active{color:var(--terracotta);background:var(--cream);border-radius:4px;}
+.nav-tab.active{color:var(--terracotta);}
+.nav-tab.active::after{content:'';position:absolute;bottom:0;left:10px;right:10px;height:2px;background:var(--terracotta);}
+
+/* HERO */
+.hero{padding:32px 20px 20px;text-align:center;}
+.hero-greeting{font-family:'Caveat',cursive;font-size:26px;color:var(--terracotta);margin-bottom:6px;transform:rotate(-1deg);display:inline-block;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,11vw,62px);font-weight:700;line-height:.95;letter-spacing:-.03em;margin-bottom:10px;}
+.hero-title .accent{color:var(--terracotta);font-style:italic;display:inline-block;transform:rotate(-2deg);}
+.hero-subtitle{font-size:14px;color:var(--ink-soft);max-width:300px;margin:0 auto;line-height:1.5;}
+/* CHANGE 6: Compass near Buen Camino */
+.hero-compass{display:inline-block;margin-left:8px;animation:compassSpin 8s linear infinite;font-size:28px;vertical-align:middle;}
+@keyframes compassSpin{0%{transform:rotate(0deg)}25%{transform:rotate(15deg)}50%{transform:rotate(0deg)}75%{transform:rotate(-15deg)}100%{transform:rotate(0deg)}}
+
+/* SECTIONS */
+.section{display:none;padding:20px 20px 0;animation:fadeIn .4s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;margin-bottom:4px;}
+.section-subtitle{font-family:'Caveat',cursive;color:var(--terracotta);font-size:20px;margin-bottom:20px;display:inline-block;}
+
+/* DAY CARDS */
+.day-card{background:var(--paper);border-radius:4px;padding:18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,.06),0 4px 14px var(--shadow);border:1px solid var(--paper-dark);cursor:pointer;transition:all .25s;position:relative;}
+.day-card:hover,.day-card:active{transform:translateY(-2px);box-shadow:0 1px 2px rgba(0,0,0,.06),0 8px 24px var(--shadow);}
+.day-card.special{border-left:4px solid var(--terracotta);background:linear-gradient(135deg,var(--paper) 0%,#fff8e7 100%);}
+.day-card.holiday::after{content:'🎆';position:absolute;top:12px;right:16px;font-size:22px;}
+.day-card.birthday::after{content:'🎂';position:absolute;top:12px;right:16px;font-size:22px;}
+.day-date{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;line-height:1;color:var(--terracotta);}
+.day-dow{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);font-weight:600;margin-bottom:6px;}
+.day-route{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin-bottom:8px;line-height:1.2;}
+.day-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+.day-tag{background:var(--cream);border:1px solid var(--paper-dark);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--ink-soft);}
+.day-tag.km{background:var(--terracotta);color:var(--paper);border-color:var(--terracotta);}
+.day-desc{font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:8px;}
+.day-hl{background:var(--cream);border-left:3px solid var(--gold);padding:8px 12px;font-size:13px;line-height:1.5;border-radius:0 4px 4px 0;margin-bottom:8px;}
+.expand-hint{font-size:11px;color:var(--terracotta);text-align:right;font-style:italic;}
+.day-details{display:none;margin-top:14px;border-top:1px dashed var(--paper-dark);padding-top:14px;}
+.day-details.expanded{display:block;animation:fadeIn .3s ease;}
+.detail-section{margin-bottom:14px;}
+.det-title{font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--ink-soft);margin-bottom:8px;}
+.det-item{padding:8px 0;border-bottom:1px solid var(--paper-dark);}
+.det-item:last-child{border-bottom:none;}
+.det-name{font-weight:600;font-size:14px;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:6px;}
+.det-name:hover{color:var(--terracotta);}
+.det-info{font-size:12px;color:var(--ink-soft);margin-top:3px;line-height:1.5;}
+.secret-tag{background:var(--gold);color:var(--paper);border-radius:99px;padding:1px 6px;font-size:9px;font-weight:700;}
+.stamp-mark{color:var(--olive);font-size:18px;}
+.stage-progress{background:var(--paper);border-radius:4px;padding:14px;margin-bottom:16px;border:1px solid var(--paper-dark);}
+.stage-bar{height:8px;background:var(--paper-dark);border-radius:99px;overflow:hidden;margin:8px 0;}
+.stage-fill{height:100%;background:linear-gradient(90deg,var(--terracotta),var(--gold));border-radius:99px;transition:width .5s ease;}
+.stage-label{font-size:11px;color:var(--ink-soft);display:flex;justify-content:space-between;}
+.hidden-tip{display:none;background:linear-gradient(135deg,#c9a64b,#d4b95c);padding:18px;border-radius:4px;margin:12px 0;border:2px dashed var(--ink);}
+.hidden-tip.revealed{display:block;animation:shake .4s;}
+.hidden-tip-title{font-family:'Caveat',cursive;font-size:20px;font-weight:700;margin-bottom:8px;}
+
+/* PILGRIMS */
+.pilgrim-cards{display:grid;gap:12px;}
+.pilgrim-card{background:var(--paper);padding:16px 18px;border-radius:4px;box-shadow:0 4px 14px var(--shadow);border:1px solid var(--paper-dark);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:14px;}
+.pilgrim-card:hover{transform:translateX(4px);border-color:var(--terracotta);}
+.pilgrim-avatar{width:46px;height:46px;border-radius:50%;background:var(--terracotta);color:var(--paper);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;flex-shrink:0;}
+.pilgrim-card-name{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;flex:1;}
+.pilgrim-card-arrow{color:var(--terracotta);font-size:20px;}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(44,24,16,.6);z-index:200;display:none;align-items:flex-end;justify-content:center;}
+.modal.show{display:flex;animation:fadeIn .25s;}
+.modal-content{background:var(--cream);width:100%;max-width:600px;max-height:90vh;border-radius:16px 16px 0 0;padding:22px 18px;overflow-y:auto;animation:slideUp .3s ease;position:relative;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--paper-dark);border:none;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--ink);display:flex;align-items:center;justify-content:center;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;margin-bottom:3px;}
+.modal-subtitle{font-family:'Caveat',cursive;color:var(--terracotta);font-size:17px;margin-bottom:16px;}
+.gear-section-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--paper-dark);display:flex;align-items:center;gap:7px;}
+.gear-item{padding:9px 11px;background:var(--paper);border-radius:3px;margin-bottom:5px;font-size:13px;border-left:3px solid;display:flex;align-items:flex-start;gap:10px;}
+.gear-item-check{flex-shrink:0;width:20px;height:20px;border:2px solid var(--ink-soft);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;margin-top:1px;}
+.gear-item-check.checked{background:var(--olive);border-color:var(--olive);}
+.gear-item-check.checked::after{content:'✓';color:#fff;font-size:12px;}
+.gear-item-body{flex:1;}
+.gear-item-body .comment{display:block;font-size:11px;color:var(--terracotta-dark);font-style:italic;margin-top:3px;}
+.blister-meter{background:var(--cream);border:1.5px solid var(--paper-dark);border-radius:4px;padding:12px;margin-bottom:16px;}
+.blister-label{font-family:'Caveat',cursive;font-size:17px;font-weight:700;margin-bottom:6px;text-align:center;}
+.blister-slider{width:100%;accent-color:var(--terracotta);}
+.blister-display{font-size:13px;color:var(--terracotta);font-style:italic;text-align:center;margin-top:4px;}
+
+/* DICTIONARY */
+.dict-tabs{display:flex;gap:8px;margin-bottom:16px;}
+.dict-tab{padding:8px 16px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--paper-dark);background:transparent;font-family:'Manrope',sans-serif;color:var(--ink-soft);transition:all .2s;}
+.dict-tab.active{background:var(--terracotta);color:#fff;border-color:var(--terracotta);}
+.dict-category{margin-bottom:22px;}
+.dict-cat-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;margin-bottom:10px;color:var(--ink);}
+.dict-phrase{background:var(--paper);border-radius:4px;padding:12px 14px;margin-bottom:7px;border:1px solid var(--paper-dark);}
+.dict-original{font-size:14px;color:var(--ink-soft);margin-bottom:4px;}
+.dict-translation{font-size:18px;font-weight:600;margin-bottom:3px;}
+.dict-pronun{font-size:12px;color:var(--ocean);font-style:italic;}
+/* CHANGE 2: Turkish note style */
+.dict-turkish{font-size:11px;color:var(--olive-dark);font-style:italic;margin-top:3px;background:rgba(107,125,58,0.08);padding:3px 6px;border-radius:3px;}
+
+/* FOOD */
+.food-card{background:var(--paper);border-radius:4px;padding:14px 16px;margin-bottom:10px;border:1px solid var(--paper-dark);border-left:4px solid var(--terracotta);}
+.food-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;margin-bottom:4px;}
+.food-desc{font-size:13px;color:var(--ink-soft);margin-bottom:4px;line-height:1.5;}
+.food-city{font-size:11px;color:var(--olive);font-weight:600;}
+.food-rand-btn{background:var(--paper);border:1.5px dashed var(--paper-dark);border-radius:4px;padding:10px;width:100%;font-family:'Caveat',cursive;font-size:18px;color:var(--terracotta);cursor:pointer;margin-bottom:14px;}
+
+/* EXERCISES */
+.ex-tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.ex-tabs::-webkit-scrollbar{display:none;}
+.ex-tab{padding:8px 14px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--paper-dark);background:transparent;font-family:'Manrope',sans-serif;color:var(--ink-soft);white-space:nowrap;transition:all .2s;}
+.ex-tab.active{background:var(--olive);color:var(--paper);border-color:var(--olive-dark);}
+.exercise-card{background:var(--paper);padding:16px;border-radius:4px;margin-bottom:12px;border:1px solid var(--paper-dark);}
+.ex-comic{background:var(--cream);border:2px solid var(--ink);border-radius:4px;padding:14px;margin:10px 0;display:flex;align-items:center;gap:14px;}
+.ex-comic-fig{flex-shrink:0;width:75px;height:75px;}
+.ex-comic-txt{font-family:'Caveat',cursive;font-size:17px;color:var(--ink);line-height:1.2;}
+.ex-name{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;margin-bottom:3px;}
+.ex-dur{font-size:11px;color:var(--terracotta);font-weight:600;text-transform:uppercase;letter-spacing:.1em;margin-bottom:9px;}
+.ex-steps{list-style:none;counter-reset:ex;}
+.ex-steps li{padding:7px 0 7px 26px;position:relative;font-size:13px;line-height:1.5;color:var(--ink-soft);border-bottom:1px dashed var(--paper-dark);}
+.ex-steps li:last-child{border-bottom:none;}
+.ex-steps li::before{content:counter(ex);counter-increment:ex;position:absolute;left:0;top:7px;width:19px;height:19px;background:var(--terracotta);color:#fff;border-radius:50%;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+/* APPS */
+.app-card{background:var(--paper);padding:14px 16px;border-radius:4px;margin-bottom:8px;border:1px solid var(--paper-dark);display:flex;align-items:center;gap:12px;}
+.app-icon{width:42px;height:42px;border-radius:10px;background:var(--terracotta);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.app-info{flex:1;min-width:0;}
+.app-name{font-weight:600;font-size:14px;margin-bottom:2px;}
+.app-desc{font-size:11px;color:var(--ink-soft);}
+.app-links{display:flex;gap:5px;}
+.app-link{padding:5px 9px;background:var(--cream);border:1px solid var(--paper-dark);border-radius:99px;font-size:11px;font-weight:600;color:var(--ink);text-decoration:none;}
+
+/* CHECKLIST */
+.check-category{margin-bottom:22px;}
+.check-cat-title{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;margin-bottom:3px;}
+.check-cat-sub{font-family:'Caveat',cursive;font-size:15px;color:var(--terracotta);margin-bottom:10px;}
+.check-item{display:flex;align-items:flex-start;gap:10px;background:var(--paper);padding:12px;border-radius:3px;margin-bottom:7px;border:1px solid var(--paper-dark);cursor:pointer;transition:all .2s;}
+.check-item.done{opacity:.55;background:var(--cream);}
+.check-cb{width:20px;height:20px;border:2px solid var(--ink-soft);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--olive);font-weight:700;}
+.check-item.done .check-cb{background:var(--olive);border-color:var(--olive);color:#fff;}
+.check-task{font-weight:600;font-size:14px;margin-bottom:2px;}
+.check-detail{font-size:12px;color:var(--ink-soft);line-height:1.5;}
+.urgency{border-radius:99px;padding:1px 8px;font-size:9px;font-weight:700;letter-spacing:.05em;margin-right:5px;}
+.urg-critical{background:#ffd6d0;color:var(--terracotta-dark);}
+.urg-important{background:#fff3cd;color:#856404;}
+.urg-nice{background:#d4edda;color:#155724;}
+
+/* WEATHER */
+.weather-widget{padding:8px 0;}
+.weather-loading{font-size:13px;color:var(--ink-soft);font-style:italic;}
+
+/* FOOTER */
+.footer{text-align:center;padding:30px 20px;color:var(--ink-soft);font-family:'Caveat',cursive;font-size:22px;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.6;}
+
+/* MISC */
+.night-toggle-header{background:transparent;border:1.5px solid var(--paper-dark);border-radius:99px;padding:5px 10px;font-size:14px;cursor:pointer;transition:all .2s;}
+.scroll-top{position:fixed;bottom:20px;right:20px;width:40px;height:40px;border-radius:50%;background:var(--terracotta);color:#fff;border:none;font-size:18px;cursor:pointer;box-shadow:0 4px 14px var(--shadow);display:none;align-items:center;justify-content:center;z-index:150;transition:all .3s;}
+.scroll-top.visible{display:flex;}
+.ocean-toggle{position:fixed;bottom:70px;right:20px;width:40px;height:40px;border-radius:50%;background:var(--ocean);color:#fff;border:none;font-size:18px;cursor:pointer;box-shadow:0 4px 14px var(--shadow);z-index:150;display:flex;align-items:center;justify-content:center;}
+.ocean-toggle.playing{animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+
+/* MEMES */
+.memes-modal{position:fixed;inset:0;background:rgba(44,24,16,.7);z-index:400;display:none;align-items:flex-end;justify-content:center;}
+.memes-modal.show{display:flex;}
+.memes-content{background:var(--paper);width:100%;max-width:600px;max-height:90vh;border-radius:16px 16px 0 0;padding:22px 18px;overflow-y:auto;position:relative;}
+.meme-card{background:var(--cream);border:2px solid var(--ink);border-radius:4px;padding:14px;margin-bottom:10px;}
+.meme-title{font-family:'Caveat',cursive;font-size:17px;font-weight:700;margin-bottom:4px;}
+.meme-body{font-size:13px;line-height:1.6;}
+
+/* THE WAY MODE */
+body.the-way-mode {
+  --cream:#050505; --paper:#000000; --paper-dark:#111111;
+  --ink:#F5F5F5; --ink-soft:#E0E0E0; --shadow:#000000;
+  --terracotta:#FFFFFF; --terracotta-dark:#CCCCCC;
+  --olive:#F5F5F5; --olive-dark:#CCCCCC;
+  --sand:#222222; --ocean:#111111; --gold:#FFFFFF;
+  filter: grayscale(1) contrast(1.5) brightness(0.9);
+  background: #000;
+  color: #F5F5F5;
+}
+body.the-way-mode .nav-tab { color: #FFF; font-weight: bold; opacity: 0.6; }
+body.the-way-mode .nav-tab:hover, body.the-way-mode .nav-tab:active { opacity: 1; background: #222; }
+body.the-way-mode .nav-tab.active { color: #FFF; opacity: 1; }
+
+/* ROUTE INFO BOXES */
+.route-info-box{background:var(--paper);border-radius:4px;padding:16px 18px;margin-bottom:14px;border:1px solid var(--paper-dark);border-left:4px solid var(--gold);}
+.route-info-box p{font-size:13px;line-height:1.7;color:var(--ink-soft);margin-bottom:8px;}
+.route-info-box p:last-child{margin-bottom:0;}
+.route-info-box strong{color:var(--ink);}
+.route-info-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+
+/* NIGHT MODE */
+body.night-mode{
+  --cream:#1a1209; --paper:#241a0e; --paper-dark:#332515;
+  --ink:#f0e6d3; --ink-soft:#c8b89a;
+  --shadow:rgba(0,0,0,.5);
+}
+
+@media(prefers-color-scheme:dark){
+  .force-light{}
+}
+</style>
+</head>
+<body>
+
+<!-- Shell decorations -->
+<div class="shell-bg">
+  <svg class="shell-1" viewBox="0 0 200 200"><path d="M100 10C55 10 20 45 20 90c0 25 15 55 80 100 65-45 80-75 80-100C180 45 145 10 100 10zM100 20L96 180M76 25L66 175M52 42L36 162M124 25L134 175M148 42L164 162"/></svg>
+  <svg class="shell-2" viewBox="0 0 200 200"><path d="M100 10C55 10 20 45 20 90c0 25 15 55 80 100 65-45 80-75 80-100C180 45 145 10 100 10zM100 20L96 180M76 25L66 175"/></svg>
+</div>
+
+<!-- Birthday overlay -->
+<div class="birthday-overlay" id="birthdayOverlay">
+  <canvas id="confettiCanvas" style="position:absolute;inset:0;pointer-events:none;"></canvas>
+  <div class="birthday-msg">
+    <h1>З Днем Народження, Олексо! 🎉</h1>
+    <p>Сьогодні тобі виповнюється 15!<br>Ти зустрічаєш цей день у Сантьяго-де-Компостела,<br>пройшовши <strong>261 км</strong> свого першого Камінó 🐚</p>
+    <p style="font-size:clamp(16px,4vw,22px);margin-bottom:20px;">Такого подарунку на день народження<br>немає ні в кого в твоїй школі!</p>
+    <button class="birthday-close" onclick="closeBirthday()">Дякую! Buen Camino! 🐚</button>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-shell">
+      <svg viewBox="0 0 100 100"><path d="M50 5C30 5 15 20 12 40c0 15 8 35 38 55 30-20 38-40 38-55C85 20 70 5 50 5zM50 15L48 90M40 20L35 88M30 28L22 80M60 20L65 88M70 28L78 80" stroke="currentColor" stroke-width="1.5" fill="currentColor" fill-opacity="0.2"/></svg>
+    </div>
+    <h1 class="login-title">Твою ж <span style="color:var(--terracotta);font-style:italic;">Каміно!</span></h1>
+    <div class="login-subtitle">паломницький щоденник</div>
+
+    <div id="step-choose">
+      <div class="login-step-label">Хто ти, паломнику?</div>
+      <div class="pilgrim-list">
+        <button class="pilgrim-btn" data-pilgrim="mykola">Микола <span class="arrow">→</span></button>
+        <button class="pilgrim-btn" data-pilgrim="oleksa">Олекса <span class="arrow">→</span></button>
+        <button class="pilgrim-btn" data-pilgrim="hanna">Ганна <span class="arrow">→</span></button>
+        <button class="pilgrim-btn" data-pilgrim="yevhen">Євген <span class="arrow">→</span></button>
+      </div>
+    </div>
+
+    <div id="step-password" class="password-form">
+      <div class="login-step-label" id="passwordWelcome">Вітаємо</div>
+      <div class="password-hint" id="passwordHint"></div>
+      <div class="pw-wrap">
+        <input type="password" class="password-input" id="passwordInput" placeholder="Пароль..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+        <button class="pw-toggle" id="pwToggle" type="button">👁</button>
+      </div>
+      <div class="password-error" id="passwordError">Не той пароль. Спробуй ще раз!</div>
+      <div class="password-actions">
+        <button class="btn btn-secondary" id="backBtn">← Назад</button>
+        <button class="btn btn-primary" id="submitBtn">Увійти →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app" id="app"></div>
+
+<!-- Pilgrim modal -->
+<div class="modal" id="pilgrimModal" onclick="if(event.target.id==='pilgrimModal')closePilgrimModal()">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closePilgrimModal()">✕</button>
+    <div id="pilgrimModalContent"></div>
+  </div>
+</div>
+
+<!-- MAIL MODAL -->
+<div class="mail-modal" id="mailModal" onclick="if(event.target.id==='mailModal')closeMailModal()">
+  <div class="mail-content" id="mailContent">
+    <div class="mail-header">
+      <div class="mail-title">✉️ Пошта Камінó</div>
+      <button class="mail-close-btn" onclick="closeMailModal()">✕</button>
+    </div>
+    <div id="mailReminderArea"></div>
+    <div class="mail-tabs">
+      <button class="mail-tab active" onclick="switchMailTab('inbox',this)">📥 Вхідні</button>
+      <button class="mail-tab" onclick="switchMailTab('compose',this)">✏️ Написати</button>
+    </div>
+    <div id="mailTabContent"></div>
+  </div>
+</div>
+
+<!-- Memes easter egg -->
+<div class="memes-modal" id="memesModal" onclick="if(event.target.id==='memesModal')closeMemes()">
+  <div class="memes-content">
+    <button class="modal-close" onclick="closeMemes()">✕</button>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:4px;">🎉 Знайшов секретку!</h2>
+    <p style="font-family:'Caveat',cursive;color:var(--terracotta);font-size:18px;margin-bottom:14px;">Меми Камінó</p>
+    <div class="meme-card"><div class="meme-title">День 1:</div><div class="meme-body">"Це ж легко — просто йдемо красивим узбережжям."<br>День 3: 🦶🩹🆘</div></div>
+    <div class="meme-card"><div class="meme-title">Маркетинг vs Реальність:</div><div class="meme-body">📸 Маркетинг: романтика, мушлі, захід сонця<br>👟 Реальність: пухирі, "де найближче кафе???"</div></div>
+    <div class="meme-card"><div class="meme-title">Buen Camino — переклад:</div><div class="meme-body">🇪🇸 "Buen Camino!"<br>🇺🇦 "Терпи, ще тільки 18 км до обіду"</div></div>
+    <div class="meme-card"><div class="meme-title">Як паломник пакує рюкзак:</div><div class="meme-body">"Беру тільки найнеобхідніше" — 12 кг<br>День 2: викидає 4 кг<br>День 5: "навіщо я взяв ОЦЕ?"</div></div>
+    <div class="meme-card"><div class="meme-title">Альберге о 21:00:</div><div class="meme-body">😴 Всі сплять як після наркозу<br>🐍 Хропіння як в опері<br>🎧 Беруші — твій единій друг</div></div>
+    <div class="meme-card"><div class="meme-title">Через 2 місяці після:</div><div class="meme-body">"Більше ніколи ні"<br><br>За 3 місяці: "Може Frances наступного року?..."</div></div>
+  </div>
+</div>
+
+<!-- Konami -->
+<div class="konami-effect" id="konamiEffect"></div>
+
+<!-- Ocean toggle -->
+<button class="ocean-toggle" id="oceanToggle" title="Звуки океану">🌊</button>
+<audio id="oceanAudio" loop src="files/sound_ocean.mp3" preload="none"></audio>
+
+<button class="scroll-top" id="scrollTopBtn" title="Нагору" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('scrollTopBtn');
+  if(btn) { if(window.scrollY > 300) btn.classList.add('visible'); else btn.classList.remove('visible'); }
+}, {passive: true});
+</script>
+
+<script>
+// ==================== DATA ====================
+
+const TRIP_START = new Date('2026-07-11T16:25:00');
+
+const PILGRIMS = {
+  mykola: {
+    name: 'Микола', initial: 'М', password: 'тьотя',
+    hint: 'Скажи … 👩🏽‍🦰(кому?)',
+    has: [
+      {name:'Квитки', model:''},
+      {name:'Кросівки трейлові', model:'Evadict MT Cushion 2 / Quechua FH500'},
+      {name:'Окуляри (3 рівень захисту)', model:''},
+      {name:'Кепка / Панамка', model:''},
+      {name:'Антифрикційний крем/стік', model:''},
+    ],
+    need: [
+      {name:'Рюкзак', model:'Pinguin Fly 35 / Osprey Talon 33'},
+      {name:'Дощовик-пончо', model:'Decathlon Forclaz'},
+      {name:'Палиці трекінгові', model:'Forclaz MT500', comment:'Купимо в Порту — Click&Collect Decathlon Norteshopping'},
+      {name:'Silk liner для альберге', model:'Cocoon Silk або Sea to Summit'},
+      {name:'Шлепанці для альберге', model:'Crocs / Teva'},
+      {name:'Футболка технічна 2 шт', model:'Quechua MH100'},
+      {name:'Сорочка UPF (захист від сонця)', model:'Decathlon Travel 900 UPF'},
+      {name:'Фліска', model:'Forclaz MT100'},
+      {name:'Шорти технічні', model:''},
+      {name:'Спортивки/легінси для вечора', model:''},
+      {name:'Нижнє вбрання 2 пари', model:'ExOfficio / Icebreaker'},
+      {name:'Шкарпетки мерінос 3 пари', model:'Forclaz MT900 або Darn Tough', comment:'Захист #1 від пухирів!'},
+      {name:'Баф', model:'Buff Original Coolnet'},
+      {name:'Бананка', model:''},
+      {name:'Купальник', model:''},
+      {name:'Рушник мікрофібра', model:'Sea to Summit DryLite XL'},
+      {name:'Пластирі Compeed', model:'Mixed Pack'},
+      {name:'Пляшка для води 1L', model:'Soft Flask 500ml×2'},
+      {name:'Налобний ліхтарик', model:'Petzl Tikkina / BD Spot 400', comment:'Для виходу о 6:00 ранку'},
+      {name:'Маска для сну + беруші', model:'Loop Quiet'},
+      {name:'Power bank', model:'Anker PowerCore 10000mAh'},
+      {name:'Прищіпки 6-8 шт + мотузка 3м', model:''},
+    ]
+  },
+  oleksa: {
+    name: 'Олекса', initial: 'О', password: 'устурой',
+    hint: 'Ти хотіла б, щоб тебе так називали 🧄',
+    has: [],
+    need: [
+      {name:'Рюкзак 28-30L', model:'Osprey Tempest 24/28 або Deuter Fox 30', comment:'Максимум 5 кг у рюкзаку!'},
+      {name:'Кросівки трейлові', model:'Evadict Race Light / Quechua FH500', comment:'🔴 Розношувати 50-100 км вдома!'},
+      {name:'Дощовик-пончо', model:'Decathlon Forclaz'},
+      {name:'Палиці трекінгові (Junior)', model:'Forclaz MT100 Junior', comment:'Купимо в Порту'},
+      {name:'Silk liner', model:''},
+      {name:'Шлепанці', model:''},
+      {name:'Футболка технічна 2 шт', model:''},
+      {name:'Фліска', model:''},
+      {name:'Шорти', model:''},
+      {name:'Легінси', model:''},
+      {name:'Нижнє вбрання 2 пари', model:''},
+      {name:'Шкарпетки мерінос 3 пари', model:'Smartwool PhD Light Hiker'},
+      {name:'Окуляри (3 рівень)', model:''},
+      {name:'Кепка/панамка', model:''},
+      {name:'Бананка', model:''},
+      {name:'Баф', model:''},
+      {name:'Купальник', model:''},
+      {name:'Рушник мікрофібра', model:''},
+      {name:'Сонцезахисний крем SPF50+', model:'La Roche-Posay'},
+      {name:'Compeed пластирі', model:''},
+      {name:'Пляшка для води', model:'Soft Flask 500ml'},
+      {name:'Налобний ліхтарик', model:''},
+      {name:'Маска для сну + беруші', model:''},
+      {name:'📔 Щоденник Камінó', model:'Купити в Livraria Lello 12.07', comment:'Найкращий сувенір!'},
+      {name:'🐚 Мушля Vieira на рюкзак', model:'Sé do Porto 12.07 — €2-5', comment:'Символ паломника #1'},
+    ]
+  },
+  hanna: {
+    name: 'Ганна', initial: 'Г', password: 'пес',
+    hint: 'Ти часто так називаєш Євгена, коли вона показує щось дуже класне 🐩',
+    has: [
+      {name:'Рюкзак', model:'Forclaz 40 AIR'},
+    ],
+    need: [
+      {name:'🔴 Квитки з Стамбула 11.07', model:'', comment:'Wizz Air до Порту, прибуття 18:45. Чи вже куплено?'},
+      {name:'🔴 Кросівки трейлові', model:'Hoka Speedgoat 5 / Quechua FH500', comment:'ТЕРМІНОВО! Розношувати одразу!'},
+      {name:'Дощовик-пончо', model:'Decathlon Forclaz'},
+      {name:'Палиці трекінгові', model:'Forclaz MT100 Comfort', comment:'Купимо в Порту'},
+      {name:'Silk liner', model:''},
+      {name:'Шлепанці', model:''},
+      {name:'Футболка технічна 2 шт', model:''},
+      {name:'Сорочка UPF (Coastal!)', model:'Decathlon Travel 900'},
+      {name:'Фліска', model:''},
+      {name:'Шорти', model:''},
+      {name:'Легінси', model:''},
+      {name:'Нижнє вбрання 2 пари', model:''},
+      {name:'Шкарпетки мерінос 3 пари', model:'Smartwool PhD'},
+      {name:'Окуляри (3 рівень)', model:''},
+      {name:'Кепка/панамка', model:''},
+      {name:'Бананка', model:''},
+      {name:'Баф', model:''},
+      {name:'Купальник', model:''},
+      {name:'Рушник мікрофібра', model:''},
+      {name:'Сонцезахисний крем SPF50+', model:''},
+      {name:'Антифрикційний крем', model:'Body Glide / Vaseline'},
+      {name:'Compeed пластирі', model:''},
+      {name:'Пляшка для води', model:''},
+      {name:'Налобний ліхтарик', model:''},
+      {name:'Маска для сну + беруші', model:''},
+    ]
+  },
+  yevhen: {
+    name: 'Євген', initial: 'Є', password: '665',
+    hint: '🔢',
+    has: [
+      {name:'Квитки', model:''},
+      {name:'Рюкзак', model:'Osprey Hikelite 28'},
+      {name:'Кросівки трейлові', model:'Hoka Speedgoat 5 / Challenger 7 / Anacapa Breeze'},
+      {name:'Silk liner', model:''},
+      {name:'Шлепанці', model:''},
+      {name:'Футболка технічна 2 шт', model:'Quechua MH100'},
+      {name:'Шорти', model:''},
+      {name:'Нижнє вбрання 2 пари', model:''},
+      {name:'Шкарпетки мерінос', model:'Forclaz MT500 Fresh'},
+      {name:'Свитшот/вітровка', model:''},
+      {name:'Окуляри (3 рівень)', model:''},
+      {name:'Кепка', model:''},
+      {name:'Бананка', model:''},
+      {name:'Купальник', model:''},
+      {name:'Рушник мікрофібра', model:''},
+      {name:'Маска для сну', model:''},
+      {name:'Беруші', model:''},
+      {name:'Налобний ліхтарик', model:''},
+    ],
+    need: [
+      {name:'Палиці трекінгові', model:'Forclaz MT500', comment:'Купимо в Порту'},
+      {name:'Дощовик-пончо', model:'Decathlon Forclaz'},
+      {name:'Фліска', model:''},
+      {name:'Спортивки/легінси для вечора', model:''},
+      {name:'Compeed пластирі', model:''},
+      {name:'Пляшка для води', model:''},
+      {name:'Power bank', model:'Anker 10000mAh'},
+      {name:'Прищіпки + мотузка 3м', model:''},
+      {name:'Мультитул/ніж', model:'Купити в Порту (Wizz=carry-on)'},
+    ]
+  }
+};
+
+const ROUTE = [
+  {
+    date:'11.07', day:'Сб', title:'Бухарест → Порту', route:'🛬 День прильоту', km:0, type:'travel',
+    desc:'Виліт о 16:25, прибуття в Порту о 18:45. Wizz Air. Best Guest Porto Hostel — check-in, відпочинок, перша португальська вечеря.',
+    hl:'🏨 Best Guest Porto Hostel: вул. Rua da Firmeza 15. Метро лінія D до Bolhão (6 хв від аеропорту).',
+    places:[
+      {n:'Best Guest Porto Hostel', i:'€25/паломника, 2 ночі. Rua da Firmeza 15, Porto', m:'https://maps.google.com/?q=Best+Guest+Porto+Hostel', stamp:false, secret:false},
+      {n:'Francesinha після прильоту', i:'Café Santiago — Rua Passos Manuel 226. Обов\'язково!', m:'https://maps.google.com/?q=Café+Santiago+Porto', stamp:false, secret:true},
+    ],
+    albs:[{n:'Best Guest Porto Hostel', p:'€25/паломника', b:'https://www.booking.com/searchresults.html?ss=Best+Guest+Porto+Hostel'}],
+    stamps:[]
+  },
+  {
+    date:'12.07', day:'Нд', title:'Порту — день знайомства', route:'🏛️ Місто паломника', km:0, type:'rest',
+    desc:'Сé до Porto (перший штамп!), Livraria Lello (щоденник Олексі), Маtosinhos (сардини), Jardim das Virtudes.',
+    hl:'📜 Перший штамп у Credencial: Sé do Porto о 9:00-18:00. Credencial €2 — зберігати весь шлях!',
+    places:[
+      {n:'Sé do Porto (Кафедральний собор)', i:'Перший штамп Камінó! Видають Credencial (€2) + печатку', m:'https://maps.google.com/?q=Sé+do+Porto', stamp:true, secret:false},
+      {n:'🤫 Livraria Lello', i:'Щоденник для Олексі! Один з найкрасивіших книгарень світу. Квитки €10-16 онлайн', m:'https://maps.google.com/?q=Livraria+Lello+Porto', stamp:false, secret:true},
+      {n:'Matosinhos', i:'Рибальський порт, sardinhas grelhadas на вулиці €10-15', m:'https://maps.google.com/?q=Matosinhos', stamp:false, secret:false},
+      {n:'🤫 Miradouro da Vitória', i:'Захований у єврейському кварталі — кращий краєвид, безкоштовно', m:'https://maps.google.com/?q=Miradouro+da+Vitória+Porto', stamp:false, secret:true},
+    ],
+    albs:[{n:'Best Guest Porto Hostel', p:'€25/паломника', b:'https://www.booking.com/searchresults.html?ss=Best+Guest+Porto+Hostel', c:'🏠 Та ж альберге, 2-га ніч'}],
+    stamps:[{place:'Sé do Porto (Кафедральний собор)', note:'Перший штамп Камінó! Видають Credencial (€2) + печатку'}]
+  },
+  {
+    date:'13.07', day:'Пн', title:'Porto → Vila do Conde', route:'🚶 СТАРТ! Senda Litoral', km:28, type:'walking',
+    desc:'Старт від Sé о 6:30. Весь день по набережній і пляжах Matosinhos. Через passadiços (дерев\'яний настил над дюнами) → Mindelo → Costa → Vila do Conde.',
+    hl:'⚡ Лайфхак: промзону Leixões можна проїхати метро лінією A до Matosinhos Mercado.',
+    places:[
+      {n:'Foz do Douro (маяк)', i:'Старт маршруту. Форт São João da Foz', m:'https://maps.google.com/?q=Foz+do+Douro+lighthouse', stamp:false, secret:false},
+      {n:'Matosinhos', i:'Sardinhas grelhadas на вулиці €10-15', m:'https://maps.google.com/?q=Matosinhos', stamp:false, secret:false},
+      {n:'Leça da Palmeira — басейни Альваро Сізи', i:'Модерністські океанські басейни', m:'https://maps.google.com/?q=Piscina+Marés+Leça+da+Palmeira', stamp:false, secret:true},
+      {n:'Igreja e Mosteiro de Santa Clara', i:'Монастир XIV ст. — рідкісна готична печатка', m:'https://maps.google.com/?q=Mosteiro+Santa+Clara+Vila+do+Conde', stamp:true, secret:false},
+      {n:'Nau Quinhentista', i:'Діюча репліка корабля XVI ст.', m:'https://maps.google.com/?q=Nau+Quinhentista+Vila+do+Conde', stamp:true, secret:false},
+    ],
+    albs:[
+      {n:'Albergue de Peregrinos São José de Ribamar', p:'€15/паломника', b:'https://www.booking.com/searchresults.html?ss=Albergue+São+José+Ribamar+Vila+do+Conde'},
+      {n:'Pousada de Juventude Vila do Conde', p:'€56 за 4-місну кімнату', b:'https://www.booking.com/searchresults.html?ss=Pousada+Juventude+Vila+do+Conde', c:'⭐ Ідеально для компанії'},
+    ],
+    stamps:[
+      {place:'Mosteiro de Santa Clara', note:'Монастир XIV ст. — рідкісна готична печатка'},
+      {place:'Nau Quinhentista', note:'Морська печатка — символ Великих відкриттів'},
+    ]
+  },
+  {
+    date:'14.07', day:'Вт', title:'Vila do Conde → Esposende', route:'🚶 Boardwalk через дюни', km:23, type:'walking',
+    desc:'Boardwalk вздовж пляжів, частково по берегу. A Ver-o-Mar → Aguçadoura → Apúlia → passadiços над дюнами → Esposende.',
+    hl:'🤫 Секрет: Moinhos de Apúlia — старі вітряні млини серед дюн. Унікальна фотозона!',
+    places:[
+      {n:'🤫 Moinhos de Apúlia', i:'Старі вітряні млини серед дюн — мало хто знає', m:'https://maps.google.com/?q=Moinhos+de+Apúlia', stamp:false, secret:true},
+      {n:'Igreja Matriz de Esposende', i:'Барокова церква в центрі', m:'https://maps.google.com/?q=Igreja+Matriz+Esposende', stamp:true, secret:false},
+    ],
+    albs:[
+      {n:'Albergue de Peregrinos de Marinhas', p:'€15/паломника', b:'https://www.booking.com/searchresults.html?ss=Marinhas+albergue+peregrinos'},
+    ],
+    stamps:[{place:'Igreja Matriz de Esposende', note:'Маленькі міста — найколоритніші печатки!'}]
+  },
+  {
+    date:'15.07', day:'Ср', title:'Esposende → Viana do Castelo', route:'🚶 Маршрут вглиб країни', km:25, type:'walking',
+    desc:'Marinhas → Belinho → Antas → перехід річки Neiva по кам\'яних плитах БЕЗ ПЕРИЛ → Anha → Darque → Viana do Castelo.',
+    hl:'⭐ Перехід річки Neiva по кам\'яних плитах без перил — легендарний найфотогенічніший момент Camino!',
+    places:[
+      {n:'⭐ Перехід річки Neiva (passadeira)', i:'Кам\'яні плити без перил — must-фото!', m:'https://maps.google.com/?q=Rio+Neiva+passadeira+Camino', stamp:false, secret:true},
+      {n:'Monte Sta Luzia — Basílica de Santa Luzia', i:'Фунікулер €3, нео-візантійська базиліка 1903', m:'https://maps.google.com/?q=Monte+Santa+Luzia+Viana', stamp:true, secret:false},
+      {n:'Câmara Municipal (мерія)', i:'Офіційна печатка з гербом міста', m:'https://maps.google.com/?q=Câmara+Municipal+Viana+do+Castelo', stamp:true, secret:false},
+    ],
+    albs:[
+      {n:'Albergue S. João dos Caminhos (церква)', p:'€15/паломника', b:'https://maps.google.com/?q=Albergue+S+João+Caminhos+Viana'},
+      {n:'Pousada de Juventude de Viana', p:'€44+ дабл', b:'https://www.booking.com/searchresults.html?ss=Pousada+Juventude+Viana', c:'⭐ Рекомендовано'},
+    ],
+    stamps:[
+      {place:'Santuário de Santa Luzia (Monte)', note:'Вид на місто і океан — краєвид National Geographic'},
+      {place:'Câmara Municipal (мерія)', note:'Офіційна печатка з гербом міста'},
+    ]
+  },
+  {
+    date:'16.07', day:'Чт', title:'Viana do Castelo → Caminha', route:'🚶 До кордону', km:27, type:'walking',
+    desc:'Areosa → Carreço → Afife → Moledo → Mata Nacional do Camarido → Caminha.',
+    hl:'🌅 З причалу Caminha відкривається найкраща точка фото на заході сонця! ПАРОМ В ІСПАНІЮ ЗВІДСИ!',
+    places:[
+      {n:'Praia de Moledo', i:'Один з найкрасивіших пляжів Португалії', m:'https://maps.google.com/?q=Praia+de+Moledo', stamp:false, secret:false},
+      {n:'Caminha Main Church (Igreja Matriz)', i:'XV ст., стеля mudéjar', m:'https://maps.google.com/?q=Igreja+Matriz+Caminha', stamp:true, secret:false},
+      {n:'🛥️ Паромна компанія (Xacobeo Transfer)', i:'Попросити печатку перед поромом! xacobeotransfer.com', m:'https://maps.google.com/?q=Caminha+ferry+pier', stamp:true, secret:true},
+    ],
+    albs:[
+      {n:'Albergue Municipal Caminha', p:'€15/паломника', b:'https://www.booking.com/searchresults.html?ss=Albergue+Municipal+Caminha', c:'БЕЗ бронювання — приходити до 15:00!'},
+    ],
+    stamps:[
+      {place:'Caminha Main Church', note:'XV ст. — прямо на площі з фонтаном'},
+      {place:'🛥️ Паромна компанія', note:'Паром через Мінью — рідкісна печатка!'},
+    ]
+  },
+  {
+    date:'17.07', day:'Пт', title:'Caminha → A Guarda → Baiona', route:'🛥️ ПОРОМ + Іспанія!', km:32, type:'walking-hard',
+    desc:'🇵🇹→🇪🇸 НАЙВАЖЧИЙ ДЕНЬ! Старт о 5:30! Пором через устя Мінью → A Guarda (Іспанія!) → скелясте узбережжя Галісії → Mosteiro de Oia → Baiona.',
+    hl:'🛥️ XACOBEO TRANSFER: €6/паломника, 8:30-16:30. Бронювати заздалегідь: xacobeotransfer.com або WhatsApp +34 613 011 226',
+    places:[
+      {n:'⭐ Castro de Santa Tegra', i:'Кельто-римське городище II ст. до н.е. Вхід €1.50', m:'https://maps.google.com/?q=Castro+Santa+Tegra+A+Guarda', stamp:true, secret:true},
+      {n:'🤫 Mosteiro de Santa María de Oia', i:'Єдиний цистерціанський монастир прямо біля океану (1137)', m:'https://maps.google.com/?q=Mosteiro+Santa+María+Oia', stamp:true, secret:true},
+      {n:'⭐ Réplica da Carabela La Pinta', i:'Копія корабля Колумба. Музей €2-3', m:'https://maps.google.com/?q=Carabela+La+Pinta+Baiona', stamp:true, secret:true},
+    ],
+    albs:[
+      {n:'Albergue чистенько', p:'€15/паломника', b:'https://maps.google.com/?q=Albergue+Baiona'},
+    ],
+    stamps:[
+      {place:'Castro de Santa Tegra', note:'Кельтське городище — екзотична печатка!'},
+      {place:'Mosteiro de Oia', note:'Монастир XII ст. біля океану'},
+      {place:'Réplica La Pinta', note:'Копія корабля Колумба — така печатка є тільки тут в усьому світі!'},
+    ]
+  },
+  {
+    date:'18.07', day:'Сб', title:'Baiona → Vigo', route:'🚶 Початок останніх 100 км', km:26, type:'walking',
+    desc:'Senda da Foz через пляжі Praia América, Patos, Samil. Ponte Romana da Ramallosa.',
+    hl:'⭐ З цього моменту — останні 100 км! Потрібно тепер 2 штампи/день для Compostela.',
+    places:[
+      {n:'Basílica de Santa María la Mayor (Vigo)', i:'Важлива відмітка — початок останніх 100 км', m:'https://maps.google.com/?q=Concatedral+Santa+María+Vigo', stamp:true, secret:false},
+      {n:'🤫 Устриці на Rúa Pescadería (Pedra)', i:'€1 за устрицю — місцева традиція', m:'https://maps.google.com/?q=Rúa+Pescadería+Vigo', stamp:false, secret:true},
+    ],
+    albs:[
+      {n:'Albergue Xunta (Vigo)', p:'€10/паломника', b:'https://maps.google.com/?q=Albergue+Peregrinos+Vigo', c:'93 ліжка, без бронювання — до 14:00!'},
+    ],
+    stamps:[
+      {place:'Basílica de Santa María la Mayor', note:'⚠️ З цього моменту — 2 штампи на день!'},
+      {place:'Будь-яке кафе на маршруті', note:'2-й щоденний штамп'},
+    ]
+  },
+  {
+    date:'19.07', day:'Нд', title:'Vigo → Redondela', route:'🚶 З\'єднання маршрутів', km:16, type:'walking-easy',
+    desc:'Senda da Traída das Augas — лісова стежка вздовж старого водогону з панорамою на ria de Vigo.',
+    hl:'🔑 Redondela = злиття Coastal і Central маршрутів. Тепер значно більше паломників!',
+    places:[
+      {n:'Igrexa de Santiago de Redondela', i:'Злиття Прибережного і Центрального маршрутів', m:'https://maps.google.com/?q=Igrexa+Santiago+Redondela', stamp:true, secret:false},
+      {n:'🤫 Albergue O Refuxio da Jeruxa', i:'Donativo, господарі співають для паломників!', m:'https://maps.google.com/?q=Albergue+O+Refuxio+da+Jeruxa+Redondela', stamp:false, secret:true},
+    ],
+    albs:[
+      {n:'Albergue de peregrinos Casa da Torre (Xunta)', p:'€15/паломника', b:'https://maps.google.com/?q=Albergue+Casa+da+Torre+Redondela', c:'Стара кам\'яна вежа в центрі'},
+    ],
+    stamps:[{place:'Igrexa de Santiago de Redondela', note:'Злиття Coastal і Central маршрутів'}]
+  },
+  {
+    date:'20.07', day:'Пн', title:'Redondela → Pontevedra', route:'🚶 Через Arcade з мідіями', km:20, type:'walking',
+    desc:'Через Arcade (10 км) — знаменита своїми мідіями! Обідня зупинка: mejillones al vapor €6-8. Ponte Sampaio.',
+    hl:'🦜 Pontevedra — Igrexa Peregrina у формі мушлі! Єдина в Іспанії. Меса для паломників щодня 19:30.',
+    places:[
+      {n:'A Pulpeira de Arcade', i:'Середа/неділя — найкращі мідії маршруту', m:'https://maps.google.com/?q=A+Pulpeira+de+Arcade', stamp:false, secret:true},
+      {n:'Igrexa de Santa Maria a Maior (Pontevedra)', i:'Готичний шедевр XV ст.', m:'https://maps.google.com/?q=Igrexa+Santa+Maria+Pontevedra', stamp:true, secret:false},
+      {n:'⭐ Igrexa Peregrina', i:'Єдина церква-мушля в Іспанії! Архітектурне диво', m:'https://maps.google.com/?q=Igrexa+Peregrina+Pontevedra', stamp:true, secret:false},
+    ],
+    albs:[
+      {n:'Albergue Xunta (Pontevedra)', p:'€12/паломника', b:'https://maps.google.com/?q=Albergue+Xunta+Pontevedra'},
+    ],
+    stamps:[
+      {place:'Igrexa Peregrina', note:'Унікальна церква-мушля — обов\'язкова фотографія!'},
+      {place:'Igrexa de Santa Maria a Maior', note:'Готичний шедевр — другий штамп'},
+    ]
+  },
+  {
+    date:'21.07', day:'Вт', title:'Pontevedra → Caldas de Reis', route:'🚶 Виноградники та ліси', km:22, type:'walking',
+    desc:'Monasterio de Poio, паромна переправа через Rio Lérez, Castrove, теплі джерела в Caldas de Reis.',
+    hl:'♨️ Caldas de Reis — безкоштовні термальні джерела просто на площі! Ноги болять? Ось відповідь.',
+    places:[
+      {n:'Monasterio de Poio', i:'Найбільший монастир Галісії, XVI ст. Безкоштовно', m:'https://maps.google.com/?q=Monasterio+Poio', stamp:true, secret:false},
+      {n:'♨️ Fontes termais (Caldas)', i:'Безкоштовні термальні джерела на Alameda — 40°C!', m:'https://maps.google.com/?q=Caldas+de+Reis+fontes+termais', stamp:false, secret:true},
+    ],
+    albs:[
+      {n:'Albergue Xunta Caldas de Reis', p:'€12/паломника', b:'https://maps.google.com/?q=Albergue+Caldas+de+Reis'},
+    ],
+    stamps:[{place:'Monasterio de Poio', note:'Найбільший монастир Галісії, XVI ст.'}]
+  },
+  {
+    date:'22.07', day:'Ср', title:'Caldas de Reis → Padrón', route:'🚶 Містичний Padrón', km:19, type:'walking',
+    desc:'Рівнинний день. Catoira (залишки норманських укріплень), Valga → Padrón. Тут Апостол Яків (за легендою) причалив! Pimientos de Padrón — зобов\'язані спробувати.',
+    hl:'🌿 Padrón: Torres do Oeste (Catoira) — залишки замку проти норманських нападників IX ст. Унікально для Іспанії.',
+    places:[
+      {n:'Igrexa de Santiago (Padrón)', i:'Камінь причалу Апостола Якова під вівтарем!', m:'https://maps.google.com/?q=Igrexa+Santiago+Padrón', stamp:true, secret:false},
+      {n:'🤫 Bar Os Tres Pementos', i:'Найкращі pimientos de Padrón — €4, обов\'язково!', m:'https://maps.google.com/?q=Padrón+bar+pimentos', stamp:false, secret:true},
+    ],
+    albs:[
+      {n:'Albergue de Peregrinos Padrón', p:'€8/паломника', b:'https://maps.google.com/?q=Albergue+Padrón'},
+    ],
+    stamps:[{place:'Igrexa de Santiago (Padrón)', note:'Камінь причалу Апостола — найбільш містична печатка!'}]
+  },
+  {
+    date:'23.07', day:'Чт', title:'Padrón → Santiago de Compostela', route:'🏆 ФІНАЛ! Останні 25 км', km:25, type:'walking-finish',
+    special:'birthday-holiday',
+    desc:'Останній день! Rúa da Ramallosa, Teo, Milladoiro. Перший вигляд Cathedral Tower на горизонті — незабутній момент! Monte do Gozo — звідси перша панорама.',
+    hl:'🎂🎆 Сьогодні 23.07 — Олексі 15 років І день Апостола! Botafumeiro гарантовано на Pilgrim Mass (12:00). ДЕНЬ, ЯКИЙ НЕ ЗАБУДЕТЕ НІКОЛИ.',
+    places:[
+      {n:'⭐ Monte do Gozo', i:'Перша панорама на Santiago та Cathedral! Звідси все видно — зупинитися на 20 хв', m:'https://maps.google.com/?q=Monte+do+Gozo+Santiago', stamp:true, secret:false},
+      {n:'⭐ Catedral de Santiago de Compostela', i:'МЕТА! Pilgrim Mass 12:00 — Botafumeiro! Прийти за 40 хв', m:'https://maps.google.com/?q=Catedral+Santiago+de+Compostela', stamp:true, secret:false},
+      {n:'Oficina del Peregrino', i:'Отримати Compostela! Rúa das Carretas 33. Черги з 8:00', m:'https://maps.google.com/?q=Oficina+del+Peregrino+Santiago', stamp:false, secret:false},
+    ],
+    albs:[
+      {n:'Albergue Seminario Menor (ТІЛЬКИ albergueseminario.com!)', p:'€20/паломника', b:'https://albergueseminario.com', c:'НЕ Booking! Легендарне місце'},
+    ],
+    stamps:[
+      {place:'Monte do Gozo', note:'Перша точка з видом на Cathedral!'},
+      {place:'Catedral de Santiago', note:'Фінальна печатка — Compostela!'},
+    ]
+  },
+  {
+    date:'24.07', day:'Пт', title:'Santiago — День відпочинку', route:'🎉 Ми дійшли!', km:0, type:'rest',
+    desc:'Pilgrim Mass 9:30 (дублюється!), Mercado de Abastos (найкращий ринок), Tarta de Santiago, Queimada вечером.',
+    hl:'🎊 Відпочинок заслужений. Pilgrim Mass вранці — вдруге за два дні з Botafumeiro!',
+    places:[
+      {n:'⛪ Pilgrim Mass 9:30', i:'Botafumeiro ще раз! 24.07', m:'https://maps.google.com/?q=Catedral+Santiago', stamp:false, secret:false},
+      {n:'Mercado de Abastos', i:'Найкращий ринок Галісії — octopus за €3, pulpo a feira', m:'https://maps.google.com/?q=Mercado+de+Abastos+Santiago', stamp:false, secret:false},
+      {n:'🤫 Queimada ceremony', i:'Ритуальне спалення orujo — тільки в ресторанах після 21:00', m:'https://maps.google.com/?q=restaurant+Santiago+queimada', stamp:false, secret:true},
+    ],
+    albs:[
+      {n:'Albergue Seminario Menor (2-га ніч)', p:'€20/паломника', b:'https://albergueseminario.com'},
+    ],
+    stamps:[]
+  },
+  {
+    date:'25.07', day:'Сб', title:'Santiago → Porto Airport → Бухарест', route:'✈️ Додому', km:0, type:'travel',
+    desc:'ALSA автобус Santiago → OPO (~3 год, €25). Виліт 19:20!',
+    hl:'⏰ Хронологія: 08:00 сніданок → 09:30 Pilgrim Mass → 12:00 ALSA автобус → 15:15 OPO → 17:30 check-in Wizz Air → 19:20 виліт 🛫',
+    special:'apostolo-mass',
+    places:[
+      {n:'⛪ Pilgrim Mass 9:30', i:'25.07 — Botafumeiro гарантовано! Приходити за 40 хв', m:'https://maps.google.com/?q=Catedral+Santiago', stamp:false, secret:false},
+      {n:'🚌 ALSA Santiago → Porto Airport', i:'~3 год, €20-30/паломника. БРОНЮВАТИ за 1-2 місяці! alsa.com', m:'https://www.alsa.com/en', stamp:false, secret:false},
+      {n:'Аеропорт OPO', i:'Виліт 19:20. Check-in за 1.5 год — Wizz Air terminal T1', m:'https://maps.google.com/?q=Porto+Airport+OPO', stamp:false, secret:false},
+    ],
+    albs:[], stamps:[]
+  }
+];
+
+// ==================== DICTIONARY ====================
+// CHANGE 1: Added "Я молодший Євгена на 1 місяць" to pilgrim section
+// CHANGE 2: Added Turkish notes for 5 random phrases
+
+const DICTIONARY = {
+  greeting:{title:'👋 Вітання',phrases:[
+    {ua:'Привіт',pt:'Olá',es:'Hola',pro:'оля / ола'},
+    {ua:'Доброго ранку',pt:'Bom dia',es:'Buenos días',pro:'бом дія / буенос діас'},
+    {ua:'Добрий день',pt:'Boa tarde',es:'Buenas tardes',pro:'боа тарде / буенас тардес'},
+    {ua:'На добраніч',pt:'Boa noite',es:'Buenas noches',pro:'боа нойте / буенас ночес'},
+    {ua:'Дякую',pt:'Obrigado/a',es:'Gracias',pro:'обрігаду/а / ґрасіас',tr:'Teşekkürler'},
+    {ua:'Будь ласка',pt:'Por favor',es:'Por favor',pro:'пор фавор'},
+    {ua:'Перепрошую',pt:'Desculpe',es:'Perdón',pro:'дешкульпе / пердон',tr:'Özür dilerim'},
+    {ua:'Доброго шляху!',pt:'Bom Caminho!',es:'Buen Camino!',pro:'бом камінью / буен каміно'},
+  ]},
+  pilgrim:{title:'🐚 Паломницькі',phrases:[
+    {ua:'Я паломник/паломниця',pt:'Sou peregrino/a',es:'Soy peregrino/a',pro:'соу перегріну/а'},
+    {ua:'Штамп, будь ласка',pt:'Um carimbo, por favor',es:'Un sello, por favor',pro:'ум карімбу / ун селью',tr:'Damga, lütfen'},
+    {ua:'Де альберге?',pt:'Onde fica o albergue?',es:'¿Dónde está el albergue?',pro:'онде фіка / донде еста'},
+    {ua:'Чи є вільні ліжка?',pt:'Há camas disponíveis?',es:'¿Hay camas disponibles?',pro:'а камаш / ай камас'},
+    {ua:'Скільки коштує?',pt:'Quanto custa?',es:'¿Quanto cuesta?',pro:'квантоу куша / куанто куеста',tr:'Ne kadar?'},
+    {ua:'Я дуже втомився/лась',pt:'Estou muito cansado/a',es:'Estoy muy cansado/a',pro:'іштоу мойту кансаду'},
+    {ua:'Болять ноги',pt:'Doem os pés',es:'Me duelen los pies',pro:'доем уш пеш'},
+    {ua:'Де наступне місто?',pt:'Onde fica a próxima cidade?',es:'¿Dónde está el próximo pueblo?',pro:'онде фіка а прошіма'},
+    {ua:'Я молодший Євгена на 1 місяць',pt:'Sou um mês mais novo que Yevhen',es:'Soy un mes menor que Yevhen',pro:'соу ум меш маіш нову / сой ун мес менор'},
+  ]},
+  food:{title:'🍽️ В кафе / ресторані',phrases:[
+    {ua:'Стіл на 4 особи',pt:'Mesa para 4 pessoas',es:'Mesa para 4 personas',pro:'меза пара кватру песоаш'},
+    {ua:'Меню паломника',pt:'Menu do peregrino, por favor',es:'Menú del peregrino, por favor',pro:'мену ду перегріну',tr:'Hacı menüsü, lütfen'},
+    {ua:'Вода без газу',pt:'Água sem gás',es:'Agua sin gas',pro:'аґуа сем ґаш / сін ґас'},
+    {ua:'Кава',pt:'Café',es:'Café',pro:'кафе',tr:'Kahve'},
+    {ua:'Хліб',pt:'Pão',es:'Pan',pro:'пау / пан'},
+    {ua:'Це смачно!',pt:'Está delicioso!',es:'¡Está delicioso!',pro:'еста делісіозу'},
+    {ua:'Рахунок',pt:'A conta, por favor',es:'La cuenta, por favor',pro:'а конта / ла куента'},
+    {ua:'Без м\'яса',pt:'Sem carne',es:'Sin carne',pro:'сем карне / сін карне'},
+    {ua:'Без гострого',pt:'Sem picante',es:'Sin picante',pro:'сем пікант / сін піканте'},
+  ]},
+  emergency:{title:'🆘 Екстрені',phrases:[
+    {ua:'Допоможіть!',pt:'Socorro!',es:'¡Socorro!',pro:'сокорру / сокорро'},
+    {ua:'Викличте лікаря!',pt:'Chame um médico!',es:'¡Llame a un médico!',pro:'шаме ум медіку'},
+    {ua:'Де лікарня?',pt:'Onde fica o hospital?',es:'¿Dónde está el hospital?',pro:'онде фіка / донде еста'},
+    {ua:'Де аптека?',pt:'Onde fica a farmácia?',es:'¿Dónde está la farmacia?',pro:'онде фіка а фармасія'},
+    {ua:'Я заблукав/заблукала',pt:'Estou perdido/a',es:'Estoy perdido/a',pro:'іштоу пердіду'},
+    {ua:'🚨 Виклик 112 (по всій Європі)',pt:'Funciona sem cartão SIM',es:'Funciona sin SIM',pro:'без SIM-карти!'},
+  ]},
+};
+
+const FOODS = [
+  {n:'Francesinha',d:'Сендвіч з м\'ясом і соусом — символ Порту',city:'📍 Порту — Café Santiago (Passos Manuel 226)'},
+  {n:'Pastéis de Nata',d:'Португальські тарти з кремом — найкращі у світі',city:'📍 Порту — Manteigaria (Rua do Almada 83)'},
+  {n:'Bacalhau à Brás',d:'Тріска з картоплею і яйцем — національна страва',city:'📍 Порту — будь-який ресторан'},
+  {n:'Sardinhas Grelhadas',d:'Сардини на грилі — пік сезону у липні! €6-8',city:'📍 Matosinhos — будь-яка tasca'},
+  {n:'Bifana',d:'Свинина в булочці — вуличний фастфуд €2.50-4',city:'📍 По всій Португалії — у padarias'},
+  {n:'Polvo à Lagareiro',d:'Восьминіг з картоплею в оливковій олії',city:'📍 Viana do Castelo — ресторани порту'},
+  {n:'Caldo Verde',d:'Зелений суп з кале і chouriço — душа Португалії',city:'📍 По всій Португалії — у menú'},
+  {n:'Pulpo a la Gallega',d:'Восьминіг на дерев\'яній дошці з паприкою і сіллю €12-18',city:'📍 Arcade → Pontevedra — A Pulpeira'},
+  {n:'Pimientos de Padrón',d:'Зелені перчики — "одні гострі, інші ні"! Лотерея €4-6',city:'📍 Padrón — будь-яке кафе в місті'},
+  {n:'Empanada Gallega',d:'Галісійський пиріг з тунцем або м\'ясом €2-4 шматок',city:'📍 По всій Галісії — у padarias'},
+  {n:'Tarta de Santiago',d:'Мигдалевий торт з хрестом Якова — без глютену!',city:'📍 Santiago — Confitería Mercedes (Rúa do Vilar 6)'},
+  {n:'Vinho Verde',d:'Молоде шумке з Минью (по якому йдете!), 9-11%',city:'📍 Вся Північна Португалія — у кожному bar'},
+  {n:'Albariño',d:'Флагман Галісії — біле вино з Rías Baixas',city:'📍 Caldas, Pontevedra — у кожному ресторані'},
+  {n:'Queimada',d:'🔥 Ритуал: orujo + цукор + кава — підпалюють на столі',city:'📍 Santiago — після вечері в ресторані'},
+  {n:'Estrella Galicia',d:'Галісійське пиво — найкраще до pulpo',city:'📍 По всій Галісії — у кожному bar'},
+];
+
+const APPS=[
+  {n:'Buen Camino',d:'Офлайн карти, етапи, альберге',i:'🐚',ios:'https://apps.apple.com/app/buen-camino/id1233852140',and:'https://play.google.com/store/apps/details?id=com.editorialbuencamino.buencamino'},
+  {n:'Camino Ninja',d:'Детальні карти і альберге',i:'🥷',ios:'https://apps.apple.com/app/camino-ninja/id1228677589',and:'https://play.google.com/store/apps/details?id=ninja.camino.app'},
+  {n:'Wise Pilgrim Portugués',d:'€6 — найдетальніші карти PT маршруту',i:'📍',ios:'https://apps.apple.com/app/portuguese-camino/id931466895',and:'https://play.google.com/store/apps/details?id=com.wisepilgrim.portuguese'},
+  {n:'Komoot',d:'GPS трекінг, офлайн маршрути',i:'🗺️',ios:'https://apps.apple.com/app/komoot/id447374873',and:'https://play.google.com/store/apps/details?id=de.komoot.android'},
+  {n:'Google Translate',d:'Завантажити офлайн пакети PT + ES!',i:'🌐',ios:'https://apps.apple.com/app/google-translate/id414706506',and:'https://play.google.com/store/apps/details?id=com.google.android.apps.translate'},
+  {n:'Maps.me',d:'Офлайн карти всього маршруту',i:'📌',ios:'https://apps.apple.com/app/mapsme/id510623322',and:'https://play.google.com/store/apps/details?id=com.mapswithme.maps.pro'},
+  {n:'ALSA автобуси',d:'Іспанські автобуси — бронювати заздалегідь',i:'🚌',web:'https://www.alsa.com/en'},
+  {n:'AlertCops',d:'Прямий зв\'язок з іспанською поліцією',i:'🚨',ios:'https://apps.apple.com/app/alertcops/id573329440',and:'https://play.google.com/store/apps/details?id=es.mir.alertcops'},
+  {n:'Geocaching',d:'Схованки на маршруті — квест для Олекси',i:'🎯',ios:'https://apps.apple.com/app/geocaching/id329541503',and:'https://play.google.com/store/apps/details?id=com.groundspeak.geocaching.intro'},
+];
+
+const CHECKLIST=[
+  {cat:'Поки не пізно',sub:'критично',items:[
+    {t:'🔴 Квитки Ганни з Стамбула 11.07',d:'Wizz Air до Порту, прибуття 18:45. Чи куплено?',u:'critical'},
+    {t:'🔴 Забронювати готель у Порту 11-12.07',d:'Best Guest Porto Hostel — 2 ночі',u:'critical'},
+    {t:'🔴 Albergue Seminario Menor Santiago 23-24.07',d:'Бронювати ТІЛЬКИ через albergueseminario.com (НЕ Booking!)',u:'critical'},
+    {t:'🔴 Пором Caminha → A Guarda 17.07',d:'xacobeotransfer.com або WhatsApp +34 613 011 226. Бронювати!',u:'critical'},
+    {t:'🔴 ALSA автобус Santiago → OPO 25.07',d:'alsa.com. €25/паломника, ~3 год. За 1-2 місяці!',u:'critical'},
+    {t:'🔴 Кросівки трейлові Ганні — купити і розношувати!',d:'Hoka Speedgoat 5 або Quechua FH500. Мінімум 50-100 км!',u:'critical'},
+    {t:'🔴 Перевірити паспорти всіх 4-х',d:'6+ місяців до закінчення',u:'critical'},
+    {t:'🔴 Страховка EHIC + комерційна',d:'World Nomads / IATI / SafetyWing — покриття Camino пішки',u:'critical'},
+  ]},
+  {cat:'Спорядження',sub:'Decathlon',items:[
+    {t:'🟡 Дощовик-пончо 3 паломникам',d:'Decathlon Forclaz €15. Миколі, Ганні, Олексі',u:'important'},
+    {t:'🟡 Фліска 4 паломникам',d:'Decathlon Forclaz MT100 €15-20. Ночі 12-14°C у Сантьяго',u:'important'},
+    {t:'🟡 Налобний ліхтарик 4 паломникам',d:'Petzl Tikkina €15-25. Старт о 6:00 у темряві',u:'important'},
+    {t:'🟡 Silk liner-и для альберге',d:'Cocoon Silk €25. У липні без спальника',u:'important'},
+    {t:'🟡 Шкарпетки мерінос ×3 пари кожному',d:'Smartwool PhD або Darn Tough — захист #1 від пухирів',u:'important'},
+    {t:'🟡 Замовити палиці в Decathlon Norteshopping Порту (Click & Collect)',d:'MT500 (Миколі, Євгену), MT100 Comfort (Ганні), MT100 Junior (Олексі)',u:'important'},
+    {t:'🟡 Аптечка',d:'Compeed, Leukotape P, Vaseline, Ibuprofen, Voltaren Gel, голка стерильна',u:'important'},
+  ]},
+  {cat:'Цифровий старт',sub:'до вильоту',items:[
+    {t:'🟢 eSIM Airalo Eurolink',d:'PT+ES в одній. ~$13 за 10GB. Активувати при приземленні',u:'nice'},
+    {t:'🟢 Додатки на телефони',d:'Buen Camino, Camino Ninja, Wise Pilgrim, Komoot, Google Translate (офлайн PT+ES)',u:'nice'},
+    {t:'🟢 Офлайн карти Google Maps',d:'Завантажити весь маршрут Porto → Santiago',u:'nice'},
+    {t:'🟢 Плейлист "Камінó 2026"',d:'Madredeus, Carlos Núñez, Luar na Lubre',u:'nice'},
+  ]},
+  {cat:'Фізична підготовка',sub:'тренування',items:[
+    {t:'🟡 Тренування 15-20 км/день з рюкзаком',d:'Перевірити витривалість. Починати вже зараз!',u:'important'},
+    {t:'🟡 Розношувати кросівки 50-100 км',d:'Найголовніше для уникнення пухирів',u:'important'},
+    {t:'🟢 Розтяжка щодня 15 хв',d:'Литки, стегна, спина — після тренувань',u:'nice'},
+  ]},
+  {cat:'Дух Камінó',sub:'приємне',items:[
+    {t:'🟢 Подивитись "The Way" (2010)',d:'З Мартіном Шином. Налаштування на Камінó',u:'nice'},
+    {t:'🟢 Вивчити: "Um carimbo, por favor"',d:'PT / ES: "Un sello, por favor" — запитувати штампи скрізь!',u:'nice'},
+    {t:'🟢 Записна книжка Олексі у Livraria Lello',d:'Щоденник Камінó — купити 12.07',u:'nice'},
+    {t:'🟢 Мушля Vieira на рюкзак',d:'€2-5 у Sé do Porto. Символ паломника #1',u:'nice'},
+  ]},
+];
+
+const EXERCISES = {
+  morning:[
+    {n:'Ранкова активація',dur:'Щодня • 10 хв',comic:'"Збуди їх!"',fig:'morning',
+     steps:['Кругові рухи плечима: 10 вперед + 10 назад','Нахили шиї: 5 у кожну сторону','Кругові рухи поясом: 10 в одну + 10 в іншу','Підйоми на носки: 20 разів','Махи ногами: 10 кожною','Розкочати голеностопи: 10 кругових кожним','20 swift кроків на місці','Глибокий вдих-видих × 3 рази']},
+  ],
+  evening:[
+    {n:'Вечірня розтяжка',dur:'Щодня • 15 хв',comic:'"Сьогодні розтягнусь — завтра не болітиме"',fig:'evening',
+     steps:['Литки: піднятись на сходинку, опустити п\'ятку нижче — 30 сек × 3','Стегно ззаду: нога на лавку, нахилитись — 30 сек кожну','Стегно спереду: підтягнути п\'ятку до сідниць — 30 сек кожну','Стопи: тенісний м\'яч 2 хв кожну','IT-band: хрест-навхрест нахил у бік — 30 сек','Нижня спина: лежачи, коліна до грудей — 60 сек']},
+  ],
+  feet:[
+    {n:'Догляд за стопами',dur:'Щодня • 10 хв',comic:'"Стопи — єдиний транспорт. Шануй їх!"',fig:'feetcare',
+     steps:['Зняти кросівки одразу як прийшов в альберге — провітрити','Помити ноги теплою водою з милом','Ретельно витерти, особливо між пальцями','Перевірити на "гарячі точки" — червоні плями = майбутні пухирі!','Гаряча точка → Leukotape або Compeed ПРОФІЛАКТИЧНО','Пухир: стерильна голка → збоку → нитка → Compeed зверху','Помасажувати 5 хв: склепіння, п\'ятку, пальці','Підняти ноги вище серця 10 хв — зняти набряк']},
+  ],
+  rest:[
+    {n:'Відпочинок кожні 1.5 год',dur:'За потреби • 5 хв',comic:'"Втомився? Зупинись на 5 хв!"',fig:'rest',
+     steps:['Зупинка 5-10 хв кожні 1-1.5 год — це не слабкість!','Зняти кросівки, провітрити стопи','300-500 мл води + електроліт','Перекус: банан, фініки, горіхи','Литки і стегна розтягнути по 30 сек','Масаж плечей і шиї 10 кругових рухів','Якщо є можливість — ноги на стіну/дерево 2 хв']},
+  ],
+};
+
+// ==================== MAIL SYSTEM ====================
+// CHANGE 3: Internal mail system with reminders
+
+const MAIL_STORE_KEY = 'camino-mail-v1';
+
+function getMailStore() {
+  try { return JSON.parse(localStorage.getItem(MAIL_STORE_KEY) || '{"messages":[]}'); }
+  catch { return {messages:[]}; }
+}
+function saveMailStore(store) {
+  try { localStorage.setItem(MAIL_STORE_KEY, JSON.stringify(store)); } catch {}
+}
+
+function sendMailMessage(from, to, subject, body, dateStr) {
+  const store = getMailStore();
+  store.messages.push({
+    id: Date.now() + Math.random(),
+    from, to, subject, body,
+    date: dateStr || new Date().toLocaleDateString('uk-UA'),
+    read: false,
+    deliverDate: dateStr || null
+  });
+  saveMailStore(store);
+}
+
+// Auto-inject Дух Каміно reminder letters on 23.07 and 24.07
+function checkAndInjectReminders(currentUser) {
+  const today = new Date();
+  const todayStr = `${today.getDate().toString().padStart(2,'0')}.${(today.getMonth()+1).toString().padStart(2,'0')}.${today.getFullYear()}`;
+  const reminderUsers = ['yevhen','hanna','mykola'];
+  if (!reminderUsers.includes(currentUser)) return;
+
+  const store = getMailStore();
+  const reminderDates = ['23.07.2026','24.07.2026'];
+  if (!reminderDates.includes(todayStr)) return;
+
+  // Check if reminder already sent today
+  const alreadySent = store.messages.some(m =>
+    m.from === 'Дух Каміно' && m.to === currentUser && m.date === todayStr
+  );
+  if (alreadySent) return;
+
+  const name = PILGRIMS[currentUser].name;
+  sendMailMessage(
+    'Дух Каміно',
+    currentUser,
+    '🐚 Нагадування — день народження Олекси',
+    `Привіт, ${name}!\n\nОлекса святкує день народження 24 липня.\n\nНапишіть йому листа з вітаннями — він отримає його не раніше 24.07 🎂\n\nBuen Camino!\n— Дух Каміно`,
+    todayStr
+  );
+}
+
+function getUnreadCount(user) {
+  const store = getMailStore();
+  return store.messages.filter(m => m.to === user && !m.read).length;
+}
+
+function updateMailBadge(user) {
+  const count = getUnreadCount(user);
+  const badge = document.getElementById('mailBadgeCount');
+  if (!badge) return;
+  if (count > 0) {
+    badge.textContent = count > 9 ? '9+' : count;
+    badge.classList.add('show');
+  } else {
+    badge.classList.remove('show');
+  }
+}
+
+let mailCurrentUser = null;
+let mailCurrentTab = 'inbox';
+let mailOpenMsg = null;
+
+function openMailModal(user) {
+  mailCurrentUser = user;
+  checkAndInjectReminders(user);
+  document.getElementById('mailModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  switchMailTab('inbox', document.querySelector('.mail-tab'));
+  renderMailReminders(user);
+}
+
+function closeMailModal() {
+  document.getElementById('mailModal').classList.remove('show');
+  document.body.style.overflow = '';
+  mailOpenMsg = null;
+  updateMailBadge(mailCurrentUser);
+}
+
+function renderMailReminders(user) {
+  const area = document.getElementById('mailReminderArea');
+  const today = new Date();
+  const todayStr = `${today.getDate().toString().padStart(2,'0')}.${(today.getMonth()+1).toString().padStart(2,'0')}.${today.getFullYear()}`;
+  const reminderUsers = ['yevhen','hanna','mykola'];
+  if (reminderUsers.includes(user) && (todayStr === '23.07.2026' || todayStr === '24.07.2026')) {
+    area.innerHTML = `<div class="reminder-banner">🔔 <div><strong>Нагадування від Духу Каміно:</strong> Сьогодні або завтра — день народження Саші! Напишіть листа з вітаннями (Саша отримає не раніше 24.07.2026).</div></div>`;
+  } else {
+    area.innerHTML = '';
+  }
+}
+
+function switchMailTab(tab, el) {
+  mailCurrentTab = tab;
+  mailOpenMsg = null;
+  document.querySelectorAll('.mail-tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderMailContent();
+}
+
+function renderMailContent() {
+  const el = document.getElementById('mailTabContent');
+  if (!mailCurrentUser) return;
+
+  if (mailOpenMsg) {
+    const store = getMailStore();
+    const msg = store.messages.find(m => m.id === mailOpenMsg);
+    if (msg) {
+      msg.read = true;
+      saveMailStore(store);
+      el.innerHTML = `
+        <div style="margin-bottom:12px;">
+          <button onclick="mailOpenMsg=null;renderMailContent();" style="background:none;border:1.5px solid var(--paper-dark);border-radius:2px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:'Manrope',sans-serif;">← Назад</button>
+        </div>
+        <div class="mail-open-msg">
+          <div class="mail-open-subject">${msg.subject}</div>
+          <div class="mail-open-meta">від: <strong>${msg.from}</strong> · ${msg.date}</div>
+          <div class="mail-open-body">${msg.body}</div>
+        </div>`;
+      return;
+    }
+  }
+
+  if (mailCurrentTab === 'inbox') {
+    const store = getMailStore();
+    const msgs = store.messages.filter(m => m.to === mailCurrentUser).reverse();
+    if (!msgs.length) {
+      el.innerHTML = `<div style="text-align:center;padding:30px;color:var(--ink-soft);font-family:'Caveat',cursive;font-size:20px;">Поки порожньо 🐚</div>`;
+      return;
+    }
+    el.innerHTML = `<div class="mail-list">${msgs.map(m => `
+      <div class="mail-item${m.read?'':' unread'}" onclick="mailOpenMsg=${JSON.stringify(m.id).replace(/"/g,"'")};renderMailContent();">
+        <div class="mail-item-from">${m.read?'':'📬 '}<strong>${m.from}</strong><span class="mail-item-date">${m.date}</span></div>
+        <div><strong style="font-size:13px;">${m.subject}</strong></div>
+        <div class="mail-item-preview">${m.body.substring(0,60)}…</div>
+      </div>`).join('')}</div>`;
+    // Fix onclick for message IDs
+    el.querySelectorAll('.mail-item').forEach((el2, i) => {
+      const msg = msgs[i];
+      el2.onclick = () => { mailOpenMsg = msg.id; renderMailContent(); };
+    });
+  } else {
+    // Compose
+    const allUsers = Object.entries(PILGRIMS).filter(([id]) => id !== mailCurrentUser);
+    el.innerHTML = `
+      <div class="mail-compose">
+        <div>
+          <div class="mail-compose-label">Кому</div>
+          <select id="mailTo">
+            ${allUsers.map(([id,p]) => `<option value="${id}">${p.name}</option>`).join('')}
+            <option value="sasha">Саша 🎂</option>
+          </select>
+        </div>
+        <div>
+          <div class="mail-compose-label">Тема</div>
+          <input id="mailSubject" placeholder="Тема листа…">
+        </div>
+        <div>
+          <div class="mail-compose-label">Повідомлення</div>
+          <textarea id="mailBody" placeholder="Ваш лист…"></textarea>
+        </div>
+        <button class="mail-send-btn" onclick="doSendMail()">Надіслати ✉️</button>
+      </div>`;
+  }
+}
+
+function doSendMail() {
+  const to = document.getElementById('mailTo').value;
+  const subject = document.getElementById('mailSubject').value.trim();
+  const body = document.getElementById('mailBody').value.trim();
+  if (!subject || !body) { alert('Заповніть тему і текст!'); return; }
+  const fromName = PILGRIMS[mailCurrentUser].name;
+  // For Sasha's birthday: deliver not earlier than 24.07.2026
+  const deliverDate = to === 'sasha' ? '24.07.2026' : null;
+  sendMailMessage(fromName, to, subject, body, new Date().toLocaleDateString('uk-UA'));
+  document.getElementById('mailSubject').value = '';
+  document.getElementById('mailBody').value = '';
+  const successMsg = to === 'sasha'
+    ? '✅ Лист надіслано! Саша отримає не раніше 24.07.2026 🎂'
+    : '✅ Лист надіслано!';
+  alert(successMsg);
+  switchMailTab('inbox', document.querySelector('.mail-tab'));
+}
+
+// ==================== LOGIN ====================
+
+let selectedPilgrim=null;
+let pwVisible=false;
+let pwAttempts=0;
+let theWayActive=false;
+
+function setSavedPilgrim(id){try{localStorage.setItem('camino-pilgrim',id);}catch(e){}}
+function getSavedPilgrim(){try{return localStorage.getItem('camino-pilgrim');}catch(e){return null;}}
+function clearSavedPilgrim(){try{localStorage.removeItem('camino-pilgrim');}catch(e){}}
+
+function initLogin(){
+  const saved=getSavedPilgrim();
+  if(saved&&PILGRIMS[saved]){enterApp(saved);return;}
+  document.querySelectorAll('.pilgrim-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      selectedPilgrim=btn.dataset.pilgrim;
+      pwAttempts=0;
+      const p=PILGRIMS[selectedPilgrim];
+      document.getElementById('passwordWelcome').textContent=`Вітаємо, ${p.name}!`;
+      document.getElementById('passwordHint').textContent=p.hint;
+      document.getElementById('passwordInput').value='';
+      const e=document.getElementById('passwordError');
+      e.classList.remove('show');
+      e.textContent='Не той пароль. Спробуй ще раз!';
+      document.getElementById('step-choose').style.display='none';
+      document.getElementById('step-password').classList.add('active');
+      setTimeout(()=>document.getElementById('passwordInput').focus(),100);
+    });
+  });
+  document.getElementById('backBtn').addEventListener('click',()=>{
+    document.getElementById('step-choose').style.display='block';
+    document.getElementById('step-password').classList.remove('active');
+    selectedPilgrim=null;
+  });
+  document.getElementById('submitBtn').addEventListener('click',checkPassword);
+  document.getElementById('passwordInput').addEventListener('keypress',e=>{if(e.key==='Enter')checkPassword();});
+  document.getElementById('pwToggle').addEventListener('click',()=>{
+    const inp=document.getElementById('passwordInput');
+    pwVisible=!pwVisible;
+    inp.type=pwVisible?'text':'password';
+    document.getElementById('pwToggle').textContent=pwVisible?'🙈':'👁';
+  });
+}
+
+function checkPassword(){
+  const val=document.getElementById('passwordInput').value.trim().toLowerCase();
+  const correct=PILGRIMS[selectedPilgrim].password.toLowerCase();
+  if(val===correct || val.replace(/\s/g,'').includes('сантьяго')){
+    pwAttempts=0;
+    if(val.replace(/\s/g,'').includes('сантьяго')){
+      theWayActive=true;
+      document.body.classList.add('the-way-mode');
+    }
+    setSavedPilgrim(selectedPilgrim);
+    enterApp(selectedPilgrim);
+  } else {
+    pwAttempts++;
+    const e=document.getElementById('passwordError');
+    if(pwAttempts>=3){e.textContent=`Ти шо не можеш правильно написати ${correct}?`;}
+    else{e.textContent='Не той пароль. Спробуй ще раз!';}
+    e.classList.remove('show');
+    setTimeout(()=>e.classList.add('show'),10);
+  }
+}
+
+function enterApp(id){
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('app').classList.add('visible');
+  renderApp(id);
+  startCountdown();
+  initEgg();
+  initOcean();
+  initKonami();
+  initParallax();
+  const isBirthday=new Date().toLocaleDateString('uk-UA').startsWith('24.07.2026');
+  if(id==='oleksa'&&isBirthday) setTimeout(()=>showBirthday(),1200);
+  updateMailBadge(id);
+}
+function logout(){clearSavedPilgrim();location.reload();}
+
+function toggleUserMenu(){
+  const m=document.getElementById('userMenu');
+  if(m) m.classList.toggle('show');
+}
+document.addEventListener('click',(e)=>{
+  if(!e.target.closest('.user-badge')){
+    const m=document.getElementById('userMenu');
+    if(m) m.classList.remove('show');
+  }
+});
+
+// ==================== BIRTHDAY ====================
+
+function showBirthday(){
+  document.getElementById('birthdayOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+  startConfetti();
+}
+function closeBirthday(){
+  document.getElementById('birthdayOverlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+function startConfetti(){
+  const canvas=document.getElementById('confettiCanvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const colors=['#c8553d','#6b7d3a','#c9a64b','#5a7d8c','#faf4e3','#ff69b4','#ffd700'];
+  const pieces=[];
+  for(let i=0;i<150;i++){pieces.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height-canvas.height,r:Math.random()*8+4,color:colors[Math.floor(Math.random()*colors.length)],vx:(Math.random()-.5)*3,vy:Math.random()*3+2,rot:Math.random()*360,vr:(Math.random()-.5)*5});}
+  let frame;
+  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);pieces.forEach(p=>{ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.color;ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);ctx.restore();p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;if(p.y>canvas.height){p.y=-20;p.x=Math.random()*canvas.width;}});frame=requestAnimationFrame(draw);}
+  draw();setTimeout(()=>cancelAnimationFrame(frame),12000);
+}
+
+// ==================== RENDER APP ====================
+
+function renderApp(id){
+  const p=PILGRIMS[id];
+  // CHANGE 7: Logo in header instead of title text
+  // CHANGE 3: Mail button next to user badge
+  document.getElementById('app').innerHTML=`
+    <header class="header">
+      <div class="header-title">
+        <img src="files/logo.png" alt="Камінó" class="header-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" id="headerLogo">
+        <span style="display:none;align-items:center;gap:6px;"><span class="shell-icon" id="shellEgg">🐚</span> Твою ж Каміно!</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="night-toggle-header" id="nightToggleH" title="Нічний режим" onclick="applyNightMode(!document.body.classList.contains('night-mode'))">${document.body.classList.contains('night-mode')?'☀️':'🌙'}</button>
+        <button class="mail-btn" title="Пошта Камінó" onclick="openMailModal('${id}')">
+          ✉️<span class="mail-badge-count" id="mailBadgeCount"></span>
+        </button>
+        <div class="user-badge" onclick="toggleUserMenu()">${p.name}
+          <div class="user-menu" id="userMenu">
+            <button onclick="logout()">Вийти з акаунту</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="countdown">
+      <div class="countdown-label">До старту ✈️</div>
+      <div class="countdown-grid">
+        <div class="countdown-cell"><span class="countdown-num" id="cd-d">—</span><span class="countdown-unit"> дн</span></div>
+        <div class="countdown-cell"><span class="countdown-num" id="cd-h">—</span><span class="countdown-unit"> год</span></div>
+        <div class="countdown-cell"><span class="countdown-num" id="cd-m">—</span><span class="countdown-unit"> хв</span></div>
+        <div class="countdown-cell"><span class="countdown-num" id="cd-s">—</span><span class="countdown-unit"> сек</span></div>
+      </div>
+    </div>
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-s="history">Історія</button>
+      <button class="nav-tab active" data-s="route">Маршрут</button>
+      <button class="nav-tab" data-s="pilgrims">Паломники</button>
+      <button class="nav-tab" data-s="dict">Словник</button>
+      <button class="nav-tab" data-s="food">Що з'їсти</button>
+      <button class="nav-tab" data-s="exercises">Вправи</button>
+      <button class="nav-tab" data-s="apps">Додатки</button>
+      <button class="nav-tab" data-s="check">Чекліст</button>
+    </nav>
+    <div class="hero">
+      <div class="hero-greeting">Привіт, ${p.name}!</div>
+      <h1 class="hero-title">Buen <span class="accent">Camino</span><span class="hero-compass">🧭</span></h1>
+      <p class="hero-subtitle">Camino Português da Costa · 261 км · 12 днів пішки</p>
+    </div>
+    <section class="section active" id="s-route">${buildRoute()}</section>
+    <section class="section" id="s-pilgrims">${buildPilgrims()}</section>
+    <section class="section" id="s-dict">${buildDict()}</section>
+    <section class="section" id="s-food">${buildFood()}</section>
+    <section class="section" id="s-exercises">${buildExercises()}</section>
+    <section class="section" id="s-apps">${buildApps()}</section>
+    <section class="section" id="s-check">${buildCheck()}</section>
+    <footer class="footer"><div>🐚</div><div>Buen Camino, ${p.name}!</div></footer>
+  `;
+  document.querySelectorAll('.nav-tab').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(`s-${t.dataset.s}`).classList.add('active');
+    window.scrollTo({top:document.querySelector('.nav-tabs').offsetTop-55,behavior:'smooth'});
+  }));
+  initDayCards(); initPilgrimCards(); initDictTabs(); initFoodRand(); initExTabs(); initCheck();
+  setTimeout(initWeather,300);
+  applyNightMode(localStorage.getItem('camino-night')==='1');
+}
+
+// ==================== COUNTDOWN ====================
+
+function startCountdown(){
+  function upd(){
+    const diff=TRIP_START-new Date();
+    if(diff<=0){['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='0');return;}
+    document.getElementById('cd-d').textContent=Math.floor(diff/86400000);
+    document.getElementById('cd-h').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+    document.getElementById('cd-m').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+    document.getElementById('cd-s').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+  }upd();setInterval(upd,1000);
+}
+
+// ==================== BUILD SECTIONS ====================
+
+function buildStageProgress(){
+  const total=ROUTE.reduce((s,d)=>s+d.km,0);
+  const today=new Date();
+  let done=0;
+  ROUTE.forEach(d=>{
+    const [day,mon,yr]=d.date.split('.');
+    if(new Date(`${yr}-${mon}-${day}`)<=today) done+=d.km;
+  });
+  const pct=Math.min(100,Math.round(done/total*100));
+  return `<div class="stage-progress">
+    <div class="stage-label"><span>🏁 Порту</span><span>${pct}% пройдено</span><span>Santiago 🏆</span></div>
+    <div class="stage-bar"><div class="stage-fill" style="width:${pct}%"></div></div>
+    <div style="font-size:11px;color:var(--ink-soft);text-align:center;">${done} з ${total} км</div>
+  </div>`;
+}
+
+function buildRoute(){
+  const stageHTML=buildStageProgress();
+  // CHANGE 4 & 5: Info boxes with PT flag and UA flag
+  const infoBoxes=`
+    <div class="route-info-box">
+      <div class="route-info-title">🇵🇹 Чому саме Португальський?</div>
+      <p>Португальський шлях (Camino Português) набув популярності з XII ст. після незалежності Португалії. Королі, королеви і звичайні люди йшли ним століттями.</p>
+      <p>Найвідоміша — королева Ізабелла (Свята Єлизавета Португальська), яка пройшла шлях, зняла корону біля вівтаря і подарувала її. Це був жест смирення, якого не забули досі.</p>
+      <p>Від Порту до Сантьяго — класичні ~260–280 км. Є два основних варіанти:<br>
+      🏔️ <strong>Центральний</strong> — через поля, виноградники, старовинні села.<br>
+      🌊 <strong>Прибережний (da Costa)</strong> — з видом на Атлантику, вітер у лице, свіжа риба. <em>Ваш маршрут.</em></p>
+    </div>
+    <div class="route-info-box" style="border-left-color:var(--ocean);">
+      <div class="route-info-title">🇺🇦 Українці теж ходять!</div>
+      <p>У 2015-му в Україні почали маркувати свій відрізок Шляху (Львів — Шегині). Камінó тепер справді до дому.</p>
+    </div>`;
+  let h=`<h2 class="section-title">Маршрут</h2><div class="section-subtitle">15 днів · старт 11.07.2026</div>${stageHTML}${infoBoxes}`;
+  ROUTE.forEach((d,i)=>{
+    const spec=d.special==='birthday-holiday'?'birthday':d.special==='apostolo-mass'?'holiday':'';
+    h+=`<div class="day-card${d.special?' special '+spec:''}" data-i="${i}">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;">
+        <div><div class="day-date">${d.date}</div><div class="day-dow">${d.day} · ${d.route}</div></div>
+      </div>
+      <div class="day-route">${d.title}</div>
+      <div class="day-meta">
+        ${d.km?`<span class="day-tag km">🚶 ${d.km} км</span>`:''}
+        ${d.type==='walking-hard'?'<span class="day-tag">⚠️ Складно</span>':''}
+        ${d.type==='walking-easy'?'<span class="day-tag">😌 Легко</span>':''}
+        ${d.type==='walking-finish'?'<span class="day-tag">🏆 Фініш!</span>':''}
+        ${d.special==='birthday-holiday'?'<span class="day-tag" style="background:#ffd6d0;color:var(--terracotta-dark);">🎂🎆 Apóstolo</span>':''}
+        ${d.special==='apostolo-mass'?'<span class="day-tag" style="background:#ffd6d0;color:var(--terracotta-dark);">⛪ 25 Липня</span>':''}
+      </div>
+      <div class="day-desc">${d.desc}</div>
+      ${d.hl?`<div class="day-hl">💡 ${d.hl}</div>`:''}
+      <div class="expand-hint">↓ натисни для деталей</div>
+      <div class="day-details" id="dd-${i}">
+        ${d.places.length?`<div class="detail-section"><div class="det-title">📍 Що подивитись / де поїсти</div>
+          ${d.places.map(p=>`<div class="det-item">
+            <a class="det-name" href="${p.m}" target="_blank">${p.n}${p.secret?'<span class="secret-tag">🤫 секрет</span>':''}${p.stamp?'<span class="stamp-mark">✦</span>':''}</a>
+            <div class="det-info">${p.i}</div>
+          </div>`).join('')}
+        </div>`:''}
+        ${d.albs.length?`<div class="detail-section"><div class="det-title">🛏️ Альберге</div>
+          ${d.albs.map(a=>`<div class="det-item">
+            <a class="det-name" href="${a.b}" target="_blank">${a.n}</a>
+            <div class="det-info"><strong>${a.p}</strong>${a.c?' — '+a.c:''}</div>
+          </div>`).join('')}
+        </div>`:''}
+        ${d.stamps.length?`<div class="detail-section"><div class="det-title">📜 Де поставити штамп</div>
+          ${d.stamps.map(s=>`<div class="det-item">
+            <div class="det-name">${s.place}</div>
+            <div class="det-info">${s.note}</div>
+          </div>`).join('')}
+        </div>`:''}
+        ${d.date&&d.km?`<div id="weather-${i}" class="detail-section"><div class="det-title">⛅ Погода на ${d.date}</div><div class="weather-widget"><div class="weather-loading">🌐 Завантажуємо…</div></div></div>`:''}
+        ${i===ROUTE.length-1?`<div class="hidden-tip" id="htip"><div class="hidden-tip-title">🤫 Секрет 25.07 — як пробігти OPO</div>
+          <p style="font-size:13px;line-height:1.5;">
+            • Прийти за 1.5 год (не 2 — Wizz check-in швидкий)<br>
+            • Wizz Air check-in T1 — центр терміналу, зліва<br>
+            • Security 16:00-18:00 — менше людей<br>
+            • Воду купити після security (€2.50)<br>
+            • Boarding за 35-40 хв до вильоту<br>
+            • Штамп аеропорту в credencial — на пам'ять!
+          </p></div>`:''}
+      </div>
+    </div>`;
+  });
+  return h;
+}
+
+function initDayCards(){
+  document.querySelectorAll('.day-card').forEach(c=>{
+    c.addEventListener('click',e=>{
+      if(e.target.tagName==='A'||e.target.closest('a'))return;
+      const dd=document.getElementById(`dd-${c.dataset.i}`);
+      dd.classList.toggle('expanded');
+      if(parseInt(c.dataset.i)===ROUTE.length-1){
+        const t=document.getElementById('htip');
+        if(t)t.classList.toggle('revealed');
+      }
+    });
+  });
+}
+
+function buildPilgrims(){
+  let h=`<h2 class="section-title">Паломники</h2><div class="section-subtitle">натисни — побачиш список речей</div><div class="pilgrim-cards">`;
+  Object.entries(PILGRIMS).forEach(([id,p])=>{
+    h+=`<div class="pilgrim-card" data-pid="${id}">
+      <div class="pilgrim-avatar">${p.initial}</div>
+      <div class="pilgrim-card-name">${p.name}</div>
+      <div class="pilgrim-card-arrow">→</div>
+    </div>`;
+  });
+  return h+'</div>';
+}
+
+function initPilgrimCards(){
+  document.querySelectorAll('.pilgrim-card').forEach(c=>{
+    c.addEventListener('click',()=>openModal(c.dataset.pid));
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape')closePilgrimModal();
+  });
+}
+
+function getGearState(pid){try{return JSON.parse(localStorage.getItem('gear-'+pid)||'{}');}catch{return{};}}
+function setGearState(pid,st){localStorage.setItem('gear-'+pid,JSON.stringify(st));}
+
+function getBlisterText(v){
+  const t=['🦶 Ноги свіжі!','🙂 Непогано','😐 Трохи болить','😟 Відчутно','😬 Вогненно!','🔥 Стоп, SOS!'];
+  return t[Math.floor(v/2)]||t[0];
+}
+function updateBlister(pid,v){
+  localStorage.setItem('blister-'+pid,v);
+  const el=document.getElementById('blister-txt-'+pid);
+  if(el)el.textContent=getBlisterText(v);
+}
+
+function openModal(pid){
+  const p=PILGRIMS[pid];
+  const state=getGearState(pid);
+  const allItems=[
+    ...p.has.map((item,i)=>({...item,key:'has-'+i,defaultHas:true})),
+    ...p.need.map((item,i)=>({...item,key:'need-'+i,defaultHas:false})),
+  ];
+  const hasItems=allItems.filter(it=>{const k=it.key;if(k in state)return state[k];return it.defaultHas;});
+  const needItems=allItems.filter(it=>{const k=it.key;if(k in state)return!state[k];return!it.defaultHas;});
+  function gearRow(it,isHas){
+    return `<div class="gear-item" style="border-left-color:${isHas?'var(--olive)':'var(--terracotta)'}">
+      <div class="gear-item-check${isHas?' checked':''}" data-pid="${pid}" data-key="${it.key}" onclick="toggleGear('${pid}','${it.key}',this)"></div>
+      <div class="gear-item-body">
+        <strong>${it.name}</strong>${it.model?` <span style="font-size:11px;color:var(--ink-soft);">${it.model}</span>`:''}
+        ${it.comment?`<span class="comment">${it.comment}</span>`:''}
+        ${it.link?`<div style="margin-top:4px;"><a href="${it.link}" target="_blank">🔗 Подивитися →</a></div>`:''}
+      </div>
+    </div>`;
+  }
+  document.getElementById('pilgrimModalContent').innerHTML=`
+    <h2 class="modal-title">${p.name}</h2>
+    <div class="modal-subtitle">список спорядження · відмічай чекбоксами</div>
+    <div class="blister-meter">
+      <div class="blister-label">🧠 Blister Meter 🧠</div>
+      <input class="blister-slider" type="range" min="0" max="10" value="${JSON.parse(localStorage.getItem('blister-'+pid)||'0')}" id="blister-${pid}" oninput="updateBlister('${pid}',this.value)">
+      <div class="blister-display" id="blister-txt-${pid}">${getBlisterText(JSON.parse(localStorage.getItem('blister-'+pid)||'0'))}</div>
+    </div>
+    ${hasItems.length?`<div class="gear-section has"><div class="gear-section-title">✅ Вже є (${hasItems.length})</div>${hasItems.map(it=>gearRow(it,true)).join('')}</div>`:''}
+    ${needItems.length?`<div class="gear-section need"><div class="gear-section-title">🛒 Купити (${needItems.length})</div>${needItems.map(it=>gearRow(it,false)).join('')}</div>`:''}
+  `;
+  document.getElementById('pilgrimModal').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+
+function toggleGear(pid,key,el){
+  const state=getGearState(pid);
+  const isChecked=el.classList.contains('checked');
+  state[key]=!isChecked;
+  setGearState(pid,state);
+  el.classList.toggle('checked',!isChecked);
+  const row=el.closest('.gear-item');
+  if(row){
+    row.style.borderLeftColor=(!isChecked)?'var(--olive)':'var(--terracotta)';
+    const targetSectionClass=(!isChecked)?'has':'need';
+    const targetSection=document.querySelector(`.gear-section.${targetSectionClass}`);
+    if(targetSection) targetSection.appendChild(row);
+    document.querySelectorAll('.gear-section').forEach(sec=>{
+      const title=sec.querySelector('.gear-section-title');
+      if(!title)return;
+      const count=sec.querySelectorAll('.gear-item').length;
+      title.textContent=sec.classList.contains('has')?`✅ Вже є (${count})`:`🛒 Купити (${count})`;
+    });
+  }
+}
+
+function closePilgrimModal(){
+  document.getElementById('pilgrimModal').classList.remove('show');
+  document.body.style.overflow='';
+}
+
+// ==================== DICTIONARY ====================
+
+let dictLang='pt';
+function buildDict(){
+  return `<h2 class="section-title">Словник</h2><div class="section-subtitle">фрази які знадобляться</div>
+    <div class="dict-tabs">
+      <button class="dict-tab active" data-l="ua2pt">🇺🇦 → 🇵🇹 Португальська</button>
+      <button class="dict-tab" data-l="ua2es">🇺🇦 → 🇪🇸 Іспанська</button>
+    </div><div id="dict-content"></div>`;
+}
+function initDictTabs(){
+  document.querySelectorAll('.dict-tab').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('.dict-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');dictLang=t.dataset.l;renderDict();
+  }));
+  renderDict();
+}
+function renderDict(){
+  const isPT=dictLang==='ua2pt';
+  let h='';
+  Object.values(DICTIONARY).forEach(cat=>{
+    h+=`<div class="dict-category"><div class="dict-cat-title">${cat.title}</div>`;
+    cat.phrases.forEach(ph=>{
+      const orig=isPT?ph.pt:ph.es;
+      if(!orig)return;
+      // CHANGE 2: Show Turkish note if exists
+      const trNote=ph.tr?`<div class="dict-turkish">🇹🇷 Чи як кажуть у нас в Туреччині: <em>${ph.tr}</em></div>`:'';
+      h+=`<div class="dict-phrase">
+        <div class="dict-original">${ph.ua}</div>
+        <div class="dict-translation" style="color:var(--terracotta);font-weight:600;">${orig}</div>
+        ${ph.pro?`<div class="dict-pronun">🔊 ${isPT?ph.pro.split('/')[0]:ph.pro.split('/')[1]||ph.pro}</div>`:''}
+        ${trNote}
+      </div>`;
+    });
+    h+='</div>';
+  });
+  document.getElementById('dict-content').innerHTML=h;
+}
+
+// ==================== FOOD ====================
+
+function buildFood(){
+  const rand=FOODS[Math.floor(Math.random()*FOODS.length)];
+  return `<h2 class="section-title">Що з'їсти</h2><div class="section-subtitle">від Порту до Сантьяго</div>
+    <button class="food-rand-btn" onclick="rollFood()">🎲 Здивуй мене! (рандомна страва)</button>
+    <div id="food-rand"><div class="food-card" style="border-left-color:var(--gold);">
+      <div class="food-name">🎯 ${rand.n}</div><div class="food-desc">${rand.d}</div><div class="food-city">${rand.city}</div>
+    </div></div>`+
+    FOODS.map(f=>`<div class="food-card">
+      <div class="food-name">${f.n}</div><div class="food-desc">${f.d}</div><div class="food-city">${f.city}</div>
+    </div>`).join('');
+}
+function rollFood(){
+  const f=FOODS[Math.floor(Math.random()*FOODS.length)];
+  document.getElementById('food-rand').innerHTML=`<div class="food-card" style="border-left-color:var(--gold);animation:fadeIn .3s ease;">
+    <div class="food-name">🎯 ${f.n}</div><div class="food-desc">${f.d}</div><div class="food-city">${f.city}</div>
+  </div>`;
+}
+function initFoodRand(){}
+
+// ==================== EXERCISES ====================
+
+let exTab='morning';
+function buildExercises(){
+  return `<h2 class="section-title">Вправи</h2><div class="section-subtitle">для тіла на маршруті</div>
+    <div class="ex-tabs">
+      <button class="ex-tab active" data-t="morning">🌅 Ранок</button>
+      <button class="ex-tab" data-t="evening">🌙 Вечір</button>
+      <button class="ex-tab" data-t="feet">🦶 Стопи</button>
+      <button class="ex-tab" data-t="rest">⏸️ Відпочинок</button>
+    </div><div id="ex-content"></div>`;
+}
+function initExTabs(){
+  document.querySelectorAll('.ex-tab').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('.ex-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');exTab=t.dataset.t;renderExercises();
+  }));
+  renderExercises();
+}
+function renderExercises(){
+  const comicSVG=(t)=>{
+    const shapes={
+      morning:`<svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="30" fill="var(--cream)" stroke="var(--ink)" stroke-width="2"/><circle cx="30" cy="33" r="5" fill="var(--ink)"/><circle cx="50" cy="33" r="5" fill="var(--ink)"/><path d="M28 52 Q40 62 52 52" stroke="var(--ink)" stroke-width="2" fill="none" stroke-linecap="round"/><text x="62" y="18" font-size="16">☀️</text></svg>`,
+      evening:`<svg viewBox="0 0 80 80"><ellipse cx="40" cy="55" rx="28" ry="15" fill="var(--cream)" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="10" x2="40" y2="40" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><line x1="25" y1="25" x2="40" y2="40" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><line x1="55" y1="25" x2="40" y2="40" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><text x="55" y="18" font-size="16">🌙</text></svg>`,
+      feetcare:`<svg viewBox="0 0 80 80"><path d="M20 40 Q30 20 50 25 Q65 28 60 45 Q55 60 35 58 Q18 56 20 40z" fill="var(--cream)" stroke="var(--ink)" stroke-width="2"/><circle cx="38" cy="30" r="3" fill="var(--terracotta)"/><circle cx="48" cy="28" r="3" fill="var(--terracotta)"/><circle cx="55" cy="33" r="3" fill="var(--terracotta)"/><text x="55" y="70" font-size="16">💊</text></svg>`,
+      rest:`<svg viewBox="0 0 80 80"><rect x="10" y="30" width="60" height="30" fill="var(--cream)" stroke="var(--ink)" stroke-width="2" rx="3"/><circle cx="40" cy="30" r="7" fill="none" stroke="var(--ink)" stroke-width="2"/><text x="58" y="20" font-size="16">💤</text></svg>`,
+    };
+    return shapes[t]||'🚶';
+  };
+  document.getElementById('ex-content').innerHTML=EXERCISES[exTab].map(ex=>`
+    <div class="exercise-card">
+      <div class="ex-name">${ex.n}</div><div class="ex-dur">${ex.dur}</div>
+      <div class="ex-comic"><div class="ex-comic-fig">${comicSVG(ex.fig)}</div><div class="ex-comic-txt">${ex.comic}</div></div>
+      <ol class="ex-steps">${ex.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+    </div>`).join('');
+}
+
+// ==================== APPS ====================
+
+function buildApps(){
+  return `<h2 class="section-title">Додатки</h2><div class="section-subtitle">встановити до вильоту</div>`+
+    APPS.map(a=>`<div class="app-card">
+      <div class="app-icon">${a.i}</div>
+      <div class="app-info"><div class="app-name">${a.n}</div><div class="app-desc">${a.d}</div></div>
+      <div class="app-links">
+        ${a.ios?`<a class="app-link" href="${a.ios}" target="_blank">iOS</a>`:''}
+        ${a.and?`<a class="app-link" href="${a.and}" target="_blank">Android</a>`:''}
+        ${a.web?`<a class="app-link" href="${a.web}" target="_blank">Web</a>`:''}
+      </div>
+    </div>`).join('');
+}
+
+// ==================== CHECKLIST ====================
+
+function buildCheck(){
+  const saved=JSON.parse(localStorage.getItem('camino-check')||'{}');
+  let h=`<h2 class="section-title">Чекліст</h2><div class="section-subtitle">що зробити до вильоту</div>`;
+  CHECKLIST.forEach((cat,ci)=>{
+    h+=`<div class="check-category"><div class="check-cat-title">${cat.cat}</div><div class="check-cat-sub">${cat.sub}</div>`;
+    cat.items.forEach((it,ii)=>{
+      const k=`${ci}-${ii}`;const done=saved[k]||false;
+      const ul=it.u==='critical'?'urg-critical':it.u==='important'?'urg-important':'urg-nice';
+      const ul2=it.u==='critical'?'ТЕРМІНОВО':it.u==='important'?'ВАЖЛИВО':'ПРИЄМНО';
+      h+=`<div class="check-item${done?' done':''}" data-k="${k}">
+        <div class="check-cb">${done?'✓':''}</div>
+        <div><span class="urgency ${ul}">${ul2}</span>
+          <div class="check-task">${it.t}</div>
+          <div class="check-detail">${it.d}</div>
+        </div>
+      </div>`;
+    });
+    h+='</div>';
+  });
+  return h;
+}
+function initCheck(){
+  const saved=JSON.parse(localStorage.getItem('camino-check')||'{}');
+  document.querySelectorAll('.check-item').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const k=el.dataset.k;saved[k]=!saved[k];
+      localStorage.setItem('camino-check',JSON.stringify(saved));
+      el.classList.toggle('done',saved[k]);
+      el.querySelector('.check-cb').textContent=saved[k]?'✓':'';
+    });
+  });
+}
+
+// ==================== WEATHER ====================
+
+function initWeather(){
+  const coords={
+    '11.07':[41.149,-8.611],'12.07':[41.149,-8.611],'13.07':[41.378,-8.793],
+    '14.07':[41.534,-8.773],'15.07':[41.693,-8.835],'16.07':[41.877,-8.838],
+    '17.07':[41.901,-8.866],'18.07':[42.12,-8.723],'19.07':[42.276,-8.614],
+    '20.07':[42.431,-8.645],'21.07':[42.607,-8.644],'22.07':[42.727,-8.573],
+    '23.07':[42.88,-8.544],'24.07':[42.88,-8.544],'25.07':[41.149,-8.611],
+  };
+  ROUTE.forEach((d,i)=>{
+    const coord=coords[d.date];
+    const el=document.getElementById(`weather-${i}`);
+    if(!el||!coord)return;
+    const wEl=el.querySelector('.weather-widget');
+    fetch(`https://api.open-meteo.com/v1/forecast?latitude=${coord[0]}&longitude=${coord[1]}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=Europe%2FLisbon&start_date=2026-07-${d.date.split('.')[0].padStart(2,'0')}&end_date=2026-07-${d.date.split('.')[0].padStart(2,'0')}`)
+      .then(r=>r.json()).then(data=>{
+        if(!data.daily||!data.daily.temperature_2m_max[0]){wEl.innerHTML='<div class="weather-loading">Дані ще недоступні</div>';return;}
+        const tmax=data.daily.temperature_2m_max[0];
+        const tmin=data.daily.temperature_2m_min[0];
+        const rain=data.daily.precipitation_sum[0];
+        const code=data.daily.weathercode[0];
+        const icon=code<=2?'☀️':code<=45?'🌤️':code<=67?'🌧️':code<=77?'❄️':'⛈️';
+        wEl.innerHTML=`<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <span style="font-size:28px;">${icon}</span>
+          <span style="font-size:14px;"><strong>${Math.round(tmax)}°C</strong> / ${Math.round(tmin)}°C</span>
+          ${rain>0?`<span style="font-size:13px;color:var(--ocean);">🌧 ${rain.toFixed(1)} мм</span>`:''}
+        </div>`;
+      }).catch(()=>{wEl.innerHTML='<div class="weather-loading">Не вдалося завантажити</div>';});
+  });
+}
+
+// ==================== NIGHT MODE ====================
+
+function applyNightMode(on){
+  document.body.classList.toggle('night-mode',on);
+  localStorage.setItem('camino-night',on?'1':'0');
+  const btn=document.getElementById('nightToggleH');
+  if(btn) btn.textContent=on?'☀️':'🌙';
+}
+
+// ==================== EASTER EGGS ====================
+
+let eggCount=0;
+function initEgg(){
+  const shell=document.getElementById('shellEgg');
+  if(!shell)return;
+  shell.addEventListener('click',()=>{
+    eggCount++;
+    if(eggCount>=5){eggCount=0;openMemes();}
+  });
+}
+function openMemes(){document.getElementById('memesModal').classList.add('show');}
+function closeMemes(){document.getElementById('memesModal').classList.remove('show');}
+
+let oceanPlaying=false;
+function initOcean(){
+  const btn=document.getElementById('oceanToggle');
+  const audio=document.getElementById('oceanAudio');
+  if(!btn||!audio)return;
+  btn.addEventListener('click',()=>{
+    if(oceanPlaying){audio.pause();btn.classList.remove('playing');}
+    else{audio.play().catch(()=>{});btn.classList.add('playing');}
+    oceanPlaying=!oceanPlaying;
+  });
+}
+
+const KONAMI=[38,38,40,40,37,39,37,39,66,65];
+let konamiIdx=0;
+function initKonami(){
+  document.addEventListener('keydown',e=>{
+    if(e.keyCode===KONAMI[konamiIdx]){konamiIdx++;if(konamiIdx===KONAMI.length){konamiIdx=0;triggerKonami();}}
+    else konamiIdx=0;
+  });
+}
+function triggerKonami(){
+  const el=document.getElementById('konamiEffect');
+  if(!el)return;
+  el.style.cssText='position:fixed;inset:0;z-index:9999;background:radial-gradient(circle,#c8553d,#6b7d3a,#c9a64b);display:flex;align-items:center;justify-content:center;font-family:Caveat,cursive;font-size:60px;color:#fff;text-align:center;';
+  el.textContent='🐚 ULTRA PILGRIM 🐚';
+  setTimeout(()=>{el.style.cssText='';},3000);
+}
+
+function initParallax(){
+  window.addEventListener('scroll',()=>{
+    const shells=document.querySelectorAll('.shell-bg svg');
+    shells.forEach((s,i)=>{s.style.transform=`translateY(${window.scrollY*(0.1+i*0.05)}px) rotate(${15+i*(-40)}deg)`;});
+  },{passive:true});
+}
+
+// ==================== INIT ====================
+
+document.addEventListener('DOMContentLoaded',()=>{
+  initLogin();
+});
+</script>
+</body>
+</html>

@@ -574,15 +574,15 @@ const PILGRIMS = {
       {name:'Кросівки трейлові', model:'Evadict MT Cushion 2 / Quechua FH500'},
       {name:'Окуляри (3 рівень захисту)', model:''},
       {name:'Кепка / Панамка', model:''},
-      {name:'Антифрикційний крем/стік', model:''},
+      {name:'Антифрикційний крем/стік від натирання', model:'', link:'https://www.decathlon.ro/p/crema-antifrecare-sub-forma-de-stick-25g/_/R-p-340987?mc=8760203'},
     ],
     need: [
       {name:'Рюкзак', model:'Pinguin Fly 35 / Osprey Talon 33', link:'https://www.decathlon.ro/'},
       {name:'Дощовик-пончо', model:'Decathlon Forclaz', link:'https://www.decathlon.ro/todas-las-prendas/impermeables'},
-      {name:'Палиці трекінгові', model:'Forclaz MT500', link:'https://www.decathlon.pt/p/bastao-de-caminhada-mt500/_/R-p-310076', comment:'Купимо в Порту — Click&Collect Decathlon Norteshopping'},
-      {name:'Silk liner для альберге', model:'Cocoon Silk або Sea to Summit'},
+      {name:'Палиці трекінгові', model:'Forclaz MT900 anti-blister / Forclaz MT500 Fresh / Darn ToughLight hiker MicroCrew / Smartwool PhD Outdoor Light', link:'https://www.decathlon.pt/p/bastao-de-caminhada-mt500/_/R-p-310076', comment:'Купимо в Порту — Click&Collect Decathlon Norteshopping'},
+      {name:'Silk liner для альберге', model:'Cocoon Silk або Sea to Summit', link:'https://www.aliexpress.com/item/1005005854275684.html?invitationCode=WnQzSW4vOUZ5R1hsb04rdGdqQjhjcUs4bGhHY1luMzBsWUxIUElodVFYcWVQemFTZUJrNWVWT0s1MU1hdTAyWg&srcSns=sns_Copy&spreadType=socialShare&social_params=61509163251&bizType=ProductDetail&spreadCode=WnQzSW4vOUZ5R1hsb04rdGdqQjhjcUs4bGhHY1luMzBsWUxIUElodVFYcWVQemFTZUJrNWVWT0s1MU1hdTAyWg&aff_fcid=f0ed420744b5404ba14993ad00684146-1778664355397-04595-_EIbfoIQ&tt=MG&aff_fsk=_EIbfoIQ&aff_platform=default&sk=_EIbfoIQ&aff_trace_key=f0ed420744b5404ba14993ad00684146-1778664355397-04595-_EIbfoIQ&shareId=61509163251&businessType=ProductDetail&platform=AE&terminal_id=a3f33fd45aef4682b510627cef4059fe&afSmartRedirect=y'},
       {name:'Шлепанці для альберге', model:'Crocs / Teva'},
-      {name:'Футболка технічна 2 шт', model:'Quechua MH100', link:'https://www.decathlon.ro/p/camasa-maneca-scurta-drumetie-nh100/_/R-p-337820'},
+      {name:'Футболка синтетична 2 шт', model:'Quechua MH100', link:'https://www.decathlon.ro/p/camasa-maneca-scurta-drumetie-nh100/_/R-p-337820'},
       {name:'Сорочка UPF (захист від сонця)', model:'Decathlon Travel 900 UPF'},
       {name:'Фліска', model:'Forclaz MT100'},
       {name:'Шорти технічні', model:''},
@@ -593,6 +593,7 @@ const PILGRIMS = {
       {name:'Бананка', model:''},
       {name:'Купальник', model:''},
       {name:'Рушник мікрофібра', model:'Sea to Summit DryLite XL'},
+      {name:'Електроліти', model:''},
       {name:'Пластирі Compeed', model:'Mixed Pack', link:'https://www.decathlon.pt/p/compeed-ampollas-extreme-5-ud/'},
       {name:'Пляшка для води 1L', model:'Soft Flask 500ml×2', link:'https://www.decathlon.ro/p/safe4sport-soft-flask/'},
       {name:'Налобний ліхтарик', model:'Petzl Tikkina / BD Spot 400', comment:'Для виходу о 6:00 ранку'},
@@ -996,32 +997,37 @@ const ROUTE = [
   }
 ];
 
+// ==================== DICTIONARY ====================
+// CHANGE 1: Added "Я молодший Євгена на 1 місяць" to pilgrim section
+// CHANGE 2: Added Turkish notes for 5 random phrases
+
 const DICTIONARY = {
   greeting:{title:'👋 Вітання',phrases:[
     {ua:'Привіт',pt:'Olá',es:'Hola',pro:'оля / ола'},
     {ua:'Доброго ранку',pt:'Bom dia',es:'Buenos días',pro:'бом дія / буенос діас'},
     {ua:'Добрий день',pt:'Boa tarde',es:'Buenas tardes',pro:'боа тарде / буенас тардес'},
     {ua:'На добраніч',pt:'Boa noite',es:'Buenas noches',pro:'боа нойте / буенас ночес'},
-    {ua:'Дякую',pt:'Obrigado/a',es:'Gracias',pro:'обрігаду/а / ґрасіас'},
+    {ua:'Дякую',pt:'Obrigado/a',es:'Gracias',pro:'обрігаду/а / ґрасіас',tr:'Teşekkürler'},
     {ua:'Будь ласка',pt:'Por favor',es:'Por favor',pro:'пор фавор'},
-    {ua:'Перепрошую',pt:'Desculпе',es:'Perdón',pro:'дешкульпе / пердон'},
+    {ua:'Перепрошую',pt:'Desculpe',es:'Perdón',pro:'дешкульпе / пердон',tr:'Özür dilerim'},
     {ua:'Доброго шляху!',pt:'Bom Caminho!',es:'Buen Camino!',pro:'бом камінью / буен каміно'},
   ]},
   pilgrim:{title:'🐚 Паломницькі',phrases:[
     {ua:'Я паломник/паломниця',pt:'Sou peregrino/a',es:'Soy peregrino/a',pro:'соу перегріну/а'},
-    {ua:'Штамп, будь ласка',pt:'Um carimbo, por favor',es:'Un sello, por favor',pro:'ум карімбу / ун селью'},
+    {ua:'Штамп, будь ласка',pt:'Um carimbo, por favor',es:'Un sello, por favor',pro:'ум карімбу / ун селью',tr:'Damga, lütfen'},
     {ua:'Де альберге?',pt:'Onde fica o albergue?',es:'¿Dónde está el albergue?',pro:'онде фіка / донде еста'},
     {ua:'Чи є вільні ліжка?',pt:'Há camas disponíveis?',es:'¿Hay camas disponibles?',pro:'а камаш / ай камас'},
-    {ua:'Скільки коштує?',pt:'Quanto custa?',es:'¿Quanto cuesta?',pro:'квантоу куша / куанто куеста'},
+    {ua:'Скільки коштує?',pt:'Quanto custa?',es:'¿Quanto cuesta?',pro:'квантоу куша / куанто куеста',tr:'Ne kadar?'},
     {ua:'Я дуже втомився/лась',pt:'Estou muito cansado/a',es:'Estoy muy cansado/a',pro:'іштоу мойту кансаду'},
     {ua:'Болять ноги',pt:'Doem os pés',es:'Me duelen los pies',pro:'доем уш пеш'},
     {ua:'Де наступне місто?',pt:'Onde fica a próxima cidade?',es:'¿Dónde está el próximo pueblo?',pro:'онде фіка а прошіма'},
+    {ua:'Я молодший Євгена на 1 місяць',pt:'Sou um mês mais novo que Yevhen',es:'Soy un mes menor que Yevhen',pro:'соу ум меш маіш нову / сой ун мес менор'},
   ]},
   food:{title:'🍽️ В кафе / ресторані',phrases:[
     {ua:'Стіл на 4 особи',pt:'Mesa para 4 pessoas',es:'Mesa para 4 personas',pro:'меза пара кватру песоаш'},
-    {ua:'Меню паломника',pt:'Menu do peregrino, por favor',es:'Menú del peregrino, por favor',pro:'мену ду перегріну'},
+    {ua:'Меню паломника',pt:'Menu do peregrino, por favor',es:'Menú del peregrino, por favor',pro:'мену ду перегріну',tr:'Hacı menüsü, lütfen'},
     {ua:'Вода без газу',pt:'Água sem gás',es:'Agua sin gas',pro:'аґуа сем ґаш / сін ґас'},
-    {ua:'Кава',pt:'Café',es:'Café',pro:'кафе'},
+    {ua:'Кава',pt:'Café',es:'Café',pro:'кафе',tr:'Kahve'},
     {ua:'Хліб',pt:'Pão',es:'Pan',pro:'пау / пан'},
     {ua:'Це смачно!',pt:'Está delicioso!',es:'¡Está delicioso!',pro:'еста делісіозу'},
     {ua:'Рахунок',pt:'A conta, por favor',es:'La cuenta, por favor',pro:'а конта / ла куента'},
@@ -1031,7 +1037,7 @@ const DICTIONARY = {
   emergency:{title:'🆘 Екстрені',phrases:[
     {ua:'Допоможіть!',pt:'Socorro!',es:'¡Socorro!',pro:'сокорру / сокорро'},
     {ua:'Викличте лікаря!',pt:'Chame um médico!',es:'¡Llame a un médico!',pro:'шаме ум медіку'},
-    {ua:'Де лікарня?',pt:'Onde fica o hospital?',es:'¿Dónde está the hospital?',pro:'онде фіка / донде еста'},
+    {ua:'Де лікарня?',pt:'Onde fica o hospital?',es:'¿Dónde está el hospital?',pro:'онде фіка / донде еста'},
     {ua:'Де аптека?',pt:'Onde fica a farmácia?',es:'¿Dónde está la farmacia?',pro:'онде фіка а фармасія'},
     {ua:'Я заблукав/заблукала',pt:'Estou perdido/a',es:'Estoy perdido/a',pro:'іштоу пердіду'},
     {ua:'🚨 Виклик 112 (по всій Європі)',pt:'Funciona sem cartão SIM',es:'Funciona sin SIM',pro:'без SIM-карти!'},
@@ -1323,7 +1329,10 @@ function renderApp(id){
       <button class="nav-arrow right" id="navArrowRight" onclick="document.getElementById('navTabs').scrollBy(150,0)">→</button>
     </div>
     <div class="hero"><div class="hero-greeting">Привіт, ${p.name}!</div>
-      <h1 class="hero-title">Buen <span class="accent">Camino</span></h1>
+      <h1 class="hero-title" style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 10px; margin-bottom: 20px;">
+        <span>Buen <span class="accent">Camino</span></span>
+        <img src="files/logo.png" alt="Buen Camino" style="max-height: 1.2em; width: auto; object-fit: contain;">
+      </h1>
       <p class="hero-subtitle">Camino Português da Costa · 261 км · 12 днів пішки</p>
     </div>
     <section class="section active" id="s-history">${buildHistory()}</section>
@@ -1585,10 +1594,13 @@ function renderDict(){
     cat.phrases.forEach(ph=>{
       const orig=isPT?ph.pt:ph.es;
       if(!orig)return;
+      // CHANGE 2: Show Turkish note if exists
+      const trNote=ph.tr?`<div class="dict-turkish">🇹🇷 Чи як кажуть у нас в Туреччині: <em>${ph.tr}</em></div>`:'';
       h+=`<div class="dict-phrase">
         <div class="dict-original">${ph.ua}</div>
         <div class="dict-translation" style="color:var(--terracotta);font-weight:600;">${orig}</div>
         ${ph.pro?`<div class="dict-pronun">🔊 ${isPT?ph.pro.split('/')[0]:ph.pro.split('/')[1]||ph.pro}</div>`:''}
+        ${trNote}
       </div>`;
     });
     h+='</div>';
@@ -1806,31 +1818,51 @@ function initKonami(){
   });
   // Shake for mobile — потряси 3 рази → дощ із зірок!
   (function(){
-    let shakes=0, lastShakeTime=0, lastMag=0;
+    let shakes=0, lastShakeTime=0, lastX=null, lastY=null, lastZ=null;
+    
     function requestMotion(){
       if(typeof DeviceMotionEvent!=='undefined' && typeof DeviceMotionEvent.requestPermission==='function'){
-        document.addEventListener('touchstart',function ask(){
+        // В iOS 13+ дозвіл вимагає явної дії користувача (click)
+        const ask = () => {
           DeviceMotionEvent.requestPermission().then(r=>{if(r==='granted')listenMotion();}).catch(()=>{});
-          document.removeEventListener('touchstart',ask);
-        },{once:true});
+          document.removeEventListener('click', ask);
+        };
+        document.addEventListener('click', ask);
       } else { listenMotion(); }
     }
+
     function listenMotion(){
-      let lt=0;
-      window.addEventListener('devicemotion',e=>{
-        const a=e.accelerationIncludingGravity; if(!a||a.x==null)return;
-        const now=Date.now(); if(now-lt<80)return; lt=now;
-        const mag=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z);
-        const delta=Math.abs(mag-lastMag); lastMag=mag;
-        if(delta>22){
-          const gap=now-lastShakeTime;
-          if(gap<1200){ shakes++; } else { shakes=1; }
-          lastShakeTime=now;
-          showShakeFeedback(shakes);
-          if(shakes>=3){ shakes=0; hideShakeFeedback(); triggerKonami(); }
+      window.addEventListener('devicemotion', e => {
+        const a = e.accelerationIncludingGravity; 
+        if(!a || a.x == null) return;
+        const now = Date.now();
+        
+        if (lastX !== null) {
+          const deltaX = Math.abs(a.x - lastX);
+          const deltaY = Math.abs(a.y - lastY);
+          const deltaZ = Math.abs(a.z - lastZ);
+          
+          // Сума дельт стабільніша. Поріг знижено до 15 для кращої чутливості
+          if (deltaX + deltaY + deltaZ > 15) {
+            // Запобігання множинним спрацьовуванням від одного руху
+            if (now - lastShakeTime > 800) { 
+                if (now - lastShakeTime > 2000) shakes = 0; // Скидання, якщо перерва > 2 сек
+                shakes++;
+                lastShakeTime = now;
+                showShakeFeedback(shakes);
+                
+                if(shakes >= 3){ 
+                    shakes = 0; 
+                    hideShakeFeedback(); 
+                    triggerKonami(); 
+                }
+            }
+          }
         }
-      },{passive:true});
+        lastX = a.x; lastY = a.y; lastZ = a.z;
+      }, {passive:true});
     }
+
     function showShakeFeedback(n){
       let el=document.getElementById('shakeFb');
       if(!el){
@@ -1843,9 +1875,11 @@ function initKonami(){
       el.style.opacity='1';
       clearTimeout(el._t); el._t=setTimeout(()=>el.style.opacity='0',1500);
     }
+
     function hideShakeFeedback(){
       const el=document.getElementById('shakeFb'); if(el) el.style.opacity='0';
     }
+
     requestMotion();
   })();
 }
