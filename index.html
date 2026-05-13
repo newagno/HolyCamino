@@ -400,6 +400,68 @@ body.the-way-mode .the-way-link { display:block; }
 .weather-temp{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;}
 .weather-desc{font-size:10px;opacity:.8;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
 .weather-loading{opacity:.6;font-style:italic;font-size:13px;}
+
+/* ====== HISTORY STYLES ====== */
+.hist-card{background:var(--paper);border-radius:4px;padding:18px;margin-bottom:14px;border:1px solid var(--paper-dark);display:flex;gap:14px;box-shadow:0 2px 10px var(--shadow);}
+.hist-icon{font-size:32px;flex-shrink:0;line-height:1;margin-top:2px;}
+.hist-body{flex:1;}
+.hist-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.hist-body p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:8px;}
+.hist-body p:last-child{margin-bottom:0;}
+.hist-body strong{color:var(--ink);}
+.hist-fact-grid{display:grid;gap:10px;margin-top:16px;}
+.hist-fact{background:var(--cream);border-radius:3px;padding:12px 14px;border-left:3px solid var(--gold);}
+.hist-fact-icon{font-size:20px;margin-bottom:4px;}
+.hist-fact-text{font-size:13px;color:var(--ink-soft);line-height:1.5;}
+.hist-fact-text strong{color:var(--ink);}
+.hist-timeline{position:relative;padding-left:24px;margin:16px 0;}
+.hist-timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--paper-dark);}
+.hist-tl-item{position:relative;margin-bottom:14px;padding-bottom:2px;}
+.hist-tl-item::before{content:'';position:absolute;left:-20px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--terracotta);border:2px solid var(--paper);}
+.hist-tl-year{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;color:var(--terracotta);}
+.hist-tl-text{font-size:13px;color:var(--ink-soft);line-height:1.5;margin-top:2px;}
+
+/* ====== SAFETY STYLES ====== */
+.safety-card{background:var(--paper);border-radius:4px;padding:18px;margin-bottom:12px;border:1px solid var(--paper-dark);box-shadow:0 2px 8px var(--shadow);}
+.safety-card.warning{border-left:4px solid var(--terracotta);}
+.safety-card.info{border-left:4px solid var(--ocean);}
+.safety-card.tip{border-left:4px solid var(--olive);}
+.safety-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.safety-body{font-size:13px;color:var(--ink-soft);line-height:1.6;}
+.safety-body li{margin-bottom:4px;padding-left:4px;}
+.safety-body ul{padding-left:16px;margin-top:6px;}
+.safety-body strong{color:var(--ink);}
+.safety-emergency{background:linear-gradient(135deg,var(--terracotta),var(--terracotta-dark));color:#fff;border-radius:4px;padding:16px;margin-bottom:12px;}
+.safety-emergency-title{font-family:'Caveat',cursive;font-size:22px;margin-bottom:10px;}
+.safety-num{display:flex;gap:10px;flex-wrap:wrap;}
+.safety-num-item{background:rgba(255,255,255,.2);border-radius:3px;padding:8px 14px;text-align:center;}
+.safety-num-val{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;display:block;}
+.safety-num-desc{font-size:11px;opacity:.9;text-transform:uppercase;letter-spacing:.05em;}
+
+/* ====== PLAYLIST STYLES ====== */
+.playlist-hero{background:linear-gradient(135deg,#1DB954,#158a3e);border-radius:8px;padding:24px 20px;margin-bottom:16px;text-align:center;color:#fff;position:relative;overflow:hidden;}
+.playlist-hero::before{content:'♪';position:absolute;font-size:120px;opacity:.08;right:-10px;top:-20px;font-family:serif;}
+.playlist-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;margin-bottom:6px;}
+.playlist-sub{font-family:'Caveat',cursive;font-size:20px;opacity:.9;margin-bottom:16px;}
+.playlist-open-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#1DB954;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;padding:12px 24px;border-radius:99px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 16px rgba(0,0,0,.2);}
+.playlist-open-btn:hover{transform:scale(1.04);box-shadow:0 6px 24px rgba(0,0,0,.3);}
+.playlist-track-card{background:var(--paper);border-radius:4px;padding:12px 14px;margin-bottom:8px;border:1px solid var(--paper-dark);display:flex;align-items:center;gap:12px;}
+.playlist-num{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--terracotta);font-weight:700;width:24px;flex-shrink:0;}
+.playlist-track-info{flex:1;}
+.playlist-track-name{font-weight:600;font-size:14px;color:var(--ink);}
+.playlist-track-artist{font-size:12px;color:var(--ink-soft);margin-top:1px;}
+.playlist-mood{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;background:var(--cream);border:1px solid var(--paper-dark);color:var(--ink-soft);font-weight:600;text-transform:uppercase;letter-spacing:.08em;}
+
+
+/* PEIXE LIGHTBOX */
+.peixe-thumb{margin:10px 0 4px;cursor:zoom-in;display:inline-block;}
+.peixe-thumb img{width:100%;max-width:300px;border-radius:6px;border:2px solid var(--paper-dark);display:block;box-shadow:0 2px 8px var(--shadow);}
+.peixe-hint{font-size:11px;color:var(--ink-soft);margin-top:3px;font-style:italic;}
+.peixe-lb{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9000;display:none;align-items:center;justify-content:center;cursor:zoom-out;padding:20px;}
+.peixe-lb.open{display:flex;animation:fadeIn .2s;}
+.peixe-lb img{max-width:90vw;max-height:85vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.6);cursor:default;}
+.peixe-lb-close{position:absolute;top:14px;right:14px;color:#fff;font-size:28px;background:rgba(0,0,0,.5);border:none;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
 </style>
 </head>
 <body>
@@ -999,15 +1061,15 @@ const FOODS = [
 ];
 
 const APPS=[
-  {n:'Buen Camino',d:'Офлайн карти, етапи, альберге',i:'🐚',ios:'https://apps.apple.com/app/buen-camino/id1233852140',and:'https://play.google.com/store/apps/details?id=com.editorialbuencamino.buencamino'},
-  {n:'Camino Ninja',d:'Детальні карти і альберге',i:'🥷',ios:'https://apps.apple.com/app/camino-ninja/id1228677589',and:'https://play.google.com/store/apps/details?id=ninja.camino.app'},
-  {n:'Wise Pilgrim Portugués',d:'€6 — найдетальніші карти PT маршруту',i:'📍',ios:'https://apps.apple.com/app/portuguese-camino/id931466895',and:'https://play.google.com/store/apps/details?id=com.wisepilgrim.portuguese'},
-  {n:'Komoot',d:'GPS трекінг, офлайн маршрути',i:'🗺️',ios:'https://apps.apple.com/app/komoot/id447374873',and:'https://play.google.com/store/apps/details?id=de.komoot.android'},
-  {n:'Google Translate',d:'Завантажити офлайн пакети PT + ES!',i:'🌐',ios:'https://apps.apple.com/app/google-translate/id414706506',and:'https://play.google.com/store/apps/details?id=com.google.android.apps.translate'},
-  {n:'Maps.me',d:'Офлайн карти всього маршруту',i:'📌',ios:'https://apps.apple.com/app/mapsme/id510623322',and:'https://play.google.com/store/apps/details?id=com.mapswithme.maps.pro'},
-  {n:'ALSA автобуси',d:'Іспанські автобуси — бронювати заздалегідь',i:'🚌',web:'https://www.alsa.com/en'},
-  {n:'AlertCops',d:'Прямий зв\'язок з іспанською поліцією',i:'🚨',ios:'https://apps.apple.com/app/alertcops/id573329440',and:'https://play.google.com/store/apps/details?id=es.mir.alertcops'},
-  {n:'Geocaching',d:'Схованки на маршруті — квест для Олекси',i:'🎯',ios:'https://apps.apple.com/app/geocaching/id329541503',and:'https://play.google.com/store/apps/details?id=com.groundspeak.geocaching.intro'},
+  {n:'Buen Camino',d:'Офлайн карти, етапи, альберге',i:'🐚',ios:'https://apps.apple.com/us/app/buen-camino-de-santiago-app/id858222947',and:'https://play.google.com/store/apps/details?id=com.editorialbuencamino.buencamino'},
+  {n:'Camino Ninja',d:'Детальні карти і альберге',i:'🥷',ios:'https://apps.apple.com/us/app/camino-ninja-app/id1491232190',and:'https://play.google.com/store/apps/details?id=ninja.camino.app'},
+  {n:'Wise Pilgrim Portugués',d:'€6 — найдетальніші карти PT маршруту',i:'📍',ios:'https://apps.apple.com/ua/app/wise-pilgrim-camino-portugu%C3%A9s/id983056779',and:'https://play.google.com/store/apps/details?id=com.wisepilgrim.portuguese'},
+  {n:'Komoot',d:'GPS трекінг, офлайн маршрути',i:'🗺️',ios:'https://apps.apple.com/us/app/komoot-hike-bike-run/id447374873',and:'https://play.google.com/store/apps/details?id=de.komoot.android'},
+  {n:'Google Translate',d:'Завантажити офлайн пакети PT + ES!',i:'🌐',ios:'https://apps.apple.com/us/app/google-translate/id414706506',and:'https://play.google.com/store/apps/details?id=com.google.android.apps.translate'},
+  {n:'Maps.me',d:'Офлайн карти всього маршруту',i:'📌',ios:'https://apps.apple.com/us/app/maps-me-offline-maps-gps-nav/id510623322',and:'https://play.google.com/store/apps/details?id=com.mapswithme.maps.pro'},
+  {n:'ALSA автобуси',d:'Іспанські автобуси — бронювати заздалегідь',i:'🚌',ios:'https://apps.apple.com/us/app/alsa-buy-coach-tickets/id444511709',and:'https://play.google.com/store/apps/details?id=com.mo2o.alsa&hl=uk'},
+  {n:'AlertCops',d:'Прямий зв\'язок з іспанською поліцією',i:'🚨',ios:'https://apps.apple.com/us/app/alertcops/id1273718252',and:'https://play.google.com/store/search?q=AlertCops&c=apps'},
+  {n:'Geocaching',d:'Схованки на маршруті — квест для Олекси',i:'🎯',ios:'https://apps.apple.com/us/iphone/search?term=Geocaching',and:'https://play.google.com/store/apps/details?id=com.groundspeak.geocaching.intro'},
 ];
 
 const CHECKLIST=[
@@ -1058,7 +1120,7 @@ const EXERCISES={
     {n:'Силові для ніг',dur:'3 рази/тиждень • 20-30 хв',comic:'"Сильні ноги = щасливе Камінó"',fig:'squat',
      steps:['Присідання: 3×15','Випади вперед: 3×12 на кожну ногу','Випади назад: 3×12 на кожну ногу','Підйоми на носки: 3×20 (для литок)','Планка: 3×30-60 сек','Місток для сідниць: 3×15']},
     {n:'Розтяжка (щодня!)',dur:'Щодня • 15-20 хв',comic:'"Гнучкі м\'язи = мало пухирів"',fig:'stretch',
-     steps:['Литки: стопу на стіну, нога пряма, 30 сек × 3','Стегно ззаду: нахилитись до пальців ніг, 30 сек × 3','Стегно спереду: підняти ногу п\'яткою до сідниць, 30 сек','Стопа: котити тенісний м\'яч під стопою 2 хв (plantar fasciitis!)','Нижня спина: лежачи, подтягнути коліна до грудей 30 сек','Шия: повільні кругові рухи 5+5']},
+     steps:['Литки: стопу на стіну, нога пряма, 30 сек × 3','Задня поверхня стегна (hamstring): сядь, пряма нога витягнута вперед, тягнись до носка — відчуєш натяг ЗЗАДУ стегна — 30 сек × 3','Передня поверхня стегна (квадрицепс): стоячи, підтягни п\'ятку рукою до сідниць — відчуєш натяг СПЕРЕДУ стегна — 30 сек × кожну','Стопа: котити тенісний м\'яч під стопою 2 хв (plantar fasciitis!)','Нижня спина: лежачи, подтягнути коліна до грудей 30 сек','Шия: повільні кругові рухи 5+5']},
     {n:'Тренування стоп',dur:'Щодня • 5 хв',comic:'"Готова стопа = щаслива стопа"',fig:'feet',
      steps:['Розтирати лосьйоном з евкаліптом щовечора','Ходити босоніж по траві/гравію 5 хв/день','Тримати стопи сухими — міняти шкарпетки якщо вологі','Розношувати кросівки мінімум 50-100 км до Камінó','Обрізати нігті коротко за тиждень до старту','Vaseline на місця ризику перед прогулянками']},
   ],
@@ -1066,7 +1128,7 @@ const EXERCISES={
     {n:'Ранкова розминка (перед стартом)',dur:'Щодня • 10 хв',comic:'"М\'язи ще сонні? Збуди їх!"',fig:'morning',
      steps:['Кругові рухи плечима: 10 вперед + 10 назад','Нахили шиї: 5 у кожну сторону','Кругові рухи поясом: 10 в одну + 10 в іншу','Підйоми на носки: 20 разів','Махи ногами: 10 кожною (підняти коліно, опустити)','Розкочати голеностопи: 10 кругових кожним','20 swift кроків на місці для тепла','Глибокий вдих-видих × 3 рази'],},
     {n:'Вечірня розтяжка',dur:'Щодня • 15 хв',comic:'"Сьогодні розтягнусь — завтра не болітиме"',fig:'evening',
-     steps:['Литки: піднятись на сходинку, опустити п\'ятку нижче — 30 сек × 3','Стегно ззаду: нога на лавку, нахилитись — 30 сек кожну','Стегно спереду: підтягнути п\'ятку до сідниць — 30 сек кожну','Стопи: тенісний м\'яч 2 хв кожну','IT-band: хрест-навхрест нахил у бік — 30 сек','Нижня спина: лежачи, коліна до грудей — 60 сек']},
+     steps:['Литки: піднятись на сходинку, опустити п\'ятку нижче — 30 сек × 3','Задня поверхня стегна (hamstring): постав ногу на лавку або бордюр, нахились корпусом вперед — натяг ззаду — 30 сек × кожну','Передня поверхня стегна (квадрицепс): притягни п\'ятку рукою до сідниць — натяг спереду стегна — 30 сек × кожну','Стопи: тенісний м\'яч 2 хв кожну','IT-band: хрест-навхрест нахил у бік — 30 сек','Нижня спина: лежачи, коліна до грудей — 60 сек']},
     {n:'Догляд за стопами (обов\'язково щовечора)',dur:'Щодня • 10 хв',comic:'"Стопи — єдиний транспорт. Шануй їх!"',fig:'feetcare',
      steps:['Зняти кросівки одразу як прийшов в альберге — провітрити','Помити ноги теплою водою з милом','Ретельно витерти, особливо між пальцями','Перевірити на "гарячі точки" — червоні плями = майбутні пухирі!','Гаряча точка → Leukotape або Compeed ПРОФІЛАКТИЧНО','Пухир: стерильна голка → збоку → нитка (дренаж) → Compeed зверху','Помасажувати 5 хв: склепіння, п\'ятку, пальці','Підняти ноги вище серця 10 хв — зняти набряк']},
     {n:'Відпочинок кожні 1.5-1.5 год',dur:'За потреби • 5 хв',comic:'"Втомився? Зупинись на 5 хв!"',fig:'rest',
@@ -1136,7 +1198,7 @@ function checkPassword(){
     pwAttempts++;
     const e=document.getElementById('passwordError');
     if (pwAttempts >= 3) {
-      e.textContent = `Ти шо не можеш правильно написати ${correct}?`;
+      e.textContent = `Ти шо не можеш правильно написати "${correct}"?`;
     } else {
       e.textContent = 'Не той пароль. Спробуй ще раз!';
     }
@@ -1248,12 +1310,15 @@ function renderApp(id){
     <div class="nav-wrapper">
       <button class="nav-arrow left" id="navArrowLeft" onclick="document.getElementById('navTabs').scrollBy(-150,0)">←</button>
       <nav class="nav-tabs" id="navTabs">
-        <button class="nav-tab active" data-s="route">Маршрут</button>
+        <button class="nav-tab active" data-s="history">Історія</button>
+        <button class="nav-tab" data-s="route">Маршрут</button>
         <button class="nav-tab" data-s="pilgrims">Паломники</button>
         <button class="nav-tab" data-s="dict">Словник</button>
         <button class="nav-tab" data-s="food">Що з'їсти</button>
         <button class="nav-tab" data-s="exercises">Вправи</button>
         <button class="nav-tab" data-s="apps">Додатки</button>
+        <button class="nav-tab" data-s="safety">Безпека</button>
+        <button class="nav-tab" data-s="playlist">Плейлист</button>
         <button class="nav-tab" data-s="check">Чекліст</button>
       </nav>
       <button class="nav-arrow right" id="navArrowRight" onclick="document.getElementById('navTabs').scrollBy(150,0)">→</button>
@@ -1262,12 +1327,15 @@ function renderApp(id){
       <h1 class="hero-title">Buen <span class="accent">Camino</span></h1>
       <p class="hero-subtitle">Camino Português da Costa · 261 км · 12 днів пішки</p>
     </div>
-    <section class="section active" id="s-route">${buildRoute()}</section>
+    <section class="section active" id="s-history">${buildHistory()}</section>
+    <section class="section" id="s-route">${buildRoute()}</section>
     <section class="section" id="s-pilgrims">${buildPilgrims()}</section>
     <section class="section" id="s-dict">${buildDict()}</section>
     <section class="section" id="s-food">${buildFood()}</section>
     <section class="section" id="s-exercises">${buildExercises()}</section>
     <section class="section" id="s-apps">${buildApps()}</section>
+    <section class="section" id="s-safety">${buildSafety()}</section>
+    <section class="section" id="s-playlist">${buildPlaylist()}</section>
     <section class="section" id="s-check">${buildCheck()}</section>
     <footer class="footer"><div>🐚</div><div>Buen Camino, ${p.name}!</div></footer>
   `;
@@ -1585,19 +1653,69 @@ function initExTabs(){
   renderEx();
 }
 function renderEx(){
-  const comicSVG=t=>{
-    const shapes={
-      walking:`<svg viewBox="0 0 80 80"><circle cx="40" cy="18" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="26" x2="40" y2="50" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="32" x2="28" y2="42" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="32" x2="52" y2="40" stroke="var(--ink)" stroke-width="2"/><rect x="48" y="36" width="10" height="12" fill="var(--terracotta)" rx="2"/><line x1="40" y1="50" x2="32" y2="68" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="50" x2="48" y2="68" stroke="var(--ink)" stroke-width="2"/></svg>`,
-      squat:`<svg viewBox="0 0 80 80"><circle cx="40" cy="14" r="7" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="21" x2="40" y2="38" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="28" x2="28" y2="38" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="28" x2="52" y2="38" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="38" x2="28" y2="52" stroke="var(--ink)" stroke-width="2"/><line x1="28" y1="52" x2="32" y2="68" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="38" x2="52" y2="52" stroke="var(--ink)" stroke-width="2"/><line x1="52" y1="52" x2="48" y2="68" stroke="var(--ink)" stroke-width="2"/><text x="56" y="58" font-size="14">💪</text></svg>`,
-      stretch:`<svg viewBox="0 0 80 80"><circle cx="28" cy="20" r="7" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="28" y1="27" x2="55" y2="40" stroke="var(--ink)" stroke-width="2"/><line x1="28" y1="32" x2="62" y2="32" stroke="var(--ink)" stroke-width="2"/><line x1="55" y1="40" x2="60" y2="65" stroke="var(--ink)" stroke-width="2"/><line x1="55" y1="40" x2="40" y2="65" stroke="var(--ink)" stroke-width="2"/><text x="52" y="20" font-size="12">✨</text></svg>`,
-      feet:`<svg viewBox="0 0 80 80"><ellipse cx="40" cy="55" rx="20" ry="13" fill="var(--sand)" stroke="var(--ink)" stroke-width="2"/><circle cx="28" cy="40" r="4" fill="var(--sand)" stroke="var(--ink)" stroke-width="2"/><circle cx="36" cy="35" r="4" fill="var(--sand)" stroke="var(--ink)" stroke-width="2"/><circle cx="44" cy="33" r="4" fill="var(--sand)" stroke="var(--ink)" stroke-width="2"/><circle cx="52" cy="35" r="4" fill="var(--sand)" stroke="var(--ink)" stroke-width="2"/><text x="35" y="57" font-size="10">❤️</text></svg>`,
-      morning:`<svg viewBox="0 0 80 80"><circle cx="40" cy="20" r="8" fill="var(--gold)"/><line x1="40" y1="6" x2="40" y2="12" stroke="var(--gold)" stroke-width="2"/><line x1="40" y1="28" x2="40" y2="34" stroke="var(--gold)" stroke-width="2"/><line x1="24" y1="20" x2="30" y2="20" stroke="var(--gold)" stroke-width="2"/><line x1="50" y1="20" x2="56" y2="20" stroke="var(--gold)" stroke-width="2"/><circle cx="40" cy="50" r="7" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="57" x2="40" y2="72" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="62" x2="28" y2="57" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="62" x2="52" y2="57" stroke="var(--ink)" stroke-width="2"/></svg>`,
-      evening:`<svg viewBox="0 0 80 80"><path d="M55 15 a8 8 0 1 0 6 14 a10 10 0 1 1 -6 -14" fill="var(--ocean)"/><circle cx="40" cy="46" r="7" fill="none" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="53" x2="40" y2="68" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="58" x2="58" y2="58" stroke="var(--ink)" stroke-width="2"/><line x1="40" y1="58" x2="22" y2="58" stroke="var(--ink)" stroke-width="2"/></svg>`,
-      feetcare:`<svg viewBox="0 0 80 80"><ellipse cx="40" cy="50" rx="22" ry="14" fill="var(--paper-dark)" stroke="var(--ink)" stroke-width="2"/><path d="M25 50 Q40 30 55 50" fill="none" stroke="var(--terracotta)" stroke-width="3" stroke-dasharray="3,3"/><text x="40" y="22" font-size="22" text-anchor="middle">💆</text></svg>`,
-      rest:`<svg viewBox="0 0 80 80"><rect x="10" y="40" width="60" height="20" fill="var(--sand)" stroke="var(--ink)" stroke-width="2" rx="3"/><circle cx="40" cy="30" r="7" fill="none" stroke="var(--ink)" stroke-width="2"/><text x="58" y="20" font-size="16">💤</text></svg>`,
+ const comicSVG = t => {
+    const shapes = {
+        // ПЕРЕД ПОХОДОМ
+        walking: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M25 65L35 45L30 25M35 45L50 65M30 25L45 20L55 35" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="48" cy="15" r="5" stroke="var(--ink)" stroke-width="2.5"/>
+            <path d="M22 28C22 28 25 15 35 15C45 15 48 28 48 28" stroke="var(--terracotta)" stroke-width="2" stroke-dasharray="3 3"/>
+            <rect x="25" y="28" width="12" height="15" rx="2" fill="var(--terracotta)" opacity="0.2" stroke="var(--terracotta)" stroke-width="1.5"/>
+        </svg>`,
+        
+        squat: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 65H35L30 45L45 40L55 25" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="58" cy="18" r="5" stroke="var(--ink)" stroke-width="2.5"/>
+            <path d="M35 65L45 55L60 55" stroke="var(--olive)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+            <text x="50" y="55" font-size="18">💪</text>
+        </svg>`,
+        
+        stretch: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 65V40L60 25M30 40L15 25" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="62" cy="18" r="5" stroke="var(--ink)" stroke-width="2.5"/>
+            <path d="M30 65C45 65 60 50 60 35" stroke="var(--gold)" stroke-width="2" stroke-dasharray="4 2"/>
+            <circle cx="60" cy="25" r="8" stroke="var(--gold)" stroke-width="1" opacity="0.5"/>
+        </svg>`,
+        
+        feet: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M25 55C25 45 35 40 45 40C55 40 65 45 65 55C65 65 55 70 45 70C35 70 25 65 25 55Z" fill="var(--paper-dark)" stroke="var(--ink)" stroke-width="2"/>
+            <circle cx="30" cy="35" r="4" fill="var(--sand)"/>
+            <circle cx="40" cy="30" r="4" fill="var(--sand)"/>
+            <circle cx="50" cy="32" r="4" fill="var(--sand)"/>
+            <circle cx="60" cy="38" r="4" fill="var(--sand)"/>
+            <path d="M45 50L45 60M40 55L50 55" stroke="var(--terracotta)" stroke-width="2" stroke-linecap="round"/>
+        </svg>`,
+
+        // ПІД ЧАС ПОХОДУ
+        morning: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="40" r="15" stroke="var(--gold)" stroke-width="2" stroke-dasharray="4 4"/>
+            <path d="M40 10V20M40 60V70M10 40H20M60 40H70" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M30 50L40 30L50 50" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="40" cy="22" r="4" fill="var(--gold)"/>
+        </svg>`,
+        
+        evening: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 50C20 33.4315 33.4315 20 50 20C53.5 20 56.8 20.6 59.9 21.7C55 24.5 52 29.8 52 35.8C52 45.2 59.8 52.8 69.2 52.8C68.1 55.9 66.5 58.7 64.3 61.1" stroke="var(--ocean)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M25 65H55L40 45L25 65Z" fill="var(--paper-dark)" stroke="var(--ink)" stroke-width="2"/>
+            <path d="M40 45V35" stroke="var(--terracotta)" stroke-width="2" stroke-dasharray="2 2"/>
+        </svg>`,
+        
+        feetcare: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="40" cy="55" rx="25" ry="15" stroke="var(--ink)" stroke-width="2" fill="var(--cream)"/>
+            <path d="M30 35C30 35 35 20 40 20C45 20 50 35 50 35" stroke="var(--terracotta)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M35 55H45M40 50V60" stroke="var(--olive)" stroke-width="2"/>
+            <circle cx="40" cy="20" r="3" fill="var(--terracotta)"/>
+        </svg>`,
+        
+        rest: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="45" width="50" height="15" rx="2" stroke="var(--ink)" stroke-width="2" fill="var(--sand)" opacity="0.3"/>
+            <path d="M20 45V30M60 45V35" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M35 25L45 25M30 15L50 15" stroke="var(--terracotta)" stroke-width="2" opacity="0.6"/>
+            <text x="55" y="25" font-size="20">💤</text>
+        </svg>`,
     };
-    return shapes[t]||'🚶';
-  };
+    return shapes[t] || '🚶';
+};
   document.getElementById('ex-content').innerHTML=EXERCISES[exTab].map(ex=>`
     <div class="exercise-card">
       <div class="ex-name">${ex.n}</div><div class="ex-dur">${ex.dur}</div>
@@ -1687,31 +1805,50 @@ function initKonami(){
     if(k===seq[pos])pos++;else pos=0;
     if(pos===seq.length){pos=0;triggerKonami();}
   });
-  // Shake for mobile
-  let shakeN=0,lastUpdate=0,lastShakeTime=0;
-  if(window.DeviceMotionEvent){
-    if(typeof DeviceMotionEvent.requestPermission === 'function'){
-      document.body.addEventListener('click',()=>{
-        DeviceMotionEvent.requestPermission().then(response => {
-          if (response === 'granted') { console.log('Motion granted'); }
-        }).catch(console.error);
-      },{once:true, passive:true});
+  // Shake for mobile — потряси 3 рази → дощ із зірок!
+  (function(){
+    let shakes=0, lastShakeTime=0, lastMag=0;
+    function requestMotion(){
+      if(typeof DeviceMotionEvent!=='undefined' && typeof DeviceMotionEvent.requestPermission==='function'){
+        document.addEventListener('touchstart',function ask(){
+          DeviceMotionEvent.requestPermission().then(r=>{if(r==='granted')listenMotion();}).catch(()=>{});
+          document.removeEventListener('touchstart',ask);
+        },{once:true});
+      } else { listenMotion(); }
     }
-    window.addEventListener('devicemotion',e=>{
-      const a=e.accelerationIncludingGravity; if(!a) return;
-      const now=Date.now();
-      if(now-lastUpdate>100){
-        const total=Math.sqrt(a.x*a.x + a.y*a.y + a.z*a.z);
-        if(total > 25){ // Significant shake
-          if(now - lastShakeTime > 1500) shakeN = 0;
-          shakeN++;
-          lastShakeTime = now;
-          if(shakeN >= 2){ shakeN=0; triggerKonami(); }
+    function listenMotion(){
+      let lt=0;
+      window.addEventListener('devicemotion',e=>{
+        const a=e.accelerationIncludingGravity; if(!a||a.x==null)return;
+        const now=Date.now(); if(now-lt<80)return; lt=now;
+        const mag=Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z);
+        const delta=Math.abs(mag-lastMag); lastMag=mag;
+        if(delta>22){
+          const gap=now-lastShakeTime;
+          if(gap<1200){ shakes++; } else { shakes=1; }
+          lastShakeTime=now;
+          showShakeFeedback(shakes);
+          if(shakes>=3){ shakes=0; hideShakeFeedback(); triggerKonami(); }
         }
-        lastUpdate=now;
+      },{passive:true});
+    }
+    function showShakeFeedback(n){
+      let el=document.getElementById('shakeFb');
+      if(!el){
+        el=document.createElement('div'); el.id='shakeFb';
+        el.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--terracotta);color:#fff;padding:8px 18px;border-radius:99px;font-family:"Caveat",cursive;font-size:20px;z-index:999;pointer-events:none;transition:opacity .4s;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2);';
+        document.body.appendChild(el);
       }
-    });
-  }
+      const remain=3-n;
+      el.textContent = remain===2?'🌀 Ще 2 рази...': remain===1?'🌟 Ще 1 раз!':'💥 Ось зараз!!!';
+      el.style.opacity='1';
+      clearTimeout(el._t); el._t=setTimeout(()=>el.style.opacity='0',1500);
+    }
+    function hideShakeFeedback(){
+      const el=document.getElementById('shakeFb'); if(el) el.style.opacity='0';
+    }
+    requestMotion();
+  })();
 }
 function triggerKonami(){
   const el=document.getElementById('konamiEffect');
@@ -1970,7 +2107,265 @@ function initWeather(){
     }
   });
 }
+
+// ==================== HISTORY ====================
+function buildHistory(){
+  return `
+<h2 class="section-title">Історія</h2>
+<div class="section-subtitle">Шлях паломника крізь віки</div>
+
+<div class="hist-card">
+  <div class="hist-icon">🌟</div>
+  <div class="hist-body">
+    <div class="hist-title">Як усе почалося — IX ст.</div>
+    <p>У 814 році пастух <strong>Пелайо</strong> побачив дивне сяйво над полем у Галіції. Виявилося — це мощі <strong>апостола Якова (Сантьяго)</strong>, одного з учнів Ісуса. За легендою, після страти в Єрусалимі його тіло привезли в Іспанію на кам'яному човні, керованому ангелами.</p>
+    <p>Король <strong>Альфонсо II</strong> побудував першу капличку, згодом — величезна катедра в Сантьяго-де-Компостела. Так почався один із трьох головних паломницьких шляхів Середньовіччя (поряд з Єрусалимом і Римом).</p>
+  </div>
+</div>
+
+<div class="hist-card">
+  <div class="hist-icon">🇵🇹</div>
+  <div class="hist-body">
+    <div class="hist-title">Чому саме Португальський?</div>
+    <p>Португальський шлях (Camino Português) набув популярності з XII ст. після незалежності Португалії. Королі, королеви і звичайні люди йшли ним століттями.</p>
+    <p>Найвідоміша — <strong>королева Ізабелла (Свята Єлизавета Португальська)</strong>, яка пройшла шлях, зняла корону біля вівтаря і подарувала її. Це був жест смирення, якого не забули досі.</p>
+    <p>Від Порту до Сантьяго — класичні ~260–280 км. Є два основних варіанти:</p>
+    <p>🏔️ <strong>Центральний</strong> — через поля, виноградники, старовинні села.<br>🌊 <strong>Прибережний (da Costa)</strong> — з видом на Атлантику, вітер у лице, свіжа риба. <em>Ваш маршрут.</em></p>
+  </div>
+</div>
+
+<div class="section-subtitle">Хронологія Шляху</div>
+<div class="hist-timeline">
+  <div class="hist-tl-item">
+    <div class="hist-tl-year">814 р.</div>
+    <div class="hist-tl-text">Пастух Пелайо знаходить мощі апостола Якова. Перша каплиця на місці майбутнього Сантьяго.</div>
+  </div>
+  <div class="hist-tl-item">
+    <div class="hist-tl-year">IX–X ст.</div>
+    <div class="hist-tl-text">Король Альфонсо II робить перше відоме паломництво. Він вважається першим офіційним пілігримом Камінó. Навіть королі терпіли мозолі.</div>
+  </div>
+  <div class="hist-tl-item">
+    <div class="hist-tl-year">XII ст.</div>
+    <div class="hist-tl-text">Португальський шлях набуває популярності. Королева Єлизавета Португальська здійснює паломництво і жертвує корону.</div>
+  </div>
+  <div class="hist-tl-item">
+    <div class="hist-tl-year">1502</div>
+    <div class="hist-tl-text">Король Мануел I проходить шлях з Лісабона. Від Порту до Сантьяго пішки — справжній королівський рівень.</div>
+  </div>
+  <div class="hist-tl-item">
+    <div class="hist-tl-year">XIX–XX ст.</div>
+    <div class="hist-tl-text">Традиція занепадає, потім відроджується. У 1985 Камінó Францеський отримує статус першого Культурного маршруту Ради Європи.</div>
+  </div>
+  <div class="hist-tl-item">
+    <div class="hist-tl-year">1993</div>
+    <div class="hist-tl-text">Камінó — об'єкт Всесвітньої спадщини ЮНЕСКО. Щорічно зростає на тисячі паломників.</div>
+  </div>
+  <div class="hist-tl-item">
+    <div class="hist-tl-year">Сьогодні</div>
+    <div class="hist-tl-text"><strong>250,000+ паломників</strong> отримують Compostela щороку. Мінімум 100 км пішки (або 200 км велосипедом). Ти серед них!</div>
+  </div>
+</div>
+
+<div class="section-subtitle">Цікаві факти</div>
+<div class="hist-fact-grid">
+  <div class="hist-fact">
+    <div class="hist-fact-icon">🐚</div>
+    <div class="hist-fact-text"><strong>Мушля — головний символ.</strong> Її носили на рюкзаку, щоб показати: «Я — пілігрим». За легендою, мушлі приносило хвилями саме до Сантьяго. Тепер вона на твоєму рюкзаку.</div>
+  </div>
+  <div class="hist-fact">
+    <div class="hist-fact-icon">🏹</div>
+    <div class="hist-fact-text"><strong>Жовті стрілки</strong> малювали волонтери задовго до Google Maps і GPS. Зараз вони мільйони по всіх маршрутах. Хтось малює ночами до цих пір.</div>
+  </div>
+  <div class="hist-fact">
+    <div class="hist-fact-icon">🇺🇦</div>
+    <div class="hist-fact-text"><strong>Українці теж ходять!</strong> У 2015-му в Україні почали маркувати свій відрізок Шляху (Львів — Шегині). Камінó тепер справді до дому.</div>
+  </div>
+  <div class="hist-fact">
+    <div class="hist-fact-icon">🏛️</div>
+    <div class="hist-fact-text"><strong>Римські дороги</strong> лягли в основу багатьох ділянок маршруту в Північній Португалії (Via XIX). Ти буквально йдеш слідами римських легіонів.</div>
+  </div>
+  <div class="hist-fact">
+    <div class="hist-fact-icon">😄</div>
+    <div class="hist-fact-text"><strong>Факт для мемів:</strong> першим офіційним пілігримом вважають короля Альфонсо II (814 р). Тобто навіть королі терпіли мозолі й альберге без WiFi.</div>
+  </div>
+  <div class="hist-fact">
+    <div class="hist-fact-icon">🧭</div>
+    <div class="hist-fact-text"><strong>Сьогодні Camino — це не тільки релігія.</strong> Хтось іде за духовністю, хтось — «перезавантажити» голову, хтось просто хоче пригоди. Buen Camino не про дистанцію, а про те, ким ти станеш на фініші.</div>
+  </div>
+</div>
+`;}
+
+// ==================== SAFETY ====================
+function buildSafety(){
+  return `
+<h2 class="section-title">Безпека</h2>
+<div class="section-subtitle">правила і корисне</div>
+
+<div class="safety-emergency">
+  <div class="safety-emergency-title">🆘 Екстрені номери</div>
+  <div class="safety-num">
+    <div class="safety-num-item"><span class="safety-num-val">112</span><div class="safety-num-desc">Єдиний ЄС (без SIM!)</div></div>
+    <div class="safety-num-item"><span class="safety-num-val">113</span><div class="safety-num-desc">INEM Португалія</div></div>
+    <div class="safety-num-item"><span class="safety-num-val">091</span><div class="safety-num-desc">Polizia Nacional ES</div></div>
+    <div class="safety-num-item"><span class="safety-num-val">062</span><div class="safety-num-desc">Guardia Civil ES</div></div>
+  </div>
+</div>
+
+<div class="safety-card warning">
+  <div class="safety-title">🌊 Безпека на пляжі</div>
+  <div class="safety-body">
+    <p>Атлантика небезпечна — не плутай з Середземним морем!</p>
+    <ul>
+      <li><strong>🟢 Зелений прапор</strong> — можна купатися</li>
+      <li><strong>🟡 Жовтий прапор</strong> — тільки по коліна, хвилі</li>
+      <li><strong>🔴 Червоний прапор</strong> — суворо заборонено</li>
+      <li><strong>Rip current (відбійна течія):</strong> не пливи проти — пливи ПАРАЛЕЛЬНО берегу, потім по діагоналі назад</li>
+      <li>Температура води: 17-18°C — холодна. Судоми можливі</li>
+      <li>Остерігайся <strong>peixe-aranha</strong> (lesser weever) — отруйна риба в піску
+              <div class="peixe-thumb" onclick="openPeixeLb()">
+                <img src="files/peixe.jpg" alt="Peixe-aranha" loading="lazy">
+                <div class="peixe-hint">🔍 Натисни — побачиш більше</div>
+              </div></li>
+    </ul>
+  </div>
+</div>
+
+<div class="safety-card tip">
+  <div class="safety-title">🦶 Профілактика пухирів</div>
+  <div class="safety-body">
+    <ul>
+      <li><strong>Compeed + Leukotape P</strong> на проблемні місця до старту — профілактично</li>
+      <li>Vaseline / Body Glide на пальці, п'ятки і між пальцями — щоранку</li>
+      <li>Двошарові шкарпетки або якісний мерінос (Smartwool, Darn Tough)</li>
+      <li>Кросівки на <strong>+0.5 розміру</strong> — ноги набрякають після 10 км</li>
+      <li>Якщо пухир: стерильна голка збоку → нитка для дренажу → Compeed зверху</li>
+      <li>Щовечора: помити ноги, провітрити, масаж</li>
+    </ul>
+  </div>
+</div>
+
+<div class="safety-card info">
+  <div class="safety-title">☀️ Спека і сонце</div>
+  <div class="safety-body">
+    <ul>
+      <li><strong>UV індекс 8+ (дуже високий)</strong> — SPF 50+ обов'язково. Ре-аплікація кожні 2 год</li>
+      <li>Стартувати о <strong>6:00-6:30</strong>, фінішувати до 13:00-14:00 — уникати пікової спеки</li>
+      <li>Норма води: <strong>2-3 літри/день</strong>. Пити до появи спраги, не після</li>
+      <li>Електроліти (SaltStick, Hydralyte) — попереджають судоми при сильній спеці</li>
+      <li><strong>Ознаки теплового удару:</strong> запаморочення, нудота, темна сеча → знайти тінь, пити, охолодити шию і зап'ястки холодною водою</li>
+      <li>Капелюх з полями + Buff + сонцезахисні окуляри кат. 3</li>
+    </ul>
+  </div>
+</div>
+
+<div class="safety-card tip">
+  <div class="safety-title">🎒 Безпека речей</div>
+  <div class="safety-body">
+    <ul>
+      <li>Документи і готівка — у <strong>money belt</strong> на тілі або в потайній кишені рюкзака</li>
+      <li>Розподіли кошти між учасниками — на випадок втрати</li>
+      <li>В альберге: замок-карабін на рюкзак або речі у спальнику</li>
+      <li>Не залишай електроніку без нагляду в спільних кімнатах</li>
+      <li>Фото копії документів у хмарі (Google Drive) — на всякий випадок</li>
+      <li>Revolut/Wise карта — оптимальний обмінний курс, без комісій за кордоном</li>
+    </ul>
+  </div>
+</div>
+
+<div class="safety-card info">
+  <div class="safety-title">🩹 Мінімальна аптечка</div>
+  <div class="safety-body">
+    <ul>
+      <li>Compeed Mixed Pack × 2-3 упаковки</li>
+      <li>Leukotape P (краща стрічка для гарячих точок)</li>
+      <li>Vaseline 50 мл</li>
+      <li>Ibuprofen 400 мг × 20 таб (біль, запалення)</li>
+      <li>Paracetamol (температура, головний біль)</li>
+      <li>Voltaren Gel 50 г (м'язи і суглоби)</li>
+      <li>Імодіум (діарея — від незвичної їжі)</li>
+      <li>Антигістамін Цетрин × 10 (алергія, комахи)</li>
+      <li>Стерильна голка + нитка + йод (пухирі)</li>
+      <li>Бальзам для губ SPF</li>
+    </ul>
+  </div>
+</div>
+
+<div class="safety-card warning">
+  <div class="safety-title">🐕 Собаки і тварини</div>
+  <div class="safety-body">
+    <ul>
+      <li>На сільських ділянках маршруту можуть зустрічатися фермерські собаки</li>
+      <li>Не біжи, не дивись в очі — стій спокійно або відходь повільно</li>
+      <li>Трекінгові палиці можна підняти для захисту</li>
+      <li>В Галісії бувають корови прямо на маршруті — обходь спокійно</li>
+    </ul>
+  </div>
+</div>
+
+<div class="safety-card tip">
+  <div class="safety-title">📱 Зв'язок і навігація</div>
+  <div class="safety-body">
+    <ul>
+      <li><strong>What3Words</strong> — найточніша локація для екстрених служб</li>
+      <li><strong>AlertCops</strong> — прямий зв'язок з іспанською поліцією</li>
+      <li>WiFi є в більшості альберге (повільний у пік-години)</li>
+      <li>eSIM Airalo або Holafly — PT+ES в одній SIM без переключення</li>
+      <li>Завантаж офлайн карти Google Maps заздалегідь!</li>
+      <li>Завжди кажи комусь куди йдеш — якщо відстаєш від групи</li>
+    </ul>
+  </div>
+</div>
+`;}
+
+// ==================== PLAYLIST ====================
+function buildPlaylist(){
+  const tracks=[
+    {n:'Un Peregrino',a:'Carlos Núñez',mood:'душа маршруту'},
+    {n:'Ao Longe o Mar',a:'Madredeus',mood:'океан і дорога'},
+    {n:'Luar na Lubre',a:'Luar na Lubre',mood:'Галісія'},
+    {n:'O Mar Eterno',a:'Madredeus',mood:'медитативно'},
+    {n:'Alalá das Mariñas',a:'Carlos Núñez',mood:'Coastal'},
+    {n:'Lisboa',a:'Madredeus',mood:'Португалія'},
+    {n:'Galicia (Celtic)',a:'Milladoiro',mood:'кельтський дух'},
+    {n:'Gaita Valadoura',a:'Carlos Núñez',mood:'волинки в горах'},
+    {n:'Anda Comigo',a:'José Afonso',mood:'класика'},
+    {n:'Ecos do Atlântico',a:'Luar na Lubre',mood:'Атлантика'},
+    {n:'Uma Casa Portuguesa',a:'Amália Rodrigues',mood:'фаду'},
+    {n:'Eithne',a:'Enya',mood:'кельтський настрій'},
+  ];
+  return `
+<h2 class="section-title">Плейлист</h2>
+<div class="section-subtitle">музика Камінó</div>
+
+<div class="section-subtitle" style="margin-top:8px;">Слухати зараз 🎧</div>
+<iframe data-testid="embed-iframe" style="border-radius:12px;margin-bottom:20px;" src="https://open.spotify.com/embed/playlist/6KaNjx2EGlYG3YrmNHV25X?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+<div class="playlist-hero">
+  <div class="playlist-title">🎵 Camino Português</div>
+  <div class="playlist-sub">музика для кожного кроку</div>
+  <a class="playlist-open-btn" href="https://open.spotify.com/playlist/6KaNjx2EGlYG3YrmNHV25X?si=fMO1s9vHQdCFDt8XrKQO7Q" target="_blank">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.305-1.76-8.786-.963-.335.077-.67-.133-.746-.47-.077-.334.132-.67.47-.745 3.808-.87 7.076-.496 9.713 1.115.293.18.386.563.206.856zm1.223-2.723c-.226.367-.706.482-1.072.257-2.687-1.652-6.785-2.131-9.965-1.166-.413.127-.848-.106-.973-.517-.125-.413.108-.848.518-.973 3.632-1.102 8.147-.568 11.234 1.328.366.226.48.707.258 1.071zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.493.15-1.016-.129-1.166-.623-.148-.495.13-1.016.624-1.165 3.532-1.073 9.404-.865 13.115 1.338.445.264.590.837.327 1.282-.264.443-.838.59-1.283.326z"/></svg>
+    Відкрити у Spotify
+  </a>
+</div>
+
+<div style="background:var(--paper);border-radius:4px;padding:16px;margin-top:16px;border:1px solid var(--paper-dark);text-align:center;">
+  <p style="font-family:'Caveat',cursive;font-size:20px;color:var(--terracotta);margin-bottom:6px;">🎧 Порада</p>
+  <p style="font-size:13px;color:var(--ink-soft);line-height:1.6;">Закачай плейлист офлайн у Spotify Premium перед вильотом. Сигнал часто зникає на прибережних ділянках. І обов'язково: Madredeus на заході сонця в Caminha — це окремий досвід.</p>
+</div>
+`;}
+
+
+function openPeixeLb(){document.getElementById('peixeLb').classList.add('open');document.body.style.overflow='hidden';}
+function closePeixeLb(){document.getElementById('peixeLb').classList.remove('open');document.body.style.overflow='';}
+
 </script>
 <a href="https://youtu.be/Tu0-1s-AuNo?si=oZ5FvMv8gFi2hVbE" target="_blank" id="theWayLink" class="the-way-link">🎬 "The Way" Mode</a>
+
+<div class="peixe-lb" id="peixeLb" onclick="closePeixeLb()">
+  <button class="peixe-lb-close" onclick="closePeixeLb()">✕</button>
+  <img src="files/peixe.jpg" alt="Peixe-aranha / Lesser weever" onclick="event.stopPropagation()">
+</div>
+
 </body>
 </html>
