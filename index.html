@@ -1816,15 +1816,16 @@ function initKonami(){
     if(k===seq[pos])pos++;else pos=0;
     if(pos===seq.length){pos=0;triggerKonami();}
   });
-  // Shake for mobile — потряси 3 рази → дощ із зірок!
+  // Shake for mobile — потряси 3 рази → дощ із зірок!!
   (function(){
-    let shakes=0, lastShakeTime=0, lastX=null, lastY=null, lastZ=null;
-    
+    let shakes = 0, lastShakeTime = 0, lastUpdate = 0;
+    let lastX = null, lastY = null, lastZ = null;
+    const SHAKE_THRESHOLD = 800; // Чутливість: чим менше, тим легше спрацьовує (норма: 600-1000)
+
     function requestMotion(){
-      if(typeof DeviceMotionEvent!=='undefined' && typeof DeviceMotionEvent.requestPermission==='function'){
-        // В iOS 13+ дозвіл вимагає явної дії користувача (click)
+      if(typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function'){
         const ask = () => {
-          DeviceMotionEvent.requestPermission().then(r=>{if(r==='granted')listenMotion();}).catch(()=>{});
+          DeviceMotionEvent.requestPermission().then(r => {if(r === 'granted') listenMotion();}).catch(()=>{});
           document.removeEventListener('click', ask);
         };
         document.addEventListener('click', ask);
@@ -1835,49 +1836,50 @@ function initKonami(){
       window.addEventListener('devicemotion', e => {
         const a = e.accelerationIncludingGravity; 
         if(!a || a.x == null) return;
-        const now = Date.now();
         
-        if (lastX !== null) {
-          const deltaX = Math.abs(a.x - lastX);
-          const deltaY = Math.abs(a.y - lastY);
-          const deltaZ = Math.abs(a.z - lastZ);
-          
-          // Сума дельт стабільніша. Поріг знижено до 15 для кращої чутливості
-          if (deltaX + deltaY + deltaZ > 15) {
-            // Запобігання множинним спрацьовуванням від одного руху
-            if (now - lastShakeTime > 800) { 
-                if (now - lastShakeTime > 2000) shakes = 0; // Скидання, якщо перерва > 2 сек
-                shakes++;
-                lastShakeTime = now;
-                showShakeFeedback(shakes);
-                
-                if(shakes >= 3){ 
-                    shakes = 0; 
-                    hideShakeFeedback(); 
-                    triggerKonami(); 
-                }
+        const now = Date.now();
+        // Рахуємо швидкість не частіше ніж раз на 100мс (нівелює різницю між 60Hz та 120Hz екранами)
+        if ((now - lastUpdate) > 100) {
+          const diffTime = (now - lastUpdate);
+          lastUpdate = now;
+
+          if (lastX !== null) {
+            // Класична формула визначення струшування, прив'язана до часу
+            const speed = Math.abs(a.x + a.y + a.z - lastX - lastY - lastZ) / diffTime * 10000;
+
+            if (speed > SHAKE_THRESHOLD) {
+              if (now - lastShakeTime > 2000) shakes = 0; // Скидання, якщо перерва > 2 сек
+              shakes++;
+              lastShakeTime = now;
+              showShakeFeedback(shakes);
+              
+              if(shakes >= 3){ 
+                shakes = 0; 
+                hideShakeFeedback(); 
+                triggerKonami(); 
+              }
             }
           }
+          lastX = a.x; lastY = a.y; lastZ = a.z;
         }
-        lastX = a.x; lastY = a.y; lastZ = a.z;
-      }, {passive:true});
+      }, {passive: true});
     }
 
     function showShakeFeedback(n){
-      let el=document.getElementById('shakeFb');
+      let el = document.getElementById('shakeFb');
       if(!el){
-        el=document.createElement('div'); el.id='shakeFb';
-        el.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--terracotta);color:#fff;padding:8px 18px;border-radius:99px;font-family:"Caveat",cursive;font-size:20px;z-index:999;pointer-events:none;transition:opacity .4s;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2);';
+        el = document.createElement('div'); el.id = 'shakeFb';
+        el.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--terracotta);color:#fff;padding:8px 18px;border-radius:99px;font-family:"Caveat",cursive;font-size:20px;z-index:999;pointer-events:none;transition:opacity .4s;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2);';
         document.body.appendChild(el);
       }
-      const remain=3-n;
-      el.textContent = remain===2?'🌀 Ще 2 рази...': remain===1?'🌟 Ще 1 раз!':'💥 Ось зараз!!!';
-      el.style.opacity='1';
-      clearTimeout(el._t); el._t=setTimeout(()=>el.style.opacity='0',1500);
+      const remain = 3 - n;
+      el.textContent = remain === 2 ? '🌀 Ще 2 рази...' : remain === 1 ? '🌟 Ще 1 раз!' : '💥 Ось зараз!!!';
+      el.style.opacity = '1';
+      clearTimeout(el._t); el._t = setTimeout(()=>el.style.opacity = '0', 1500);
     }
 
     function hideShakeFeedback(){
-      const el=document.getElementById('shakeFb'); if(el) el.style.opacity='0';
+      const el = document.getElementById('shakeFb'); if(el) el.style.opacity = '0';
     }
 
     requestMotion();
