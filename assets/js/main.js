@@ -100,7 +100,7 @@ function initLoginScreen() {
   document.getElementById('backBtn').addEventListener('click', showPilgrimList);
   document.getElementById('submitBtn').addEventListener('click', checkPassword);
   document.getElementById('guestLoginBtn')?.addEventListener('click', () => {
-    selectedPilgrim = 'mykola';
+    selectedPilgrim = 'guest';
     enterApp(selectedPilgrim);
   });
   document.getElementById('resetPilgrimBtn')?.addEventListener('click', () => {

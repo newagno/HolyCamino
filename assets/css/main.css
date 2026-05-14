@@ -1166,7 +1166,7 @@ h1, h2, h3 {
   color: #fff;
   font-size: 20px;
   cursor: pointer;
-  z-index: 50;
+  z-index: 9999;
   box-shadow: 0 4px 16px rgba(0,0,0,.2);
   display: flex;
   align-items: center;
@@ -1176,7 +1176,7 @@ h1, h2, h3 {
 
 .ocean-toggle:hover            { transform: scale(1.1); }
 .ocean-toggle.active           { background: var(--olive); animation: pulse 2s infinite; }
-#theWayToggle.active           { background: #000; border-color: #fff; box-shadow: 0 0 15px #fff; animation: theWayPulse 2s infinite; }
+#theWayToggle.active           { background: #000; border-color: #fff; box-shadow: 0 0 15px #fff; animation: theWayPulse 2s infinite; z-index: 10001; }
 
 @keyframes theWayPulse {
   0%, 100% { box-shadow: 0 0 10px #fff; }
@@ -1193,7 +1193,7 @@ h1, h2, h3 {
   color: #fff;
   font-size: 22px;
   cursor: pointer;
-  z-index: 50;
+  z-index: 9999;
   box-shadow: 0 4px 16px rgba(0,0,0,.2);
   display: flex;
   align-items: center;
@@ -1438,13 +1438,43 @@ body.francesinha-mode .accent { color: #ff4500; }
 body.the-way-mode .the-way-link { display: block; }
 
 /* ── Responsive ─────────────────────────────────────────────── */
-@media (min-width: 768px) {
-  .section,
-  .day-card,
-  .pilgrim-card,
-  .app-card { max-width: 700px; margin-left: auto; margin-right: auto; }
-
   .section { padding-left: 0; padding-right: 0; }
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .header-left, .header-right {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .header-title {
+    font-size: 17px;
+  }
+  
+  .header-cd {
+    width: 100%;
+    order: 3;
+    padding: 8px 0;
+    border-top: 1px dashed var(--paper-dark);
+  }
+  
+  .countdown-label {
+    display: none;
+  }
+
+  .countdown-grid {
+    gap: 8px;
+  }
+  
+  .countdown-num {
+    font-size: 20px;
+  }
 }
 
 /* ============================================================

@@ -33,7 +33,9 @@ import { initShellEgg, initLogoLongPress } from './easterEggs.js';
  * @returns {string}
  */
 export function buildPilgrimList() {
-  return Object.entries(PILGRIMS).map(([id, p]) => `
+  return Object.entries(PILGRIMS)
+    .filter(([id]) => id !== 'guest')
+    .map(([id, p]) => `
     <button class="pilgrim-btn" data-pilgrim="${id}">
       ${p.name} <span class="arrow">→</span>
     </button>
@@ -470,7 +472,9 @@ function initWeatherLazy() {
 // ─────────────────────────────────────────────
 
 function buildPilgrims() {
-  const cards = Object.entries(PILGRIMS).map(([id, p]) => `
+  const cards = Object.entries(PILGRIMS)
+    .filter(([id]) => id !== 'guest')
+    .map(([id, p]) => `
     <div class="pilgrim-card" data-pid="${id}" role="button" tabindex="0" aria-label="${p.name}">
       <div class="pilgrim-avatar" aria-hidden="true">${p.initial}</div>
       <div class="pilgrim-card-name">${p.name}</div>
