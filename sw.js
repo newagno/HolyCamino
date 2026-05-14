@@ -1,4 +1,4 @@
-const CACHE_NAME = 'camino-v2-static-v7';
+const CACHE_NAME = 'camino-v2-static-v8';
 const STATIC_ASSETS = [
   './',
   './index.html',

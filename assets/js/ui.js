@@ -33,9 +33,7 @@ import { initShellEgg, initLogoLongPress } from './easterEggs.js';
  * @returns {string}
  */
 export function buildPilgrimList() {
-  return Object.entries(PILGRIMS)
-    .filter(([id]) => id !== 'guest')
-    .map(([id, p]) => `
+  return Object.entries(PILGRIMS).map(([id, p]) => `
     <button class="pilgrim-btn" data-pilgrim="${id}">
       ${p.name} <span class="arrow">→</span>
     </button>
@@ -59,6 +57,8 @@ export function renderApp(id) {
     ${buildHeader(p, id)}
     ${buildNav()}
     ${buildHero(p)}
+
+    <p id="navSectionLive" class="sr-only" aria-live="polite" aria-atomic="true"></p>
 
     <section class="section active" id="s-route">${buildRoute()}</section>
     <section class="section"        id="s-booking">${buildBooking()}</section>
@@ -206,6 +206,14 @@ function initNav() {
   const tabs = document.querySelectorAll('.nav-tab');
   const sections = document.querySelectorAll('.section');
 
+  const announceActiveSection = (tab) => {
+    const sid = tab.getAttribute('data-s');
+    const entry = NAV_TABS.find((t) => t.id === sid);
+    const live = document.getElementById('navSectionLive');
+    if (!live || !entry) return;
+    live.textContent = `Секція: ${entry.label}`;
+  };
+
   const switchTab = (tab) => {
     tabs.forEach((t) => {
       t.classList.remove('active');
@@ -221,6 +229,7 @@ function initNav() {
     if (target) {
       target.classList.add('active');
       window.scrollTo(0, 0);
+      announceActiveSection(tab);
     }
   };
 
@@ -472,9 +481,7 @@ function initWeatherLazy() {
 // ─────────────────────────────────────────────
 
 function buildPilgrims() {
-  const cards = Object.entries(PILGRIMS)
-    .filter(([id]) => id !== 'guest')
-    .map(([id, p]) => `
+  const cards = Object.entries(PILGRIMS).map(([id, p]) => `
     <div class="pilgrim-card" data-pid="${id}" role="button" tabindex="0" aria-label="${p.name}">
       <div class="pilgrim-avatar" aria-hidden="true">${p.initial}</div>
       <div class="pilgrim-card-name">${p.name}</div>
