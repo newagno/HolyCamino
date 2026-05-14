@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Твою ж Каміно! 🐚</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐚</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=Caveat:wght@600&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+  <!-- ========== DECORATIVE SHELL BACKGROUNDS ========== -->
+  <svg style="display:none">
+    <defs>
+      <symbol id="shell-shape" viewBox="0 0 100 100">
+        <path d="M50 5C30 5 15 20 12 40c0 15 8 35 38 55 30-20 38-40 38-55C85 20 70 5 50 5zM50 15L48 90M40 20L35 88M30 28L22 80M60 20L65 88M70 28L78 80"
+          stroke="currentColor" stroke-width="1" fill="currentColor" fill-opacity="0.3"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="shell-bg" aria-hidden="true">
+    <svg class="shell-1" viewBox="0 0 100 100"><use href="#shell-shape"/></svg>
+    <svg class="shell-2" viewBox="0 0 100 100"><use href="#shell-shape"/></svg>
+    <svg class="shell-3" viewBox="0 0 100 100"><use href="#shell-shape"/></svg>
+  </div>
+
+  <!-- ========== BIRTHDAY OVERLAY (Олекса 24.07) ========== -->
+  <div class="birthday-overlay" id="birthdayOverlay" role="dialog" aria-modal="true" aria-label="День народження">
+    <canvas id="confettiCanvas" style="position:absolute;inset:0;pointer-events:none;" aria-hidden="true"></canvas>
+    <div class="birthday-msg">
+      <h1>🎉 З Днем Народження, Олекса! 🎉</h1>
+      <p>Сьогодні тобі виповнюється 15!<br>
+         Ти зустрічаєш цей день у Сантьяго-де-Компостела,<br>
+         пройшовши <strong>261 км</strong> свого першого Камінó 🐚</p>
+      <p style="font-size:clamp(16px,4vw,22px);margin-bottom:20px;">
+        Такого подарунку на день народження<br>немає ні в кого в твоїй школі!
+      </p>
+      <button class="birthday-close" id="birthdayCloseBtn">Дякую! Buen Camino! 🐚</button>
+    </div>
+  </div>
+
+  <!-- ========== LOGIN SCREEN ========== -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-shell" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <path d="M50 5C30 5 15 20 12 40c0 15 8 35 38 55 30-20 38-40 38-55C85 20 70 5 50 5zM50 15L48 90M40 20L35 88M30 28L22 80M60 20L65 88M70 28L78 80"
+            stroke="currentColor" stroke-width="1.5" fill="currentColor" fill-opacity="0.2"/>
+        </svg>
+      </div>
+      <h1 class="login-title">Твою ж <span style="color:var(--terracotta);font-style:italic;">Каміно!</span></h1>
+      <div class="login-subtitle">паломницький щоденник</div>
+
+      <!-- Step 1: Choose pilgrim -->
+      <div id="step-choose">
+        <div class="login-step-label">Хто ти, паломнику?</div>
+        <div class="pilgrim-list" id="pilgrimList">
+          <button class="pilgrim-btn" data-pilgrim="mykola">Микола <span class="arrow">→</span></button>
+          <button class="pilgrim-btn" data-pilgrim="oleksa">Олекса <span class="arrow">→</span></button>
+          <button class="pilgrim-btn" data-pilgrim="hanna">Ганна <span class="arrow">→</span></button>
+          <button class="pilgrim-btn" data-pilgrim="yevhen">Євген <span class="arrow">→</span></button>
+        </div>
+        <div class="login-extra-actions">
+          <button class="btn btn-secondary guest-login" id="guestLoginBtn" type="button">Гість без пароля</button>
+          <button class="btn btn-secondary" id="resetPilgrimBtn" type="button">Скинути вибір</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Password -->
+      <div id="step-password" class="password-form">
+        <div class="login-step-label" id="passwordWelcome">Вітаємо</div>
+        <div class="password-hint" id="passwordHint"></div>
+        <div class="pw-wrap">
+          <input type="password" class="password-input" id="passwordInput"
+            placeholder="Пароль..." autocomplete="off" autocapitalize="off"
+            autocorrect="off" spellcheck="false" aria-label="Пароль">
+          <button class="pw-toggle" id="pwToggle" type="button" aria-label="Показати пароль">👁</button>
+        </div>
+        <div class="password-error" id="passwordError" role="alert">Не той пароль. Спробуй ще раз!</div>
+        <div class="password-actions">
+          <button class="btn btn-secondary" id="backBtn">← Назад</button>
+          <button class="btn btn-primary" id="submitBtn">Увійти →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MAIN APP (rendered by ui.js) ========== -->
+  <div class="app" id="app"></div>
+
+  <!-- ========== PILGRIM GEAR MODAL ========== -->
+  <div class="modal" id="pilgrimModal" role="dialog" aria-modal="true" aria-label="Спорядження паломника">
+    <div class="modal-content">
+      <button class="modal-close" id="pilgrimModalClose" aria-label="Закрити">✕</button>
+      <div id="pilgrimModalContent"></div>
+    </div>
+  </div>
+
+  <!-- ========== MEMES EASTER EGG MODAL ========== -->
+  <div class="memes-modal" id="memesModal" role="dialog" aria-modal="true" aria-label="Меми Камінó">
+    <div class="memes-content">
+      <button class="modal-close" id="memesModalClose" aria-label="Закрити">✕</button>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:4px;">🎉 Знайшов секретку!</h2>
+      <p style="font-family:'Caveat',cursive;color:var(--terracotta);font-size:18px;margin-bottom:14px;">Меми Камінó</p>
+      <div class="meme-card"><div class="meme-title">День 1:</div><div class="meme-body">"Це ж легко — просто йдемо красивим узбережжям."<br>День 3: 🦶🩹🆘</div></div>
+      <div class="meme-card"><div class="meme-title">Маркетинг vs Реальність:</div><div class="meme-body">📸 Маркетинг: романтика, мушлі, захід сонця<br>👟 Реальність: пухирі, "де найближче кафе???"</div></div>
+      <div class="meme-card"><div class="meme-title">Buen Camino — переклад:</div><div class="meme-body">🇪🇸 "Buen Camino!"<br>🇺🇦 "Терпи, ще тільки 18 км до обіду"</div></div>
+      <div class="meme-card"><div class="meme-title">Як паломник пакує рюкзак:</div><div class="meme-body">"Беру тільки найнеобхідніше" — 12 кг<br>День 2: викидає 4 кг<br>День 5: "навіщо я взяв ОЦЕ?"</div></div>
+      <div class="meme-card"><div class="meme-title">Альберге о 21:00:</div><div class="meme-body">😴 Всі сплять як після наркозу<br>🐍 Хропіння як в опері<br>🎧 Беруші — твій единій друг</div></div>
+      <div class="meme-card"><div class="meme-title">Через 2 місяці після:</div><div class="meme-body">"Більше ніколи ні"<br><br>За 3 місяці: "Може Frances наступного року?..."</div></div>
+    </div>
+  </div>
+
+  <!-- ========== KONAMI / SHELL RAIN EFFECT ========== -->
+  <div class="konami-effect" id="konamiEffect" aria-hidden="true"></div>
+
+  <!-- ========== PEIXE ARANHA LIGHTBOX ========== -->
+  <div class="peixe-lb" id="peixeLb" role="dialog" aria-modal="true" aria-label="Peixe-aranha">
+    <button class="peixe-lb-close" id="peixeLbClose" aria-label="Закрити">✕</button>
+    <img src="assets/files/peixe.jpg" alt="Peixe-aranha / Lesser weever" onclick="event.stopPropagation()">
+  </div>
+
+  <!-- ========== DAILY WISDOM MODAL ========== -->
+  <div class="modal" id="wisdomModal" role="dialog" aria-modal="true" aria-label="Мудрість дня">
+    <div class="modal-content wisdom-content">
+      <button class="modal-close" id="wisdomModalClose" aria-label="Закрити">✕</button>
+      <div id="wisdomModalBody"></div>
+    </div>
+  </div>
+
+  <!-- ========== PERSISTENT UI BUTTONS ========== -->
+  <button class="ocean-toggle" id="oceanToggle" title="Звуки океану" aria-label="Увімкнути звуки океану">🌊</button>
+  <audio id="oceanAudio" loop src="assets/files/sound_ocean.mp3" preload="none"></audio>
+
+  <!-- ========== THE WAY AUDIO ========== -->
+  <button class="ocean-toggle" id="theWayToggle" title="Звуки шторму" aria-label="Увімкнути звуки шторму" style="display:none;background:#000;border:2px solid #fff;">⚡</button>
+  <audio id="theWayAudio" loop src="assets/files/sound_storme.mp3" preload="none"></audio>
+
+  <button class="scroll-top" id="scrollTopBtn" title="Нагору" aria-label="Прокрутити вгору">↑</button>
+
+  <!-- ========== THE WAY MODE LINK ========== -->
+  <a href="https://youtu.be/Tu0-1s-AuNo?si=oZ5FvMv8gFi2hVbE"
+     target="_blank" id="theWayLink" class="the-way-link"
+     rel="noopener noreferrer">🎬 "The Way" Mode</a>
+
+  <!-- ========== MODULES (ES6, order matters) ========== -->
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
