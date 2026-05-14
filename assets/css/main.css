@@ -1176,6 +1176,12 @@ h1, h2, h3 {
 
 .ocean-toggle:hover            { transform: scale(1.1); }
 .ocean-toggle.active           { background: var(--olive); animation: pulse 2s infinite; }
+#theWayToggle.active           { background: #000; border-color: #fff; box-shadow: 0 0 15px #fff; animation: theWayPulse 2s infinite; }
+
+@keyframes theWayPulse {
+  0%, 100% { box-shadow: 0 0 10px #fff; }
+  50% { box-shadow: 0 0 25px #fff; }
+}
 
 .scroll-top {
   position: fixed;

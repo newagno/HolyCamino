@@ -36,10 +36,33 @@ export function activateTheWayMode() {
   
   if (toggle) toggle.style.display = 'flex';
   if (oceanToggle) oceanToggle.style.display = 'none';
+
+  // Stop ocean audio if playing
+  const oceanAudio = /** @type {HTMLAudioElement} */ (document.getElementById('oceanAudio'));
+  if (oceanAudio) {
+    oceanAudio.pause();
+    oceanAudio.currentTime = 0;
+    const oceanToggleBtn = document.getElementById('oceanToggle');
+    if (oceanToggleBtn) oceanToggleBtn.classList.remove('active');
+  }
+
   if (audio) {
-    audio.play().catch(() => {
+    audio.play().then(() => {
+      if (toggle) {
+        toggle.textContent = '⛈️';
+        toggle.classList.add('active');
+      }
+    }).catch(() => {
       // Autoplay blocked, wait for first click
-      document.addEventListener('click', () => audio.play(), { once: true });
+      const autoPlayHandler = () => {
+        audio.play();
+        if (toggle) {
+          toggle.textContent = '⛈️';
+          toggle.classList.add('active');
+        }
+        document.removeEventListener('click', autoPlayHandler);
+      };
+      document.addEventListener('click', autoPlayHandler);
     });
   }
 }
@@ -53,12 +76,12 @@ export function initTheWayAudio() {
   btn.addEventListener('click', () => {
     if (audio.paused) {
       audio.play();
-      btn.textContent = '⚡';
-      btn.classList.add('playing');
+      btn.textContent = '⛈️';
+      btn.classList.add('active');
     } else {
       audio.pause();
       btn.textContent = '🔇';
-      btn.classList.remove('playing');
+      btn.classList.remove('active');
     }
   });
 }
