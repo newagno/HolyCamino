@@ -18,6 +18,12 @@
   --ink-soft: #4a3825;
   --gold: #c9a64b;
   --shadow: rgba(44, 24, 16, 0.15);
+  
+  /* Safe Areas */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 }
 
 /* ── Reset & Base ───────────────────────────────────────────── */
@@ -49,6 +55,8 @@ html {
 
 body {
   font-family: 'Manrope', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
   background: var(--cream);
   color: var(--ink);
   min-height: 100dvh;
@@ -60,12 +68,29 @@ body {
   background-attachment: fixed;
 }
 
+/* ── Focus Styles ───────────────────────────────────────────── */
+:focus-visible {
+  outline: 3px solid var(--terracotta);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 h1,
 h2,
 h3 {
   font-family: 'Cormorant Garamond', serif;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -.02em;
+}
+
+/* ── Icon Utility ───────────────────────────────────────────── */
+.icon {
+  width: 1.2em;
+  height: 1.2em;
+  fill: currentColor;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 /* ── Shell Background ───────────────────────────────────────── */
@@ -612,7 +637,7 @@ body.the-way-mode .the-way-rain {
 .header {
   background: var(--paper);
   z-index: 100;
-  padding: 12px 20px;
+  padding: calc(12px + var(--safe-top)) 20px 12px;
   border-bottom: 1px solid var(--paper-dark);
   display: flex;
   align-items: center;
@@ -655,6 +680,7 @@ body.the-way-mode .the-way-rain {
   font-weight: 800;
   color: var(--terracotta);
   font-family: 'Manrope', sans-serif;
+  font-variant-numeric: tabular-nums;
 }
 
 .cd-u {
@@ -695,13 +721,18 @@ body.the-way-mode .the-way-rain {
 .user-badge {
   background: var(--terracotta);
   color: var(--paper);
-  padding: 5px 13px;
+  padding: 8px 16px;
+  min-height: 44px;
+  min-width: 44px;
   border-radius: 99px;
   font-family: 'Caveat', cursive;
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 700;
   cursor: pointer;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .user-menu {
@@ -905,9 +936,10 @@ body.the-way-mode .the-way-rain {
 .nav-tab {
   background: transparent;
   border: none;
-  padding: 12px 14px;
+  padding: 14px 18px;
+  min-height: 44px;
   font-family: 'Manrope', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: .03em;
   color: var(--ink-soft);
@@ -915,6 +947,8 @@ body.the-way-mode .the-way-rain {
   white-space: nowrap;
   position: relative;
   transition: all .2s;
+  display: flex;
+  align-items: center;
 }
 
 .nav-tab:hover,
@@ -1890,15 +1924,15 @@ body.the-way-mode .the-way-rain {
 /* ── Ocean Toggle & Scroll Top ──────────────────────────────── */
 .ocean-toggle {
   position: fixed;
-  bottom: 20px;
+  bottom: calc(20px + var(--safe-bottom));
   right: 20px;
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--ocean);
   border: 2px solid var(--paper);
   color: #fff;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
   z-index: 50;
   box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
@@ -1919,15 +1953,15 @@ body.the-way-mode .the-way-rain {
 
 .scroll-top {
   position: fixed;
-  bottom: 76px;
+  bottom: calc(76px + var(--safe-bottom));
   right: 20px;
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--terracotta);
   border: 2px solid var(--paper);
   color: #fff;
-  font-size: 22px;
+  font-size: 24px;
   cursor: pointer;
   z-index: 50;
   box-shadow: 0 4px 16px rgba(0, 0, 0, .2);
@@ -3347,4 +3381,37 @@ body.the-way-mode .det-book-btn:hover {
 .playlist-open-btn:hover {
   background: var(--paper-dark);
   border-color: var(--ink-soft);
+}
+
+/* ── Click Ripple Micro-interaction ────────────────────────── */
+.click-ripple {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  border: 1.5px solid var(--terracotta);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  animation: ripple-wave 1s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  box-shadow: 0 0 15px rgba(200, 85, 61, 0.2);
+}
+
+@keyframes ripple-wave {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+.night-mode .click-ripple {
+  border-color: var(--gold);
+  box-shadow: 0 0 15px rgba(201, 166, 75, 0.2);
 }

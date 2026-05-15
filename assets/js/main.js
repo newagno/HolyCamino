@@ -25,6 +25,7 @@ import {
   initScrollTop,
   initOcean,
   initPeixeLightbox,
+  initClickRipple,
   applyNightMode,
   shouldAutoNight,
 } from './utils.js';
@@ -70,6 +71,7 @@ function boot() {
   initScrollTop();
   initOcean();
   initPeixeLightbox();
+  initClickRipple();
   initBirthdayOverlay();
   initMemesModal();
   initTheWayAudio();
@@ -157,7 +159,7 @@ function togglePwVisibility() {
   pwVisible = !pwVisible;
   const inp = document.getElementById('passwordInput');
   inp.type = pwVisible ? 'text' : 'password';
-  document.getElementById('pwToggle').textContent = pwVisible ? '🙈' : '👁';
+  document.getElementById('pwToggle').innerHTML = `<svg class="icon"><use href="#icon-${pwVisible ? 'eye-off' : 'eye'}"></svg>`;
 }
 
 /**

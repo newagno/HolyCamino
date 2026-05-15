@@ -42,12 +42,12 @@ export function activateTheWayMode() {
   if (audio && toggle) {
     audio.volume = 0.4;
     audio.play().then(() => {
-      toggle.textContent = '🌩️';
+      toggle.innerHTML = '<svg class="icon"><use href="#icon-storm"></svg>';
       toggle.title = 'Вимкнути звук шторму';
       toggle.setAttribute('aria-label', 'Вимкнути звук шторму');
       toggle.classList.add('playing');
     }).catch(() => {
-      toggle.textContent = '🌩️';
+      toggle.innerHTML = '<svg class="icon"><use href="#icon-storm"></svg>';
       toggle.title = 'Увімкнути звук шторму';
       toggle.setAttribute('aria-label', 'Увімкнути звук шторму');
       toggle.classList.remove('playing');
@@ -106,7 +106,7 @@ export function initTheWayAudio() {
     if (audio.paused) {
       audio.volume = 0.4;
       audio.play().then(() => {
-        btn.textContent = '🌩️';
+        btn.innerHTML = '<svg class="icon"><use href="#icon-storm"></svg>';
         btn.title = 'Вимкнути звук шторму';
         btn.setAttribute('aria-label', 'Вимкнути звук шторму');
         btn.classList.add('playing');
@@ -114,7 +114,7 @@ export function initTheWayAudio() {
     } else {
       audio.pause();
       audio.currentTime = 0;
-      btn.textContent = '🌩️';
+      btn.innerHTML = '<svg class="icon"><use href="#icon-storm"></svg>';
       btn.title = 'Увімкнути звук шторму';
       btn.setAttribute('aria-label', 'Увімкнути звук шторму');
       btn.classList.remove('playing');

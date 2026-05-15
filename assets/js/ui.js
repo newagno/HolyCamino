@@ -38,7 +38,7 @@ export function buildPilgrimList() {
     .filter(([id]) => id !== 'guest')
     .map(([id, p]) => `
     <button class="pilgrim-btn" data-pilgrim="${id}">
-      ${p.name} <span class="arrow">→</span>
+      ${p.name} <span class="arrow"><svg class="icon"><use href="#icon-right"></svg></span>
     </button>
   `).join('');
 }
@@ -76,7 +76,7 @@ export function renderApp(id) {
     <section class="section"        id="s-playlist">${buildPlaylist()}</section>
     <section class="section"        id="s-check">${buildCheck()}</section>
 
-    <footer class="footer"><div>🐚</div><div>Buen Camino, ${displayName}!</div></footer>
+    <footer class="footer"><div><svg class="icon" style="width:24px;height:24px;"><use href="#shell-shape"></svg></div><div>Buen Camino, ${displayName}!</div></footer>
   `;
 
   // Wire up all interactive pieces
@@ -118,12 +118,14 @@ function buildHeader(p, id) {
   <header class="header">
     <div class="header-left">
       <div class="header-title">
-        <span class="shell-icon" id="shellEgg" role="button" tabindex="0" aria-label="Секретний елемент">🐚</span>
+        <span class="shell-icon" id="shellEgg" role="button" tabindex="0" aria-label="Секретний елемент">
+          <svg class="icon"><use href="#shell-shape"></svg>
+        </span>
         Твою ж Каміно!
       </div>
     </div>
     <div class="header-cd" role="timer">
-        <div class="countdown-label">До старту ✈️</div>
+        <div class="countdown-label">До старту <svg class="icon" style="font-size:10px;"><use href="#icon-plane"></svg></div>
         <div class="countdown-grid">
           <div class="countdown-cell"><span class="countdown-num" id="cd-d">—</span><span class="countdown-unit"> дн</span></div>
           <div class="countdown-cell"><span class="countdown-num" id="cd-h">—</span><span class="countdown-unit"> год</span></div>
@@ -134,7 +136,7 @@ function buildHeader(p, id) {
     <div class="header-right">
       <button class="night-toggle-header" id="nightToggleH"
         title="Нічний режим" aria-label="Перемкнути нічний режим">
-        ${document.body.classList.contains('night-mode') ? '☀️' : '🌙'}
+        <svg class="icon"><use href="#icon-${document.body.classList.contains('night-mode') ? 'sun' : 'moon'}"></svg>
       </button>
       <div class="user-badge" id="userBadge" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" data-initial="${initial}" data-name="${name}">
         <span class="user-badge-text">${initial}</span>
@@ -213,9 +215,9 @@ function buildNav() {
 
   return `
   <div class="nav-wrapper" role="tablist">
-    <button class="nav-arrow left" id="navArrowLeft" aria-label="Прокрутити вліво">←</button>
+    <button class="nav-arrow left" id="navArrowLeft" aria-label="Прокрутити вліво"><svg class="icon"><use href="#icon-left"></svg></button>
     <nav class="nav-tabs" id="navTabs">${tabs}</nav>
-    <button class="nav-arrow right" id="navArrowRight" aria-label="Прокрутити вправо">→</button>
+    <button class="nav-arrow right" id="navArrowRight" aria-label="Прокрутити вправо"><svg class="icon"><use href="#icon-right"></svg></button>
     <!-- <div class="nav-search-wrap">
       <input class="nav-search" id="routeSearch" type="search" placeholder="Пошук..." aria-label="Пошук по маршруту">
     </div> -->
@@ -314,12 +316,12 @@ function buildRoute() {
     const isHoliday = d.special === 'apostolo-mass';
 
     const tags = [
-      d.km ? `<span class="day-tag km">🚶 ${d.km} км</span>` : '',
-      d.type === 'walking-hard' ? '<span class="day-tag">⚠️ Складно</span>' : '',
-      d.type === 'walking-easy' ? '<span class="day-tag">😌 Легко</span>' : '',
-      d.type === 'walking-finish' ? '<span class="day-tag">🏆 Фініш!</span>' : '',
-      isBirthday ? '<span class="day-tag" style="background:#ffd6d0;color:var(--terracotta-dark);">🎂🎆 Apóstolo</span>' : '',
-      isHoliday ? '<span class="day-tag" style="background:#ffd6d0;color:var(--terracotta-dark);">⛪ 25 Липня</span>' : '',
+      d.km ? `<span class="day-tag km"><svg class="icon" style="font-size:10px;margin-right:3px;"><use href="#icon-walk"></svg> ${d.km} км</span>` : '',
+      d.type === 'walking-hard' ? '<span class="day-tag"><svg class="icon" style="font-size:10px;margin-right:3px;"><use href="#icon-alert"></svg> Складно</span>' : '',
+      d.type === 'walking-easy' ? '<span class="day-tag"><svg class="icon" style="font-size:10px;margin-right:3px;"><use href="#icon-happy"></svg> Легко</span>' : '',
+      d.type === 'walking-finish' ? '<span class="day-tag"><svg class="icon" style="font-size:10px;margin-right:3px;"><use href="#icon-trophy"></svg> Фініш!</span>' : '',
+      isBirthday ? '<span class="day-tag" style="background:#ffd6d0;color:var(--terracotta-dark);"><svg class="icon" style="font-size:10px;margin-right:3px;"><use href="#icon-cake"></svg> Apóstolo</span>' : '',
+      isHoliday ? '<span class="day-tag" style="background:#ffd6d0;color:var(--terracotta-dark);"><svg class="icon" style="font-size:10px;margin-right:3px;"><use href="#icon-church"></svg> 25 Липня</span>' : '',
     ].join('');
 
     const specialClass = isSpecial ? ` special ${isBirthday ? 'birthday' : isHoliday ? 'holiday' : ''}` : '';
@@ -327,12 +329,12 @@ function buildRoute() {
     // Places
     const placesHTML = d.places.length ? `
       <div class="detail-section">
-        <div class="det-title">📍 Що подивитись / де поїсти</div>
+        <div class="det-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-pin"></svg> Що подивитись / де поїсти</div>
         ${d.places.map((p) => `
           <div class="det-item">
             <a class="det-name" href="${p.m}" target="_blank" rel="noopener noreferrer">
               ${p.n}
-              ${p.secret ? '<span class="secret-tag">🤫 секрет</span>' : ''}
+              ${p.secret ? '<span class="secret-tag"><svg class="icon" style="font-size:9px;margin-right:2px;"><use href="#icon-shush"></svg> секрет</span>' : ''}
               ${p.stamp ? '<span class="stamp-mark">✦</span>' : ''}
             </a>
             <div class="det-info">${p.i}</div>
@@ -347,8 +349,8 @@ function buildRoute() {
         const isBooked = (a.c?.includes('ЗАБРОНЬОВАНО') ?? false) || bookingState[key];
         const cleanComment = (a.c ?? '').replace('(ЗАБРОНЬОВАНО)', '').replace('ЗАБРОНЬОВАНО', '').trim();
         const mapLink = a.m || `https://www.google.com/maps/search/${encodeURIComponent(a.n)}`;
-        const bookLink = a.b ? `<a class="det-book-btn" href="${a.b}" target="_blank" rel="noopener noreferrer">🎫 Book</a>` : '';
-        const bookedBadge = isBooked ? '<div class="booked-badge">✓ ЗАБРОНЬОВАНО</div>' : '';
+        const bookLink = a.b ? `<a class="det-book-btn" href="${a.b}" target="_blank" rel="noopener noreferrer"><svg class="icon" style="margin-right:3px;"><use href="#icon-ticket"></svg> Book</a>` : '';
+        const bookedBadge = isBooked ? '<div class="booked-badge"><svg class="icon" style="margin-right:3px;"><use href="#icon-check"></svg> ЗАБРОНЬОВАНО</div>' : '';
         const bookedClass = isBooked ? 'booked' : '';
         const btnBg = isBooked ? 'var(--paper-dark)' : 'var(--olive)';
         const btnColor = isBooked ? 'var(--ink)' : '#fff';
@@ -358,7 +360,7 @@ function buildRoute() {
             <div class="det-item ${bookedClass}">
               <div style="display:flex;justify-content:space-between;align-items:center;width:100%;gap:10px;">
                 <div style="flex:1;">
-                  <a class="det-name" href="${mapLink}" target="_blank" rel="noopener noreferrer">📍 ${a.n}</a>
+                  <a class="det-name" href="${mapLink}" target="_blank" rel="noopener noreferrer"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${a.n}</a>
                   <div class="det-info"><strong>${a.p}</strong>${cleanComment ? ' — ' + cleanComment : ''}</div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:5px;">
@@ -369,13 +371,13 @@ function buildRoute() {
               ${bookedBadge}
             </div>`;
       });
-      return `<div class="detail-section"><div class="det-title">🛏️ Альберге</div>${rows.join('')}</div>`;
+      return `<div class="detail-section"><div class="det-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-bed"></svg> Альберге</div>${rows.join('')}</div>`;
     })() : '';
 
     // Stamps
     const stampsHTML = d.stamps.length ? `
       <div class="detail-section">
-        <div class="det-title">📜 Де поставити штамп</div>
+        <div class="det-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-scroll"></svg> Де поставити штамп</div>
         ${d.stamps.map((s) => `
           <div class="det-item">
             <div class="det-name">${s.place}</div>
@@ -386,14 +388,14 @@ function buildRoute() {
     // Weather widget placeholder (only for days with coords)
     const weatherHTML = CITY_COORDS[d.date] ? `
       <div id="weather-${i}" class="detail-section">
-        <div class="det-title">⛅ Погода на ${d.date}</div>
-        <div class="weather-widget"><div class="weather-loading">🌐 Завантажуємо…</div></div>
+        <div class="det-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-cloud"></svg> Погода на ${d.date}</div>
+        <div class="weather-widget"><div class="weather-loading"><svg class="icon" style="margin-right:5px;animation:spin 2s linear infinite;"><use href="#icon-globe"></svg> Завантажуємо…</div></div>
       </div>` : '';
 
     // Secret tip on the last day
     const secretTip = i === lastIdx ? `
       <div class="hidden-tip" id="htip">
-        <div class="hidden-tip-title">🤫 Секрет 25.07 — як пробігти OPO</div>
+        <div class="hidden-tip-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-shush"></svg> Секрет 25.07 — як пробігти OPO</div>
         <p style="font-size:13px;line-height:1.5;">
           • Прийти за 1.5 год (не 2 — Wizz check-in швидкий)<br>
           • Wizz Air check-in T1 — центр терміналу, зліва<br>
@@ -416,8 +418,8 @@ function buildRoute() {
       <div class="day-route">${d.title}</div>
       <div class="day-meta">${tags}</div>
       <div class="day-desc">${d.desc}</div>
-      ${d.hl ? `<div class="day-hl">💡 ${d.hl}</div>` : ''}
-      <div class="expand-hint" aria-hidden="true">↓ натисни для деталей</div>
+      ${d.hl ? `<div class="day-hl"><svg class="icon" style="margin-right:5px;color:var(--gold);"><use href="#icon-sun"></svg> ${d.hl}</div>` : ''}
+      <div class="expand-hint" aria-hidden="true"><svg class="icon"><use href="#icon-down"></svg> натисни для деталей</div>
       <div class="day-details" id="dd-${i}">
         ${placesHTML}
         ${albsHTML}
@@ -509,7 +511,7 @@ function initDayCards() {
         if (isBooked) {
           detItem.classList.add('booked');
           if (!detItem.querySelector('.booked-badge')) {
-            detItem.insertAdjacentHTML('beforeend', '<div class="booked-badge">✓ ЗАБРОНЬОВАНО</div>');
+            detItem.insertAdjacentHTML('beforeend', '<div class="booked-badge"><svg class="icon" style="margin-right:3px;"><use href="#icon-check"></svg> ЗАБРОНЬОВАНО</div>');
           }
         } else {
           detItem.classList.remove('booked');
@@ -550,7 +552,7 @@ function buildPilgrims() {
     <div class="pilgrim-card" data-pid="${id}" role="button" tabindex="0" aria-label="${p.name}">
       <div class="pilgrim-avatar" aria-hidden="true">${p.initial}</div>
       <div class="pilgrim-card-name">${p.name}</div>
-      <div class="pilgrim-card-arrow" aria-hidden="true">→</div>
+      <div class="pilgrim-card-arrow" aria-hidden="true"><svg class="icon"><use href="#icon-right"></svg></div>
     </div>`).join('');
 
   return `
@@ -603,7 +605,7 @@ function openGearModal(pid) {
         <strong>${it.name}</strong>
         ${it.model ? ` <span style="font-size:11px;color:var(--ink-soft);">${it.model}</span>` : ''}
         ${it.comment ? `<span class="comment">${it.comment}</span>` : ''}
-        ${it.link ? `<div style="margin-top:4px;"><a href="${it.link}" target="_blank" rel="noopener noreferrer">🔗 Подивитися →</a></div>` : ''}
+        ${it.link ? `<div style="margin-top:4px;"><a href="${it.link}" target="_blank" rel="noopener noreferrer"><svg class="icon" style="font-size:11px;margin-right:3px;"><use href="#icon-link"></svg> Подивитися <svg class="icon" style="font-size:10px;"><use href="#icon-right"></svg></a></div>` : ''}
       </div>
     </div>`;
 
@@ -613,14 +615,14 @@ function openGearModal(pid) {
     <h2 class="modal-title">${p.name}</h2>
     <div class="modal-subtitle">загальний список речей · відмічай чекбоксами</div>
     <div class="blister-meter">
-      <div class="blister-label">🧠 Blister Meter 🧠</div>
+      <div class="blister-label"><svg class="icon" style="margin-right:5px;"><use href="#icon-brain"></svg> Blister Meter <svg class="icon" style="margin-left:5px;"><use href="#icon-brain"></svg></div>
       <input class="blister-slider" type="range" min="0" max="10"
              value="${blisterVal}" id="blister-${pid}"
              aria-label="Blister Meter">
       <div class="blister-display" id="blister-txt-${pid}">${getBlisterText(blisterVal)}</div>
     </div>
-    ${hasItems.length ? `<div class="gear-section has"><div class="gear-section-title">✅ Вже є (${hasItems.length})</div>${hasItems.map((it) => gearRow(it, true)).join('')}</div>` : ''}
-    ${needItems.length ? `<div class="gear-section need"><div class="gear-section-title">🛒 Купити (${needItems.length})</div>${needItems.map((it) => gearRow(it, false)).join('')}</div>` : ''}
+    ${hasItems.length ? `<div class="gear-section has"><div class="gear-section-title"><svg class="icon" style="margin-right:7px;color:var(--olive);"><use href="#icon-check"></svg> Вже є (${hasItems.length})</div>${hasItems.map((it) => gearRow(it, true)).join('')}</div>` : ''}
+    ${needItems.length ? `<div class="gear-section need"><div class="gear-section-title"><svg class="icon" style="margin-right:7px;color:var(--terracotta);"><use href="#icon-cart"></svg> Купити (${needItems.length})</div>${needItems.map((it) => gearRow(it, false)).join('')}</div>` : ''}
   `;
 
   // Gear item check toggle
@@ -714,7 +716,7 @@ function renderDict() {
         <div class="dict-phrase">
           <div class="dict-original">${ph.ua}</div>
           <div class="dict-translation" style="color:var(--terracotta);font-weight:600;">${target}</div>
-          ${pronun ? `<div class="dict-pronun">🔊 ${pronun}</div>` : ''}
+          ${pronun ? `<div class="dict-pronun"><svg class="icon" style="margin-right:5px;"><use href="#icon-volume"></svg> ${pronun}</div>` : ''}
           ${trNote}
         </div>`;
     }).join('');
@@ -751,15 +753,15 @@ function buildFood() {
     <h2 class="section-title">Що з'їсти</h2>
     <div class="section-subtitle">натисни — рандомна страва</div>
     <div class="food-randomizer">
-      <div class="food-rand-title">🎲 Каміно Меню</div>
-      <span class="food-spinner" id="foodSpinner" aria-hidden="true">🍽️</span>
+      <div class="food-rand-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-food"></svg> Каміно Меню</div>
+      <span class="food-spinner" id="foodSpinner" aria-hidden="true"><svg class="icon" style="width:48px;height:48px;"><use href="#icon-food"></svg></span>
       <div class="food-result" id="foodResult" aria-live="polite">натисни кнопку!</div>
       <div class="food-desc"   id="foodDesc">щоб дізнатися що замовити...</div>
       <div class="food-city"   id="foodCity"></div>
       <button class="food-btn" id="foodBtn">🎲 Що з'їсти?</button>
     </div>
     <div style="background:var(--paper);padding:14px;border-radius:4px;border:1px solid var(--paper-dark);">
-      <div style="font-family:'Caveat',cursive;font-size:20px;color:var(--terracotta);margin-bottom:8px;">📜 Menu del Peregrino</div>
+      <div style="font-family:'Caveat',cursive;font-size:20px;color:var(--terracotta);margin-bottom:8px;"><svg class="icon" style="margin-right:5px;"><use href="#icon-scroll"></svg> Menu del Peregrino</div>
       <p style="font-size:13px;color:var(--ink-soft);line-height:1.5;">
         <strong>€10-15/паломника</strong> — 3 страви (закуска / основна / десерт) + хліб + вино або сік.
         Обід 13:00-16:00, вечеря 18:30-19:00.
@@ -824,7 +826,7 @@ function getExerciseSVG(type) {
       <path d="M20 65H35L30 45L45 40L55 25" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       <circle cx="58" cy="18" r="5" stroke="var(--ink)" stroke-width="2.5"/>
       <path d="M35 65L45 55L60 55" stroke="var(--olive)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
-      <text x="50" y="55" font-size="18">💪</text>
+      <path d="M45 45c2 0 4 2 4 4s-2 4-4 4M55 45c-2 0-4 2-4 4s2 4 4 4" stroke="var(--ink)" stroke-width="1.5" opacity="0.3"/>
     </svg>`,
     stretch: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M30 65V40L60 25M30 40L15 25" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
@@ -858,7 +860,7 @@ function getExerciseSVG(type) {
       <rect x="15" y="45" width="50" height="15" rx="2" stroke="var(--ink)" stroke-width="2" fill="var(--sand)" opacity="0.3"/>
       <path d="M20 45V30M60 45V35" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
       <path d="M35 25L45 25M30 15L50 15" stroke="var(--terracotta)" stroke-width="2" opacity="0.6"/>
-      <text x="55" y="25" font-size="20">💤</text>
+      <path d="M52 20l4 4m0-4l-4 4M58 14l4 4m0-4l-4 4" stroke="var(--ink)" stroke-width="1.5" opacity="0.4"/>
     </svg>`,
     mind: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M40 20C25 20 20 35 20 45C20 55 30 65 40 65C50 65 60 55 60 45C60 35 55 20 40 20Z" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
@@ -920,7 +922,9 @@ function initExerciseTabs() {
 function buildApps() {
   const cards = APPS.map((a) => `
     <div class="app-card">
-      <div class="app-icon" aria-hidden="true">${a.i}</div>
+      <div class="app-icon" aria-hidden="true">
+        <svg class="icon" style="width:32px;height:32px;"><use href="#icon-${a.i === 'shell' ? 'shell-shape' : a.i}"></svg>
+      </div>
       <div class="app-info">
         <div class="app-name">${a.n}</div>
         <div class="app-desc">${a.d}</div>
@@ -1031,7 +1035,7 @@ function buildHistory() {
     <div class="section-subtitle">Шлях паломника крізь віки</div>
 
     <div class="hist-card">
-      <div class="hist-icon">🌟</div>
+      <div class="hist-icon"><svg class="icon"><use href="#icon-star"></svg></div>
       <div class="hist-body">
         <div class="hist-title">Як усе почалося — IX ст.</div>
         <p>У 814 році пастух <strong>Пелайо</strong> побачив дивне сяйво над полем у Галіції. Виявилося — це мощі <strong>апостола Якова (Сантьяго)</strong>, одного з учнів Ісуса. За легендою, після страти в Єрусалимі його тіло привезли в Іспанію на кам'яному човні, керованому ангелами.</p>
@@ -1040,12 +1044,12 @@ function buildHistory() {
     </div>
 
     <div class="hist-card">
-      <div class="hist-icon">🇵🇹</div>
+      <div class="hist-icon"><svg class="icon"><use href="#icon-flag-pt"></svg></div>
       <div class="hist-body">
         <div class="hist-title">Чому саме Португальський?</div>
         <p>Португальський шлях (Camino Português) набув популярності з XII ст. після незалежності Португалії. Королі, королеви і звичайні люди йшли ним століттями.</p>
         <p>Найвідоміша — <strong>королева Ізабелла (Свята Єлизавета Португальська)</strong>, яка пройшла шлях, зняла корону біля вівтаря і подарувала її. Це був жест смирення, якого не забули досі.</p>
-        <p>🏔️ <strong>Центральний</strong> — через поля, виноградники, старовинні села.<br>🌊 <strong>Прибережний (da Costa)</strong> — з видом на Атлантику, вітер у лице, свіжа риба. <em>Ваш маршрут.</em></p>
+        <p><svg class="icon" style="font-size:14px;margin-right:3px;"><use href="#icon-mountain"></svg> <strong>Центральний</strong> — через поля, виноградники, старовинні села.<br><svg class="icon" style="font-size:14px;margin-right:3px;"><use href="#icon-wave"></svg> <strong>Прибережний (da Costa)</strong> — з видом на Атлантику, вітер у лице, свіжа риба. <em>Ваш маршрут.</em></p>
       </div>
     </div>
 
@@ -1069,15 +1073,15 @@ function buildHistory() {
     <div class="section-subtitle">Цікаві факти</div>
     <div class="hist-fact-grid">
       ${[
-      { icon: '🐚', text: '<strong>Мушля — головний символ.</strong> Її носили на рюкзаку, щоб показати: «Я — пілігрим». За легендою, мушлі приносило хвилями саме до Сантьяго. Тепер вона на твоєму рюкзаку.' },
-      { icon: '🏹', text: '<strong>Жовті стрілки</strong> малювали волонтери задовго до Google Maps і GPS. Зараз вони мільйони по всіх маршрутах. Хтось малює ночами до цих пір.' },
-      { icon: '🇺🇦', text: '<strong>Українці теж ходять!</strong> У 2015-му в Україні почали маркувати свій відрізок Шляху (Львів — Шегині). Камінó тепер справді до дому.' },
-      { icon: '🏛️', text: '<strong>Римські дороги</strong> лягли в основу багатьох ділянок маршруту в Північній Португалії (Via XIX). Ти буквально йдеш слідами римських легіонів.' },
-      { icon: '😄', text: '<strong>Факт для мемів:</strong> першим офіційним пілігримом вважають короля Альфонсо II (814 р). Тобто навіть королі терпіли мозолі й альберге без WiFi.' },
-      { icon: '🧭', text: '<strong>Сьогодні Camino — це не тільки релігія.</strong> Хтось іде за духовністю, хтось — «перезавантажити» голову, хтось просто хоче пригоди. Buen Camino не про дистанцію, а про те, ким ти станеш на фініші.' },
+      { icon: 'shell-shape', text: '<strong>Мушля — головний символ.</strong> Її носили на рюкзаку, щоб показати: «Я — пілігрим». За легендою, мушлі приносило хвилями саме до Сантьяго. Тепер вона на твоєму рюкзаку.' },
+      { icon: 'icon-scroll', text: '<strong>Жовті стрілки</strong> малювали волонтери задовго до Google Maps і GPS. Зараз вони мільйони по всіх маршрутах. Хтось малює ночами до цих пір.' },
+      { icon: 'icon-flag-ua', text: '<strong>Українці теж ходять!</strong> У 2015-му в Україні почали маркувати свій відрізок Шляху (Львів — Шегині). Камінó тепер справді до дому.' },
+      { icon: 'icon-roman', text: '<strong>Римські дороги</strong> лягли в основу багатьох ділянок маршруту в Північній Португалії (Via XIX). Ти буквально йдеш слідами римських легіонів.' },
+      { icon: 'icon-happy', text: '<strong>Факт для мемів:</strong> першим офіційним пілігримом вважають короля Альфонсо II (814 р). Тобто навіть королі терпіли мозолі й альберге без WiFi.' },
+      { icon: 'icon-compass', text: '<strong>Сьогодні Camino — це не тільки релігія.</strong> Хтось іде за духовністю, хтось — «перезавантажити» голову, хтось просто хоче пригоди. Buen Camino не про дистанцію, а про те, ким ти станеш на фініші.' },
     ].map((f) => `
         <div class="hist-fact">
-          <div class="hist-fact-icon">${f.icon}</div>
+          <div class="hist-fact-icon"><svg class="icon"><use href="#${f.icon}"></svg></div>
           <div class="hist-fact-text">${f.text}</div>
         </div>`).join('')}
     </div>`;
@@ -1093,7 +1097,7 @@ function buildSafety() {
     <div class="section-subtitle">правила і корисне</div>
 
     <div class="safety-emergency">
-      <div class="safety-emergency-title">🆘 Екстрені номери</div>
+      <div class="safety-emergency-title"><svg class="icon" style="margin-right:5px;color:var(--terracotta);"><use href="#icon-sos"></svg> Екстрені номери</div>
       <div class="safety-num">
         <div class="safety-num-item"><span class="safety-num-val">112</span><div class="safety-num-desc">Єдиний ЄС (без SIM!)</div></div>
         <div class="safety-num-item"><span class="safety-num-val">113</span><div class="safety-num-desc">INEM Португалія</div></div>
@@ -1103,19 +1107,19 @@ function buildSafety() {
     </div>
 
     <div class="safety-card warning">
-      <div class="safety-title">🌊 Безпека на пляжі</div>
+      <div class="safety-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-wave"></svg> Безпека на пляжі</div>
       <div class="safety-body">
         <p>Атлантика небезпечна — не плутай з Середземним морем!</p>
         <ul>
-          <li><strong>🟢 Зелений прапор</strong> — можна купатися</li>
-          <li><strong>🟡 Жовтий прапор</strong> — тільки по коліна, хвилі</li>
-          <li><strong>🔴 Червоний прапор</strong> — суворо заборонено</li>
+          <li><strong><span style="color:#2ecc71;">⬤</span> Зелений прапор</strong> — можна купатися</li>
+          <li><strong><span style="color:#f1c40f;">⬤</span> Жовтий прапор</strong> — тільки по коліна, хвилі</li>
+          <li><strong><span style="color:#e74c3c;">⬤</span> Червоний прапор</strong> — суворо заборонено</li>
           <li><strong>Rip current (відбійна течія):</strong> не пливи проти — пливи ПАРАЛЕЛЬНО берегу, потім по діагоналі назад</li>
           <li>Температура води: 17-18°C — холодна. Судоми можливі</li>
           <li>Остерігайся <strong>peixe-aranha</strong> (lesser weever) — отруйна риба в піску
             <div class="peixe-thumb" onclick="window.openPeixeLb && window.openPeixeLb()" role="button" tabindex="0" aria-label="Показати фото peixe-aranha">
               <img src="assets/files/peixe.jpg" alt="Peixe-aranha" loading="lazy">
-              <div class="peixe-hint">🔍 Натисни — побачиш більше</div>
+              <div class="peixe-hint"><svg class="icon" style="font-size:12px;margin-right:3px;"><use href="#icon-eye"></svg> Натисни — побачиш більше</div>
             </div>
           </li>
         </ul>
@@ -1123,7 +1127,7 @@ function buildSafety() {
     </div>
 
     <div class="safety-card tip">
-      <div class="safety-title">🦶 Профілактика пухирів</div>
+      <div class="safety-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-foot"></svg> Профілактика пухирів</div>
       <div class="safety-body">
         <ul>
           <li><strong>Compeed + Leukotape P</strong> на проблемні місця до старту — профілактично</li>
@@ -1137,7 +1141,7 @@ function buildSafety() {
     </div>
 
     <div class="safety-card info">
-      <div class="safety-title">☀️ Спека і сонце</div>
+      <div class="safety-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-sun"></svg> Спека і сонце</div>
       <div class="safety-body">
         <ul>
           <li><strong>UV індекс 8+ (дуже високий)</strong> — SPF 50+ обов'язково. Ре-аплікація кожні 2 год</li>
@@ -1150,7 +1154,7 @@ function buildSafety() {
     </div>
 
     <div class="safety-card tip">
-      <div class="safety-title">🎒 Безпека речей</div>
+      <div class="safety-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-backpack"></svg> Безпека речей</div>
       <div class="safety-body">
         <ul>
           <li>Документи і готівка — у <strong>money belt</strong> на тілі або в потайній кишені рюкзака</li>
@@ -1163,7 +1167,7 @@ function buildSafety() {
     </div>
 
     <div class="safety-card info">
-      <div class="safety-title">🩹 Мінімальна аптечка</div>
+      <div class="safety-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-bandage"></svg> Мінімальна аптечка</div>
       <div class="safety-body">
         <ul>
           <li>Compeed Mixed Pack × 2-3 упаковки</li>
@@ -1180,7 +1184,7 @@ function buildSafety() {
     </div>
 
     <div class="safety-card warning">
-      <div class="safety-title">🐕 Собаки і тварини</div>
+      <div class="safety-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-dog"></svg> Собаки і тварини</div>
       <div class="safety-body">
         <ul>
           <li>На сільських ділянках маршруту можуть зустрічатися фермерські собаки</li>
@@ -1192,7 +1196,7 @@ function buildSafety() {
     </div>
 
     <div class="safety-card tip">
-      <div class="safety-title">📱 Зв'язок і навігація</div>
+      <div class="safety-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-phone"></use></svg> Зв'язок і навігація</div>
       <div class="safety-body">
         <ul>
           <li><strong>What3Words</strong> — найточніша локація для екстрених служб</li>
@@ -1214,10 +1218,10 @@ function buildPlaylist() {
     <h2 class="section-title">Плейлист</h2>
     <div class="section-subtitle">музика Камінó</div>
 
-    <div class="section-subtitle" style="margin-top:8px;">Слухати зараз 🎧</div>
+    <div class="section-subtitle" style="margin-top:8px;">Слухати зараз <svg class="icon" style="font-size:14px;"><use href="#icon-headset"></svg></div>
     <iframe
       style="border-radius:12px;margin-bottom:20px;"
-      src="https://open.spotify.com/embed/playlist/6KaNjx2EGlYG3YrmNHV25X?utm_source=generator"
+      src="https://open.spotify.com/embed/playlist/6KaNjx2EGlYG3YrmNHV25X?utm_source=generator&theme=0"
       width="100%" height="352" frameborder="0"
       allowfullscreen
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -1226,7 +1230,7 @@ function buildPlaylist() {
     </iframe>
 
     <div style="background:var(--paper);border-radius:4px;padding:16px;margin-top:16px;border:1px solid var(--paper-dark);text-align:center;">
-      <p style="font-family:'Caveat',cursive;font-size:20px;color:var(--terracotta);margin-bottom:6px;">🎧 Порада</p>
+      <p style="font-family:'Caveat',cursive;font-size:20px;color:var(--terracotta);margin-bottom:6px;"><svg class="icon" style="margin-right:5px;"><use href="#icon-headset"></svg> Порада</p>
       <p style="font-size:13px;color:var(--ink-soft);line-height:1.6;">
         Закачай плейлист офлайн у Spotify Premium перед вильотом. Сигнал часто зникає
         на прибережних ділянках. І обов'язково: Madredeus на заході сонця в Caminha — це окремий досвід.
@@ -1256,9 +1260,9 @@ function initWisdomModal() {
   const order = 'випити воду до першої кави';
 
   body.innerHTML = `
-    <div class="wisdom-title">💡 Мудрість дня</div>
+    <div class="wisdom-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-lightbulb"></svg> Мудрість дня</div>
     <div class="wisdom-text">${wisdom}</div>
-    <div class="wisdom-order-title">📜 Наказ дня</div>
+    <div class="wisdom-order-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-scroll"></svg> Наказ дня</div>
     <div class="wisdom-order-text">${order}</div>
     <button class="tool-btn" id="wisdomUnderstandBtn" style="margin-top:20px;width:100%;">Зрозумів!</button>
   `;

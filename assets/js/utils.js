@@ -147,7 +147,7 @@ export function buildStageProgress() {
     <div class="stage-progress-label">🐾 Твій Camiño зараз</div>
     <div class="stage-track">
       <div class="stage-fill" style="width:${pct}%"></div>
-      <span class="stage-shell" style="left:${pct}%">🐚</span>
+      <span class="stage-shell" style="left:${pct}%"><svg class="icon" style="width:18px;height:18px;"><use href="#shell-shape"></svg></span>
     </div>
     <div class="stage-city">${city}</div>
   </div>`;
@@ -289,7 +289,9 @@ export function initScrollTop() {
 export function applyNightMode(on) {
   document.body.classList.toggle('night-mode', on);
   const btn = document.getElementById('nightToggleH');
-  if (btn) btn.textContent = on ? '☀️' : '🌙';
+  if (btn) {
+    btn.innerHTML = `<svg class="icon"><use href="#icon-${on ? 'sun' : 'moon'}"></svg>`;
+  }
 }
 
 /**
@@ -410,4 +412,33 @@ export function initPeixeLightbox() {
 
   close.addEventListener('click', closeIt);
   lb.addEventListener('click', closeIt);
+}
+
+// ─────────────────────────────────────────────
+// CLICK RIPPLE EFFECT
+// ─────────────────────────────────────────────
+
+/**
+ * Initialise a global ripple effect on click/tap.
+ * Adds a temporary .click-ripple element to the DOM at the pointer location.
+ */
+export function initClickRipple() {
+  document.addEventListener('pointerdown', (e) => {
+    // Create 3 concentric rings for a "wave" effect
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        const ripple = document.createElement('div');
+        ripple.className = 'click-ripple';
+        
+        ripple.style.left = `${e.clientX}px`;
+        ripple.style.top = `${e.clientY}px`;
+        
+        document.body.appendChild(ripple);
+        
+        ripple.addEventListener('animationend', () => {
+          ripple.remove();
+        });
+      }, i * 150);
+    }
+  }, { passive: true });
 }
