@@ -10,7 +10,7 @@
 
 import {
   PILGRIMS, ROUTE, DICTIONARY, FOODS, EXERCISES,
-  APPS, CHECKLIST, CITY_COORDS, BLISTER_TEXTS,
+  APPS, CHECKLIST, CITY_COORDS, BLISTER_TEXTS, GLOBAL_GEAR,
 } from './config.js';
 
 import {
@@ -113,6 +113,7 @@ export function renderApp(id) {
 
 function buildHeader(p, id) {
   const initial = id === 'guest' ? 'В' : p.initial;
+  const name = id === 'guest' ? 'Вуаєрист' : p.name;
   return `
   <header class="header">
     <div class="header-left">
@@ -135,8 +136,8 @@ function buildHeader(p, id) {
         title="Нічний режим" aria-label="Перемкнути нічний режим">
         ${document.body.classList.contains('night-mode') ? '☀️' : '🌙'}
       </button>
-      <div class="user-badge" id="userBadge" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
-        ${initial}
+      <div class="user-badge" id="userBadge" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" data-initial="${initial}" data-name="${name}">
+        <span class="user-badge-text">${initial}</span>
         <div class="user-menu" id="userMenu" role="menu">
           <button id="logoutBtn" role="menuitem">Вийти з акаунту</button>
         </div>
@@ -154,6 +155,20 @@ function initUserMenu() {
   const toggle = () => {
     const open = menu.classList.toggle('show');
     badge.setAttribute('aria-expanded', String(open));
+    const textSpan = badge.querySelector('.user-badge-text');
+    if (textSpan) {
+      if (open) {
+        textSpan.textContent = badge.getAttribute('data-name');
+        badge.style.width = 'auto';
+        badge.style.padding = '0 12px';
+        badge.style.borderRadius = '16px';
+      } else {
+        textSpan.textContent = badge.getAttribute('data-initial');
+        badge.style.width = '';
+        badge.style.padding = '';
+        badge.style.borderRadius = '';
+      }
+    }
   };
 
   badge.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
@@ -338,7 +353,7 @@ function buildRoute() {
         const btnBg = isBooked ? 'var(--paper-dark)' : 'var(--olive)';
         const btnColor = isBooked ? 'var(--ink)' : '#fff';
         const btnBorder = isBooked ? 'var(--paper-dark)' : 'var(--olive)';
-        const btnLabel = isBooked ? 'Відмінити' : 'Забронював!';
+        const btnLabel = isBooked ? 'Відмінити' : 'Забронювати';
         return `
             <div class="det-item ${bookedClass}">
               <div style="display:flex;justify-content:space-between;align-items:center;width:100%;gap:10px;">
@@ -483,12 +498,12 @@ function initDayCards() {
       const key = btn.getAttribute('data-key');
       if (!key) return;
       const isBooked = toggleBookingItem(key);
-      
+
       btn.style.background = isBooked ? 'var(--paper-dark)' : 'var(--olive)';
       btn.style.color = isBooked ? 'var(--ink)' : '#fff';
       btn.style.borderColor = isBooked ? 'var(--paper-dark)' : 'var(--olive)';
-      btn.textContent = isBooked ? 'Відмінити' : 'Забронював!';
-      
+      btn.textContent = isBooked ? 'Відмінити' : 'Забронювати';
+
       const detItem = btn.closest('.det-item');
       if (detItem) {
         if (isBooked) {
@@ -502,7 +517,7 @@ function initDayCards() {
           if (badge) badge.remove();
         }
       }
-      
+
       const bookingSec = document.getElementById('s-booking');
       if (bookingSec) bookingSec.innerHTML = buildBooking();
     });
@@ -574,24 +589,14 @@ function openGearModal(pid) {
   const p = PILGRIMS[pid];
   const state = getGearState(pid);
 
-  // Build unified item list: has = checked by default, need = unchecked
-  const allItems = [
-    ...p.has.map((item, i) => ({ ...item, key: `has-${i}`, defaultHas: true })),
-    ...p.need.map((item, i) => ({ ...item, key: `need-${i}`, defaultHas: false })),
-  ];
-
-  const isChecked = (item) => {
-    if (item.key in state) return state[item.key];
-    return item.defaultHas;
-  };
-
-  const hasItems = allItems.filter((it) => isChecked(it));
-  const needItems = allItems.filter((it) => !isChecked(it));
+  // Use GLOBAL_GEAR, mark checked if state has it true
+  const hasItems = GLOBAL_GEAR.filter(it => state[it.name]);
+  const needItems = GLOBAL_GEAR.filter(it => !state[it.name]);
 
   const gearRow = (it, checked) => `
     <div class="gear-item" style="border-left-color:${checked ? 'var(--olive)' : 'var(--terracotta)'}">
       <div class="gear-item-check${checked ? ' checked' : ''}"
-           data-pid="${pid}" data-key="${it.key}"
+           data-pid="${pid}" data-key="${it.name}"
            role="checkbox" aria-checked="${checked}" tabindex="0"
            aria-label="Відмітити: ${it.name}"></div>
       <div class="gear-item-body">
@@ -606,7 +611,7 @@ function openGearModal(pid) {
 
   document.getElementById('pilgrimModalContent').innerHTML = `
     <h2 class="modal-title">${p.name}</h2>
-    <div class="modal-subtitle">список спорядження · відмічай чекбоксами</div>
+    <div class="modal-subtitle">загальний список речей · відмічай чекбоксами</div>
     <div class="blister-meter">
       <div class="blister-label">🧠 Blister Meter 🧠</div>
       <input class="blister-slider" type="range" min="0" max="10"

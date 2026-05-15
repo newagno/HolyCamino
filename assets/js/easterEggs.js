@@ -28,20 +28,55 @@ export function isTheWayActive() { return theWayActive; }
 export function activateTheWayMode() {
   theWayActive = true;
   document.body.classList.add('the-way-mode');
-  
+
   // Show The Way toggle and hide ocean toggle
   const toggle = document.getElementById('theWayToggle');
   const oceanToggle = document.getElementById('oceanToggle');
-  
+  const audio = /** @type {HTMLAudioElement} */ (document.getElementById('theWayAudio'));
+
   if (toggle) {
     toggle.style.display = 'flex';
-    toggle.textContent = '⚡';
-    toggle.title = 'Увімкнути звук шторму';
-    toggle.setAttribute('aria-label', 'Увімкнути звук шторму');
-    toggle.classList.remove('playing');
   }
   if (oceanToggle) oceanToggle.style.display = 'none';
-  // Audio starts paused — user clicks toggle to play
+
+  if (audio && toggle) {
+    audio.volume = 0.4;
+    audio.play().then(() => {
+      toggle.textContent = '🌩️';
+      toggle.title = 'Вимкнути звук шторму';
+      toggle.setAttribute('aria-label', 'Вимкнути звук шторму');
+      toggle.classList.add('playing');
+    }).catch(() => {
+      toggle.textContent = '🌩️';
+      toggle.title = 'Увімкнути звук шторму';
+      toggle.setAttribute('aria-label', 'Увімкнути звук шторму');
+      toggle.classList.remove('playing');
+    });
+  }
+
+  startLightningLoop();
+}
+
+/**
+ * Periodically triggers a lightning flash effect.
+ */
+function startLightningLoop() {
+  if (!theWayActive) return;
+
+  // Random interval between 4 and 12 seconds
+  const nextFlash = 4000 + Math.random() * 8000;
+
+  setTimeout(() => {
+    if (!theWayActive) return;
+
+    document.body.classList.add('lightning-strike');
+
+    // Remove class after animation ends (0.4s)
+    setTimeout(() => {
+      document.body.classList.remove('lightning-strike');
+      startLightningLoop();
+    }, 500);
+  }, nextFlash);
 }
 
 export function initTheWayAudio() {
@@ -49,25 +84,19 @@ export function initTheWayAudio() {
   const audio = /** @type {HTMLAudioElement} */ (document.getElementById('theWayAudio'));
   if (!btn || !audio) return;
 
-  let playing = false;
-
   btn.addEventListener('click', () => {
-    if (!playing) {
+    if (audio.paused) {
       audio.volume = 0.4;
       audio.play().then(() => {
-        playing = true;
-        btn.textContent = '⚡';
+        btn.textContent = '🌩️';
         btn.title = 'Вимкнути звук шторму';
         btn.setAttribute('aria-label', 'Вимкнути звук шторму');
         btn.classList.add('playing');
-      }).catch(() => {
-        playing = false;
-      });
+      }).catch(() => { });
     } else {
       audio.pause();
       audio.currentTime = 0;
-      playing = false;
-      btn.textContent = '🔇';
+      btn.textContent = '🌩️';
       btn.title = 'Увімкнути звук шторму';
       btn.setAttribute('aria-label', 'Увімкнути звук шторму');
       btn.classList.remove('playing');
@@ -143,13 +172,13 @@ export function initLogoLongPress() {
   };
   const cancel = () => clearTimeout(pressTimer);
 
-  logo.addEventListener('touchstart',  start,  { passive: true });
-  logo.addEventListener('touchend',    cancel, { passive: true });
-  logo.addEventListener('touchmove',   cancel, { passive: true });
+  logo.addEventListener('touchstart', start, { passive: true });
+  logo.addEventListener('touchend', cancel, { passive: true });
+  logo.addEventListener('touchmove', cancel, { passive: true });
   logo.addEventListener('touchcancel', cancel, { passive: true });
-  logo.addEventListener('mousedown',   start);
-  logo.addEventListener('mouseup',     cancel);
-  logo.addEventListener('mouseleave',  cancel);
+  logo.addEventListener('mousedown', start);
+  logo.addEventListener('mouseup', cancel);
+  logo.addEventListener('mouseleave', cancel);
   logo.addEventListener('contextmenu', (e) => e.preventDefault());
 }
 
@@ -165,7 +194,7 @@ export function initShellEgg() {
   const shell = document.getElementById('shellEgg');
   if (!shell) return;
 
-  let count   = 0;
+  let count = 0;
   let resetTimer;
 
   shell.addEventListener('click', () => {
@@ -209,8 +238,8 @@ export function closeMemesModal() {
 
 /** Bind close button and backdrop click for memes modal. */
 export function initMemesModal() {
-  const modal     = document.getElementById('memesModal');
-  const closeBtn  = document.getElementById('memesModalClose');
+  const modal = document.getElementById('memesModal');
+  const closeBtn = document.getElementById('memesModalClose');
   if (!modal || !closeBtn) return;
 
   closeBtn.addEventListener('click', closeMemesModal);
@@ -226,7 +255,7 @@ export function initMemesModal() {
 /** Show birthday overlay with confetti. */
 export function showBirthday() {
   const overlay = document.getElementById('birthdayOverlay');
-  const canvas  = /** @type {HTMLCanvasElement} */ (document.getElementById('confettiCanvas'));
+  const canvas = /** @type {HTMLCanvasElement} */ (document.getElementById('confettiCanvas'));
   if (!overlay || !canvas) return;
 
   overlay.classList.add('show');
@@ -256,8 +285,8 @@ export function maybeShowBirthday(pilgrimId) {
   if (pilgrimId !== 'oleksa') return;
   const today = new Date();
   const isBirthday = today.getFullYear() === 2026
-    && today.getMonth()  === 6  // July = 6 (0-indexed)
-    && today.getDate()   === 24;
+    && today.getMonth() === 6  // July = 6 (0-indexed)
+    && today.getDate() === 24;
   if (isBirthday) {
     setTimeout(showBirthday, 1_200);
   }
