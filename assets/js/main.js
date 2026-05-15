@@ -62,6 +62,7 @@ let pwVisible = false;
  * restores a saved session or shows the login screen.
  */
 function boot() {
+  console.log('Booting app...');
   // Apply night-mode before anything renders
   if (shouldAutoNight()) applyNightMode(true);
 
@@ -89,24 +90,19 @@ function boot() {
 
 /** Wire up all interactive elements on the login screen. */
 function initLoginScreen() {
-  const list = document.getElementById('pilgrimList');
-  if (list) list.innerHTML = buildPilgrimList();
-
-  // Pilgrim selection buttons
-  document.querySelectorAll('.pilgrim-btn').forEach(btn => {
-    btn.addEventListener('click', () => handlePilgrimSelect(btn.dataset.pilgrim));
-  });
+  // NOTE: pilgrim buttons (including Guest) are hardcoded in index.html.
+  // Do NOT replace innerHTML — that would destroy the static Guest button.
+  // Use event delegation on the container instead.
+  const stepChoose = document.getElementById('step-choose');
+  if (stepChoose) {
+    stepChoose.addEventListener('click', (e) => {
+      const btn = e.target.closest('.pilgrim-btn');
+      if (btn) handlePilgrimSelect(btn.dataset.pilgrim);
+    });
+  }
 
   document.getElementById('backBtn').addEventListener('click', showPilgrimList);
   document.getElementById('submitBtn').addEventListener('click', checkPassword);
-  document.getElementById('guestLoginBtn')?.addEventListener('click', () => {
-    selectedPilgrim = 'mykola';
-    enterApp(selectedPilgrim);
-  });
-  document.getElementById('resetPilgrimBtn')?.addEventListener('click', () => {
-    clearSavedPilgrim();
-    showPilgrimList();
-  });
 
   document.getElementById('passwordInput').addEventListener('keypress', e => {
     if (e.key === 'Enter') checkPassword();
@@ -120,6 +116,18 @@ function initLoginScreen() {
  * @param {string} pilgrimId
  */
 function handlePilgrimSelect(pilgrimId) {
+  console.log('Pilgrim selected:', pilgrimId);
+  if (!pilgrimId || !PILGRIMS[pilgrimId]) {
+    console.warn('Invalid pilgrim ID:', pilgrimId);
+    return;
+  }
+
+  if (pilgrimId === 'guest') {
+    selectedPilgrim = 'guest';
+    enterApp(selectedPilgrim);
+    return;
+  }
+
   selectedPilgrim = pilgrimId;
   pwAttempts = 0;
 
@@ -246,7 +254,11 @@ document.addEventListener('click', e => {
 // ─────────────────────────────────────────────────────────────
 // Boot
 // ─────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', boot);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
 
 function initOfflineCache() {
   if (!('serviceWorker' in navigator)) return;

@@ -49,8 +49,9 @@ body {
   font-family: 'Manrope', sans-serif;
   background: var(--cream);
   color: var(--ink);
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
+  max-width: 100vw;
   background-image:
     radial-gradient(at 20% 30%, rgba(212, 165, 116, .15) 0, transparent 50%),
     radial-gradient(at 80% 70%, rgba(107, 125, 58, .12) 0, transparent 50%);
@@ -593,7 +594,7 @@ h1, h2, h3 {
 }
 
 /* ── Hero ───────────────────────────────────────────────────── */
-.hero { padding: 32px 20px 20px; text-align: center; }
+.hero { padding: 24px 16px 16px; text-align: center; }
 
 .hero-greeting {
   font-family: 'Caveat', cursive;
@@ -606,7 +607,7 @@ h1, h2, h3 {
 
 .hero-title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(42px, 11vw, 62px);
+  font-size: clamp(36px, 10vw, 62px);
   font-weight: 700;
   line-height: .95;
   letter-spacing: -.03em;
@@ -1444,6 +1445,17 @@ body.francesinha-mode .accent { color: #ff4500; }
 
 body.the-way-mode .the-way-link { display: block; }
 
+/* The Way toggle button (same base as ocean-toggle, but dark theme) */
+#theWayToggle {
+  /* base styles copied from .ocean-toggle, overridden for film-noir */
+  z-index: 9999;
+}
+#theWayToggle.playing {
+  background: #333 !important;
+  border-color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+}
+
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (min-width: 768px) {
   .section,
@@ -1452,6 +1464,53 @@ body.the-way-mode .the-way-link { display: block; }
   .app-card { max-width: 700px; margin-left: auto; margin-right: auto; }
 
   .section { padding-left: 0; padding-right: 0; }
+}
+
+@media (max-width: 600px) {
+  /* Header: compact single-row layout */
+  .header { padding: 8px 10px; gap: 4px; }
+  .header-left { flex: 0 0 auto; }
+  .header-title { font-size: 13px; white-space: nowrap; }
+  .header-title .shell-icon { margin-right: 3px; }
+  .header-cd { gap: 4px; flex: 1 1 auto; justify-content: center; }
+  .countdown-grid { gap: 4px; }
+  .countdown-label { display: none; }
+  .countdown-num { font-size: 15px; }
+  .countdown-unit { font-size: 9px; }
+  .header-right { flex: 0 0 auto; gap: 6px; }
+  .user-badge { font-size: 13px; padding: 4px 8px; }
+  .night-toggle-header { font-size: 17px; }
+
+  /* Nav: smaller tabs */
+  .nav-tab { padding: 10px 10px; font-size: 11px; }
+
+  /* Hero: tighten */
+  .hero { padding: 18px 14px 12px; }
+  .hero-greeting { font-size: 22px; }
+  .hero-title { font-size: clamp(32px, 9vw, 48px); }
+  .hero-subtitle { font-size: 13px; }
+
+  /* Sections: full width padding */
+  .section { padding: 14px 14px 0; }
+  .section-title { font-size: 26px; }
+
+  /* Day cards: full width */
+  .day-card { padding: 14px; margin-bottom: 10px; }
+  .day-date { font-size: 22px; }
+
+  /* Login card: more comfortable */
+  .login-card { padding: 28px 18px; }
+  .login-title { font-size: 32px; }
+
+  /* Exercise comic figure: smaller on mobile */
+  .ex-comic-fig { width: 60px; height: 60px; }
+  .ex-comic-txt { font-size: 15px; }
+
+  /* Fix shell background on mobile — clip to avoid horizontal scroll */
+  .shell-bg { overflow: hidden; max-width: 100vw; }
+  .shell-1 { width: 220px; right: -30px; }
+  .shell-2 { width: 280px; left: -60px; }
+  .shell-3 { width: 120px; }
 }
 
 /* ============================================================

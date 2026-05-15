@@ -2,7 +2,10 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Твою ж Каміно! 🐚</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐚</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,10 +66,7 @@
           <button class="pilgrim-btn" data-pilgrim="oleksa">Олекса <span class="arrow">→</span></button>
           <button class="pilgrim-btn" data-pilgrim="hanna">Ганна <span class="arrow">→</span></button>
           <button class="pilgrim-btn" data-pilgrim="yevhen">Євген <span class="arrow">→</span></button>
-        </div>
-        <div class="login-extra-actions">
-          <button class="btn btn-secondary guest-login" id="guestLoginBtn" type="button">Гість без пароля</button>
-          <button class="btn btn-secondary" id="resetPilgrimBtn" type="button">Скинути вибір</button>
+          <button class="pilgrim-btn" data-pilgrim="guest" id="guestLoginBtn" type="button">Гість <span class="arrow">→</span></button>
         </div>
       </div>
 
@@ -137,8 +137,8 @@
   <audio id="oceanAudio" loop src="assets/files/sound_ocean.mp3" preload="none"></audio>
 
   <!-- ========== THE WAY AUDIO ========== -->
-  <button class="ocean-toggle" id="theWayToggle" title="Звуки шторму" aria-label="Увімкнути звуки шторму" style="display:none;background:#000;border:2px solid #fff;">⚡</button>
-  <audio id="theWayAudio" loop src="assets/files/sound_storme.mp3" preload="none"></audio>
+  <button class="ocean-toggle" id="theWayToggle" title="Увімкнути звук шторму" aria-label="Увімкнути звук шторму" style="display:none;background:#111;border:2px solid #fff;color:#fff;">⚡</button>
+  <audio id="theWayAudio" src="assets/files/sound_storme.mp3" loop preload="none"></audio>
 
   <button class="scroll-top" id="scrollTopBtn" title="Нагору" aria-label="Прокрутити вгору">↑</button>
 

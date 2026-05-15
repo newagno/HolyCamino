@@ -33,11 +33,14 @@ import { initShellEgg, initLogoLongPress } from './easterEggs.js';
  * @returns {string}
  */
 export function buildPilgrimList() {
-  return Object.entries(PILGRIMS).map(([id, p]) => `
+  // Guest is hardcoded in index.html, so exclude it from the dynamic list
+  return Object.entries(PILGRIMS)
+    .filter(([id]) => id !== 'guest')
+    .map(([id, p]) => `
     <button class="pilgrim-btn" data-pilgrim="${id}">
       ${p.name} <span class="arrow">→</span>
     </button>
-  `).join('') + '<!-- guest-login lives in index.html so visitors can enter without a saved session -->';
+  `).join('');
 }
 
 // ─────────────────────────────────────────────
@@ -53,10 +56,11 @@ export function renderApp(id) {
   const app = document.getElementById('app');
   if (!app) return;
 
+  const displayName = id === 'guest' ? 'Вуайєрист' : p.name;
   app.innerHTML = `
     ${buildHeader(p, id)}
     ${buildNav()}
-    ${buildHero(p)}
+    ${buildHero(p, id)}
 
     <p id="navSectionLive" class="sr-only" aria-live="polite" aria-atomic="true"></p>
 
@@ -72,7 +76,7 @@ export function renderApp(id) {
     <section class="section"        id="s-playlist">${buildPlaylist()}</section>
     <section class="section"        id="s-check">${buildCheck()}</section>
 
-    <footer class="footer"><div>🐚</div><div>Buen Camino, ${p.name}!</div></footer>
+    <footer class="footer"><div>🐚</div><div>Buen Camino, ${displayName}!</div></footer>
   `;
 
   // Wire up all interactive pieces
@@ -108,6 +112,7 @@ export function renderApp(id) {
 // ─────────────────────────────────────────────
 
 function buildHeader(p, id) {
+  const initial = id === 'guest' ? 'В' : p.initial;
   return `
   <header class="header">
     <div class="header-left">
@@ -131,7 +136,7 @@ function buildHeader(p, id) {
         ${document.body.classList.contains('night-mode') ? '☀️' : '🌙'}
       </button>
       <div class="user-badge" id="userBadge" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
-        ${p.name}
+        ${initial}
         <div class="user-menu" id="userMenu" role="menu">
           <button id="logoutBtn" role="menuitem">Вийти з акаунту</button>
         </div>
@@ -264,18 +269,19 @@ function initNavArrows() {
 // ─────────────────────────────────────────────
 
 /** @param {{ name: string }} p */
-function buildHero(p) {
+function buildHero(p, id) {
+  const displayName = id === 'guest' ? 'Вуайєрист' : p.name;
   return `
-  <div class="hero">
-    <div class="hero-greeting">Привіт, ${p.name}!</div>
-    <h1 class="hero-title" style="display:flex;justify-content:center;align-items:center;gap:12px;margin-top:10px;margin-bottom:20px;">
-      <span>Buen <span class="accent">Camino</span></span>
-      <img id="heroLogoEgg" src="assets/files/logo.png" alt="Buen Camino"
-        style="max-height:1.2em;width:auto;object-fit:contain;cursor:pointer;-webkit-touch-callout:none;user-select:none;"
-        draggable="false">
-    </h1>
-    <p class="hero-subtitle">Camino Português da Costa · 261 км · 12 днів пішки</p>
-  </div>`;
+    <div class="hero" id="heroLogoEgg" role="button" tabindex="0" aria-label="Головне лого (затисніть для сюрпризу)">
+      <div class="hero-greeting">Привіт, ${displayName}!</div>
+      <h1 class="hero-title" style="display:flex;justify-content:center;align-items:center;gap:12px;margin-top:10px;margin-bottom:20px;">
+        <span>Buen <span class="accent">Camino</span></span>
+        <img src="assets/files/logo.png" alt="Buen Camino"
+          style="max-height:1.2em;width:auto;object-fit:contain;pointer-events:none;"
+          draggable="false">
+      </h1>
+      <p class="hero-subtitle">Camino Português da Costa · 261 км · 12 днів пішки</p>
+    </div>`;
 }
 
 // ─────────────────────────────────────────────
@@ -285,6 +291,7 @@ function buildHero(p) {
 function buildRoute() {
   const stageHTML = buildStageProgress();
   const lastIdx = ROUTE.length - 1;
+  const bookingState = getBookingState();
 
   const cards = ROUTE.map((d, i) => {
     const isSpecial = !!d.special;
@@ -318,27 +325,37 @@ function buildRoute() {
       </div>` : '';
 
     // Albergues
-    const albsHTML = d.albs.length ? `
-      <div class="detail-section">
-        <div class="det-title">🛏️ Альберге</div>
-        ${d.albs.map((a) => {
-      const isBooked = a.c?.includes('ЗАБРОНЬОВАНО') ?? false;
-      const cleanComment = (a.c ?? '').replace('(ЗАБРОНЬОВАНО)', '').replace('ЗАБРОНЬОВАНО', '').trim();
-      const mapLink = a.m || `https://www.google.com/maps/search/${encodeURIComponent(a.n)}`;
-
-      return `
-          <div class="det-item ${isBooked ? 'booked' : ''}">
-            <div style="display:flex;justify-content:space-between;align-items:center;width:100%;gap:10px;">
-              <div style="flex:1;">
-                <a class="det-name" href="${mapLink}" target="_blank" rel="noopener noreferrer">📍 ${a.n}</a>
-                <div class="det-info"><strong>${a.p}</strong>${cleanComment ? ' — ' + cleanComment : ''}</div>
+    const bookingState = getBookingState();
+    const albsHTML = d.albs.length ? (() => {
+      const rows = d.albs.map((a, aIdx) => {
+        const key = `${i}-${aIdx}`;
+        const isBooked = (a.c?.includes('ЗАБРОНЬОВАНО') ?? false) || bookingState[key];
+        const cleanComment = (a.c ?? '').replace('(ЗАБРОНЬОВАНО)', '').replace('ЗАБРОНЬОВАНО', '').trim();
+        const mapLink = a.m || `https://www.google.com/maps/search/${encodeURIComponent(a.n)}`;
+        const bookLink = a.b ? `<a class="det-book-btn" href="${a.b}" target="_blank" rel="noopener noreferrer">🎫 Book</a>` : '';
+        const bookedBadge = isBooked ? '<div class="booked-badge">✓ ЗАБРОНЬОВАНО</div>' : '';
+        const bookedClass = isBooked ? 'booked' : '';
+        const btnBg = isBooked ? 'var(--paper-dark)' : 'var(--olive)';
+        const btnColor = isBooked ? 'var(--ink)' : '#fff';
+        const btnBorder = isBooked ? 'var(--paper-dark)' : 'var(--olive)';
+        const btnLabel = isBooked ? 'Відмінити' : 'Забронював!';
+        return `
+            <div class="det-item ${bookedClass}">
+              <div style="display:flex;justify-content:space-between;align-items:center;width:100%;gap:10px;">
+                <div style="flex:1;">
+                  <a class="det-name" href="${mapLink}" target="_blank" rel="noopener noreferrer">📍 ${a.n}</a>
+                  <div class="det-info"><strong>${a.p}</strong>${cleanComment ? ' — ' + cleanComment : ''}</div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:5px;">
+                  ${bookLink}
+                  <button class="det-book-btn alb-toggle-btn" data-key="${key}" style="background:${btnBg};color:${btnColor};border-color:${btnBorder};">${btnLabel}</button>
+                </div>
               </div>
-              ${a.b ? `<a class="det-book-btn" href="${a.b}" target="_blank" rel="noopener noreferrer">🎫 Book</a>` : ''}
-            </div>
-            ${isBooked ? '<div class="booked-badge">✓ ЗАБРОНЬОВАНО</div>' : ''}
-          </div>`;
-    }).join('')}
-      </div>` : '';
+              ${bookedBadge}
+            </div>`;
+      });
+      return `<div class="detail-section"><div class="det-title">🛏️ Альберге</div>${rows.join('')}</div>`;
+    })() : '';
 
     // Stamps
     const stampsHTML = d.stamps.length ? `
@@ -459,6 +476,37 @@ function initDayCards() {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
     });
   });
+
+  document.querySelectorAll('.alb-toggle-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const key = btn.getAttribute('data-key');
+      if (!key) return;
+      const isBooked = toggleBookingItem(key);
+      
+      btn.style.background = isBooked ? 'var(--paper-dark)' : 'var(--olive)';
+      btn.style.color = isBooked ? 'var(--ink)' : '#fff';
+      btn.style.borderColor = isBooked ? 'var(--paper-dark)' : 'var(--olive)';
+      btn.textContent = isBooked ? 'Відмінити' : 'Забронював!';
+      
+      const detItem = btn.closest('.det-item');
+      if (detItem) {
+        if (isBooked) {
+          detItem.classList.add('booked');
+          if (!detItem.querySelector('.booked-badge')) {
+            detItem.insertAdjacentHTML('beforeend', '<div class="booked-badge">✓ ЗАБРОНЬОВАНО</div>');
+          }
+        } else {
+          detItem.classList.remove('booked');
+          const badge = detItem.querySelector('.booked-badge');
+          if (badge) badge.remove();
+        }
+      }
+      
+      const bookingSec = document.getElementById('s-booking');
+      if (bookingSec) bookingSec.innerHTML = buildBooking();
+    });
+  });
 }
 
 /** Attach one-time lazy weather load on card click. */
@@ -481,7 +529,9 @@ function initWeatherLazy() {
 // ─────────────────────────────────────────────
 
 function buildPilgrims() {
-  const cards = Object.entries(PILGRIMS).map(([id, p]) => `
+  const cards = Object.entries(PILGRIMS)
+    .filter(([id, p]) => id !== 'guest')
+    .map(([id, p]) => `
     <div class="pilgrim-card" data-pid="${id}" role="button" tabindex="0" aria-label="${p.name}">
       <div class="pilgrim-avatar" aria-hidden="true">${p.initial}</div>
       <div class="pilgrim-card-name">${p.name}</div>
@@ -741,7 +791,7 @@ function initFoodRandom() {
 // EXERCISES SECTION
 // ─────────────────────────────────────────────
 
-/** @type {'before'|'during'} */
+/** @type {'before'|'during'|'mindset'} */
 let exTab = 'before';
 
 function buildExercises() {
@@ -751,6 +801,7 @@ function buildExercises() {
     <div class="exercise-tabs" role="tablist">
       <button class="ex-tab active" data-et="before" role="tab" aria-selected="true">Перед походом</button>
       <button class="ex-tab"        data-et="during" role="tab" aria-selected="false">Під час походу</button>
+      <button class="ex-tab"        data-et="mindset" role="tab" aria-selected="false">Як дійти</button>
     </div>
     <div id="ex-content"></div>`;
 }
@@ -804,6 +855,23 @@ function getExerciseSVG(type) {
       <path d="M35 25L45 25M30 15L50 15" stroke="var(--terracotta)" stroke-width="2" opacity="0.6"/>
       <text x="55" y="25" font-size="20">💤</text>
     </svg>`,
+    mind: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M40 20C25 20 20 35 20 45C20 55 30 65 40 65C50 65 60 55 60 45C60 35 55 20 40 20Z" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M30 35C30 35 35 30 40 30C45 30 50 35 50 35" stroke="var(--terracotta)" stroke-width="2"/>
+      <circle cx="33" cy="45" r="3" fill="var(--ink)"/>
+      <circle cx="47" cy="45" r="3" fill="var(--ink)"/>
+    </svg>`,
+    physics: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M25 60L35 45L45 55L60 30" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="60" cy="30" r="4" fill="var(--terracotta)"/>
+      <path d="M25 35L35 35" stroke="var(--olive)" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>`,
+    resource: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="25" y="20" width="30" height="45" rx="4" stroke="var(--ink)" stroke-width="2.5"/>
+      <path d="M35 15H45" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
+      <rect x="30" y="45" width="20" height="15" fill="var(--olive)" opacity="0.8"/>
+      <path d="M40 30V40M35 35H45" stroke="var(--terracotta)" stroke-width="2" stroke-linecap="round"/>
+    </svg>`,
   };
   return svgs[type] ?? '🚶';
 }
@@ -833,7 +901,7 @@ function initExerciseTabs() {
       });
       tab.classList.add('active');
       tab.setAttribute('aria-selected', 'true');
-      exTab = /** @type {'before'|'during'} */ (tab.getAttribute('data-et') ?? 'before');
+      exTab = /** @type {'before'|'during'|'mindset'} */ (tab.getAttribute('data-et') ?? 'before');
       renderExercises();
     });
   });

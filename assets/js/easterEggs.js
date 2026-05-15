@@ -29,35 +29,47 @@ export function activateTheWayMode() {
   theWayActive = true;
   document.body.classList.add('the-way-mode');
   
-  // Show The Way toggle and play sound
+  // Show The Way toggle and hide ocean toggle
   const toggle = document.getElementById('theWayToggle');
-  const audio = /** @type {HTMLAudioElement} */ (document.getElementById('theWayAudio'));
   const oceanToggle = document.getElementById('oceanToggle');
   
-  if (toggle) toggle.style.display = 'flex';
-  if (oceanToggle) oceanToggle.style.display = 'none';
-  if (audio) {
-    audio.play().catch(() => {
-      // Autoplay blocked, wait for first click
-      document.addEventListener('click', () => audio.play(), { once: true });
-    });
+  if (toggle) {
+    toggle.style.display = 'flex';
+    toggle.textContent = '⚡';
+    toggle.title = 'Увімкнути звук шторму';
+    toggle.setAttribute('aria-label', 'Увімкнути звук шторму');
+    toggle.classList.remove('playing');
   }
+  if (oceanToggle) oceanToggle.style.display = 'none';
+  // Audio starts paused — user clicks toggle to play
 }
 
-/** Initialize The Way mode audio toggle. */
 export function initTheWayAudio() {
   const btn = document.getElementById('theWayToggle');
   const audio = /** @type {HTMLAudioElement} */ (document.getElementById('theWayAudio'));
   if (!btn || !audio) return;
 
+  let playing = false;
+
   btn.addEventListener('click', () => {
-    if (audio.paused) {
-      audio.play();
-      btn.textContent = '⚡';
-      btn.classList.add('playing');
+    if (!playing) {
+      audio.volume = 0.4;
+      audio.play().then(() => {
+        playing = true;
+        btn.textContent = '⚡';
+        btn.title = 'Вимкнути звук шторму';
+        btn.setAttribute('aria-label', 'Вимкнути звук шторму');
+        btn.classList.add('playing');
+      }).catch(() => {
+        playing = false;
+      });
     } else {
       audio.pause();
+      audio.currentTime = 0;
+      playing = false;
       btn.textContent = '🔇';
+      btn.title = 'Увімкнути звук шторму';
+      btn.setAttribute('aria-label', 'Увімкнути звук шторму');
       btn.classList.remove('playing');
     }
   });
