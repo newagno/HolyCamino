@@ -55,6 +55,24 @@ export function activateTheWayMode() {
   }
 
   startLightningLoop();
+  initRain();
+}
+
+/**
+ * Creates rain drops for The Way mode.
+ */
+function initRain() {
+  const container = document.getElementById('theWayRain');
+  if (!container) return;
+  container.innerHTML = '';
+  for (let i = 0; i < 100; i++) {
+    const drop = document.createElement('div');
+    drop.className = 'rain-drop';
+    drop.style.left = `${Math.random() * 100}%`;
+    drop.style.animationDelay = `${Math.random() * 2}s`;
+    drop.style.animationDuration = `${0.4 + Math.random() * 0.4}s`;
+    container.appendChild(drop);
+  }
 }
 
 /**
