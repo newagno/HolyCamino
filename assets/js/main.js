@@ -263,7 +263,13 @@ if (document.readyState === 'loading') {
 function initOfflineCache() {
   if (!('serviceWorker' in navigator)) return;
   if (!location.protocol.startsWith('http')) return;
+  
   navigator.serviceWorker.register('./sw.js').catch(() => {
-    // Offline cache is a nice-to-have; the app should still run without it.
+    // Offline cache is a nice-to-have
+  });
+
+  // Automatically reload when a new service worker takes control
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
   });
 }
