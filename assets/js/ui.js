@@ -333,11 +333,11 @@ function buildRoute() {
         ${d.places.map((p) => `
           <div class="det-item">
             <a class="det-name" href="${p.m}" target="_blank" rel="noopener noreferrer">
-              ${p.n}
+              ${injectIcons(p.n)}
               ${p.secret ? '<span class="secret-tag"><svg class="icon" style="font-size:9px;margin-right:2px;"><use href="#icon-shush"></svg> секрет</span>' : ''}
               ${p.stamp ? '<span class="stamp-mark">✦</span>' : ''}
             </a>
-            <div class="det-info">${p.i}</div>
+            <div class="det-info">${injectIcons(p.i)}</div>
           </div>`).join('')}
       </div>` : '';
 
@@ -360,8 +360,8 @@ function buildRoute() {
             <div class="det-item ${bookedClass}">
               <div style="display:flex;justify-content:space-between;align-items:center;width:100%;gap:10px;">
                 <div style="flex:1;">
-                  <a class="det-name" href="${mapLink}" target="_blank" rel="noopener noreferrer"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${a.n}</a>
-                  <div class="det-info"><strong>${a.p}</strong>${cleanComment ? ' — ' + cleanComment : ''}</div>
+                  <a class="det-name" href="${mapLink}" target="_blank" rel="noopener noreferrer"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${injectIcons(a.n)}</a>
+                  <div class="det-info"><strong>${a.p}</strong>${cleanComment ? ' — ' + injectIcons(cleanComment) : ''}</div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:5px;">
                   ${bookLink}
@@ -380,8 +380,8 @@ function buildRoute() {
         <div class="det-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-scroll"></svg> Де поставити штамп</div>
         ${d.stamps.map((s) => `
           <div class="det-item">
-            <div class="det-name">${s.place}</div>
-            <div class="det-info">${s.note}</div>
+            <div class="det-name">${injectIcons(s.place)}</div>
+            <div class="det-info">${injectIcons(s.note)}</div>
           </div>`).join('')}
       </div>` : '';
 
@@ -412,13 +412,13 @@ function buildRoute() {
       <div style="display:flex;justify-content:space-between;align-items:baseline;">
         <div>
           <div class="day-date">${d.date}</div>
-          <div class="day-dow">${d.day} · ${d.route}</div>
+          <div class="day-dow">${d.day} · ${injectIcons(d.route)}</div>
         </div>
       </div>
-      <div class="day-route">${d.title}</div>
+      <div class="day-route">${injectIcons(d.title)}</div>
       <div class="day-meta">${tags}</div>
-      <div class="day-desc">${d.desc}</div>
-      ${d.hl ? `<div class="day-hl"><svg class="icon" style="margin-right:5px;color:var(--gold);"><use href="#icon-sun"></svg> ${d.hl}</div>` : ''}
+      <div class="day-desc">${injectIcons(d.desc)}</div>
+      ${d.hl ? `<div class="day-hl"><svg class="icon" style="margin-right:5px;color:var(--gold);"><use href="#icon-sun"></svg> ${injectIcons(d.hl)}</div>` : ''}
       <div class="expand-hint" aria-hidden="true"><svg class="icon"><use href="#icon-down"></svg> натисни для деталей</div>
       <div class="day-details" id="dd-${i}">
         ${placesHTML}
@@ -692,8 +692,8 @@ function buildDict() {
     <h2 class="section-title">Словник</h2>
     <div class="section-subtitle">фрази які знадобляться</div>
     <div class="dict-tabs" role="tablist">
-      <button class="dict-tab active" data-l="ua2pt" role="tab" aria-selected="true">🇺🇦 → 🇵🇹 Португальська</button>
-      <button class="dict-tab"        data-l="ua2es" role="tab" aria-selected="false">🇺🇦 → 🇪🇸 Іспанська</button>
+      <button class="dict-tab active" data-l="ua2pt" role="tab" aria-selected="true"><svg class="icon" style="width:16px;height:16px;"><use href="#icon-flag-ua"></svg> <svg class="icon" style="width:10px;height:10px;opacity:.6;"><use href="#icon-right"></svg> <svg class="icon" style="width:16px;height:16px;"><use href="#icon-flag-pt"></svg> Португальська</button>
+      <button class="dict-tab"        data-l="ua2es" role="tab" aria-selected="false"><svg class="icon" style="width:16px;height:16px;"><use href="#icon-flag-ua"></svg> <svg class="icon" style="width:10px;height:10px;opacity:.6;"><use href="#icon-right"></svg> <svg class="icon" style="width:16px;height:16px;"><use href="#icon-flag-es"></svg> Іспанська</button>
     </div>
     <div id="dict-content"></div>`;
 }
@@ -708,16 +708,14 @@ function renderDict() {
 
       const pronParts = ph.pro?.split(' / ') ?? [];
       const pronun = isPT ? pronParts[0] : (pronParts[1] ?? pronParts[0] ?? '');
-      const trNote = ph.tr
-        ? `<div style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-top:3px;">🇹🇷 <em>${ph.tr}</em></div>`
-        : '';
+
 
       return `
         <div class="dict-phrase">
           <div class="dict-original">${ph.ua}</div>
           <div class="dict-translation" style="color:var(--terracotta);font-weight:600;">${target}</div>
           ${pronun ? `<div class="dict-pronun"><svg class="icon" style="margin-right:5px;"><use href="#icon-volume"></svg> ${pronun}</div>` : ''}
-          ${trNote}
+          ${ph.tr ? `<div style="font-size:12px;color:var(--ink-soft);font-style:italic;margin-top:3px;"><svg class="icon" style="width:14px;height:14px;margin-right:3px;"><use href="#icon-scroll"></svg><em>${injectIcons(ph.tr)}</em></div>` : ''}
         </div>`;
     }).join('');
 
@@ -758,7 +756,7 @@ function buildFood() {
       <div class="food-result" id="foodResult" aria-live="polite">натисни кнопку!</div>
       <div class="food-desc"   id="foodDesc">щоб дізнатися що замовити...</div>
       <div class="food-city"   id="foodCity"></div>
-      <button class="food-btn" id="foodBtn">🎲 Що з'їсти?</button>
+      <button class="food-btn" id="foodBtn"><svg class="icon" style="margin-right:6px;"><use href="#icon-food"></svg> Що з'їсти?</button>
     </div>
     <div style="background:var(--paper);padding:14px;border-radius:4px;border:1px solid var(--paper-dark);">
       <div style="font-family:'Caveat',cursive;font-size:20px;color:var(--terracotta);margin-bottom:8px;"><svg class="icon" style="margin-right:5px;"><use href="#icon-scroll"></svg> Menu del Peregrino</div>
@@ -788,7 +786,7 @@ function initFoodRandom() {
       const food = FOODS[Math.floor(Math.random() * FOODS.length)];
       result.textContent = food.n;
       desc.textContent = food.d;
-      city.textContent = food.city;
+      city.innerHTML = `<svg class="icon" style="width:14px;height:14px;margin-right:4px;"><use href="#icon-pin"></svg>${food.city.replace(/^📍\s*/, '')}`;
       [result, desc, city].forEach((el) => { el.style.opacity = '1'; });
     }, 1_400);
   });
@@ -923,7 +921,7 @@ function buildApps() {
   const cards = APPS.map((a) => `
     <div class="app-card">
       <div class="app-icon" aria-hidden="true">
-        <svg class="icon" style="width:32px;height:32px;"><use href="#icon-${a.i === 'shell' ? 'shell-shape' : a.i}"></svg>
+        ${a.img ? `<img src="${a.img}" alt="${a.n}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">` : `<svg class="icon" style="width:32px;height:32px;"><use href="#icon-${a.i === 'shell' ? 'shell-shape' : a.i}"></svg>`}
       </div>
       <div class="app-info">
         <div class="app-name">${a.n}</div>
@@ -1309,4 +1307,37 @@ function buildBooking() {
   `;
 }
 
+/**
+ * Replaces common emojis with their SVG counterparts or strips them.
+ * @param {string} text
+ * @returns {string}
+ */
+export function injectIcons(text) {
+  if (!text) return '';
+  let result = text;
+  
+  const mapping = {
+    '🍽️': 'food',
+    '🚶': 'walk',
+    '🛥️': 'boat',
+    '⚡': 'bolt',
+    '🎆': 'sparkles',
+    '🎸': 'guitar',
+    '🛫': 'plane',
+    '⚠️': 'warning',
+    '🤫': 'shush',
+    '📍': 'pin',
+    '⛪': 'church',
+    '🧗': 'mountain',
+    '🐚': 'shell-shape',
+    '🦴': 'bandage',
+    '🎒': 'backpack'
+  };
 
+  Object.entries(mapping).forEach(([emoji, icon]) => {
+    const regex = new RegExp(emoji, 'g');
+    result = result.replace(regex, `<svg class="icon" style="width:1.1em;height:1.1em;vertical-align:text-bottom;margin-right:2px;"><use href="#icon-${icon}"></svg>`);
+  });
+
+  return result;
+}

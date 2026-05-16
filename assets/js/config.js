@@ -149,8 +149,8 @@ export const ROUTE = [
       { n: 'Foz do Douro', i: 'Гирло Дору, маяк, форт São João da Foz — перший погляд на океан', m: 'https://maps.google.com/?q=Foz+do+Douro+Porto', stamp: false, secret: false },
       { n: 'Ponte Luís I', i: 'Міст через Дору, верхній рівень веде у Vila Nova de Gaia (винарні)', m: 'https://maps.app.goo.gl/KR4i38yuCVkit5kCA', stamp: false, secret: false },
       { n: 'Igreja do Carmo', i: 'Барокова церква, з’єднана будівлею з церквою-близнюком; популярна завдяки бічному фасаду з мозаїкою.', m: 'https://maps.app.goo.gl/mjovM8xpzWeSxpNc8', stamp: false, secret: true },
-      { n: 'Café Santiago — francesinha', i: 'Класика з 1959. Замовляти з розрахунком, черги. Приходити після 17:00', m: 'https://maps.app.goo.gl/Yb7yTws3A944dMgy6', stamp: false, secret: false },
-      { n: 'Mercado do Bolhão', i: 'Історичний дворівневий ринок у неокласичній будівлі. Спробувати bifana - світліше м\'ясо і тонше тісто.', m: 'https://maps.app.goo.gl/5wNnN7npAir7SLME9', stamp: false, secret: true },
+      { n: '🍽️ Café Santiago — francesinha', i: 'Класика з 1959. Замовляти з розрахунком, черги. Приходити після 17:00', m: 'https://maps.app.goo.gl/Yb7yTws3A944dMgy6', stamp: false, secret: false },
+      { n: '🍽️ Mercado do Bolhão', i: 'Історичний дворівневий ринок у неокласичній будівлі. Спробувати bifana - світліше м\'ясо і тонше тісто.', m: 'https://maps.app.goo.gl/5wNnN7npAir7SLME9', stamp: false, secret: true },
     ],
     albs: [
       { n: 'The Passenger Hostel', p: '€32,5/паломника', b: 'http://www.thepassengerhostel.com/', m: 'https://maps.app.goo.gl/Rb1d5CxoA84iC6AXA', c: 'Проводять 🎸fado-вечори' },
@@ -251,7 +251,7 @@ export const ROUTE = [
       { n: 'Navio-Hospital Gil Eannes', i: 'Корабель-музей, ходив у Гренландію за тріскою.', m: 'https://maps.google.com/?q=Gil+Eannes+Viana', stamp: false, secret: false },
       { n: 'The Umbrellas Street', i: 'Яскрава вулиця з парасольками', m: 'https://maps.app.goo.gl/PBg4D2ne2FRihDXQ8', stamp: false, secret: false },
       { n: '🍽️ Tasquinha da Linda', i: 'Преміальні морепродукти в порту', m: 'https://maps.app.goo.gl/NXH78mWLtRmkahKs9', stamp: false, secret: false },
-      { n: 'Lampião Caffé', i: 'Кумедне місце з купою меморабільї', m: 'https://maps.app.goo.gl/pG3oKRFG2GvmxJpS8', stamp: false, secret: true },
+      { n: '🍽️ Lampião Caffé', i: 'Кумедне місце з купою меморабільї', m: 'https://maps.app.goo.gl/pG3oKRFG2GvmxJpS8', stamp: false, secret: true },
       { n: 'Citânia de Santa Luzia', i: 'Залізновіковий castro VII ст. до н.е. поруч з базилікою', m: 'https://maps.google.com/?q=Citânia+Santa+Luzia+Viana', stamp: false, secret: true },
     ],
     albs: [
@@ -326,7 +326,7 @@ export const ROUTE = [
       { n: 'Senda del Agua', i: 'Стежка з видами на затоку (Ria de Vigo)', m: 'https://maps.app.goo.gl/15RP53fJtx6QuS1h6', stamp: false, secret: false },
       { n: 'Senda da Foz', i: 'Через пляжі Praia América, Patos, Samil — найкрасивіше, літоральний шлях', m: 'https://maps.google.com/?q=Senda+da+Foz+Vigo', stamp: false, secret: false },
       { n: 'Monte O Castro', i: 'Замок на вершині', m: 'https://maps.app.goo.gl/A2nPDQwo7gdwPU9C6', stamp: false, secret: false },
-      { n: 'Устриці на Сalle de las ostras', i: 'Ціла вулиця, €1 за устрицю, відкривають при тобі. Місцева традиція, мало туристів знає', m: 'https://maps.app.goo.gl/6RZiWeMCkepGBjzQ6', stamp: false, secret: true },
+      { n: '🍽️ Устриці на Сalle de las ostras', i: 'Ціла вулиця, €1 за устрицю🦪, відкривають при тобі. Місцева традиція, мало туристів знає', m: 'https://maps.app.goo.gl/6RZiWeMCkepGBjzQ6', stamp: false, secret: true },
       { n: 'Viaduto de Redondela', i: 'Величезний залізничний віадук — архітектурна ікона міста', m: 'https://maps.google.com/?q=Viaduto+Redondela', stamp: false, secret: false },
     ],
     albs: [
@@ -364,7 +364,7 @@ export const ROUTE = [
       { n: 'Santuario de la Virgen Peregrina', i: 'Каплиця', m: 'https://maps.app.goo.gl/gr3rL11WkXBhmrLb8', stamp: false, secret: true },
       { n: 'Ponte do Burgo', i: 'Середньовічний міст через Лерес', m: 'https://maps.google.com/?q=Ponte+do+Burgo+Pontevedra', stamp: false, secret: false },
       { n: '🍽️ Plaza da Leña', i: 'Найкращі тапас-бари: Loaira, O Pulpeiro', m: 'https://maps.google.com/?q=Praza+da+Leña+Pontevedra', stamp: false, secret: false },
-      { n: 'Casa Fidel OPulpeiro', i: 'Найкраща восьминіг (Pulpo a la Gallega) на маршруті', m: 'https://maps.app.goo.gl/QhSURfyB1mo7Gwf68', stamp: false, secret: false },
+      { n: '🍽️ Casa Fidel OPulpeiro', i: 'Найкраща восьминіг (Pulpo a la Gallega) на маршруті', m: 'https://maps.app.goo.gl/QhSURfyB1mo7Gwf68', stamp: false, secret: false },
       { n: 'Iglesia de Santa María la Mayor (Pontevedra)', i: 'Красивіша готика Галісії', m: 'https://maps.google.com/?q=Iglesia+Santa+María+Pontevedra', stamp: false, secret: false },
       { n: 'Igrexa da Virxe Peregrina', i: 'XVIII ст. — ЄДИНА в Іспанії церква у формі мушлі Якова! Меса для паломників 19:30', m: 'https://maps.google.com/?q=Igrexa+Virxe+Peregrina+Pontevedra', stamp: true, secret: true },
     ],
@@ -405,7 +405,7 @@ export const ROUTE = [
       { n: 'Iglesia de Santiago de Padrón', i: 'Під вівтарем — камінь Pedrón. ГОЛОВНА ЛЕГЕНДА Камінó! Одна з найголовніших печаток всього шляху.', m: 'https://maps.google.com/?q=Iglesia+Santiago+Padrón', stamp: true, secret: false },
       { n: 'Iglesia de Santiago Apóstol de Padrón', i: 'Церква де під вівтарем лежить "El Pedrón" — камінь, до якого за легендою пришвартували човен з тілом Апостола Якова.', m: 'https://maps.app.goo.gl/NpEvXLgSuT2EuYUy7', stamp: false, secret: false },
       { n: 'Santiaguiño do Monte', i: 'Маленьке місце паломників, мало хто знає — печера де ховався апостол. Особлива секретна печатка', m: 'https://maps.google.com/?q=Santiaguiño+do+Monte+Padrón', stamp: true, secret: true },
-      { n: 'Pimientos de Padrón', i: '"Uns pican e outros non" — лотерея! Одні гострі, інші ні. Замовляти всім €4-6', m: 'https://maps.app.goo.gl/XJWYWVBqNos4azGj7 ', stamp: false, secret: false },
+      { n: '🍽️ Pimientos de Padrón', i: '"Uns pican e outros non" — лотерея! Одні гострі, інші ні. Замовляти всім €4-6', m: 'https://maps.app.goo.gl/XJWYWVBqNos4azGj7 ', stamp: false, secret: false },
     ],
     albs: [
       { n: "Albergue de peregrinos de Padrón", p: '€15/паломника', b: 'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-padron/', m: 'https://maps.app.goo.gl/udndMuGKrNG43Fw99' },
@@ -427,7 +427,7 @@ export const ROUTE = [
       { n: 'Catedral de Santiago de Compostela', i: 'Загальний вхід безкоштовний. Pórtico de la Gloria €15 (€12 паломникам)', m: 'https://maps.google.com/?q=Catedral+Santiago', stamp: false, secret: false },
       { n: '🍽️ Abastos 2.0', i: 'Сучасна галісійська кухня', m: 'https://maps.app.goo.gl/radYpsd59LcLWUa46', stamp: false, secret: false },
       { n: 'Parque da Alameda', i: 'Класичний вид на собор на заході сонця', m: 'https://maps.google.com/?q=Parque+da+Alameda+Santiago', stamp: false, secret: false },
-      { n: 'Mercado de Abastos', i: 'Закритий неділю. У Nave 5/Abastos 2.0 приготують куплене вами', m: 'https://maps.google.com/?q=Mercado+Abastos+Santiago', stamp: false, secret: false },
+      { n: 'Mercado de Abastos', i: 'Закритий в неділю. У Nave 5/Abastos 2.0 приготують куплене вами', m: 'https://maps.google.com/?q=Mercado+Abastos+Santiago', stamp: false, secret: false },
     ],
     albs: [
       { n: 'Albergue Seminario Menor', p: '€24-40/паломника (приватна кімната)', b: 'https://seminariomenorsantiago.com/', m: 'https://maps.app.goo.gl/XR4o3RkZ2RE6v21M6', c: '🔴 Бронювати ПРЯМО через сайт, НЕ через Booking!' },
@@ -539,6 +539,13 @@ export const DICTIONARY = {
       { ua: 'Виклик 112 (по всій Європі)', pt: 'Funciona sem cartão SIM', es: 'Funciona sin SIM', pro: 'без SIM-карти!' },
     ],
   },
+  special: {
+    title: 'Особливі',
+    phrases: [
+      { ua: 'Я не розмовляю іспанською/португальською. Ви говорите англійською?', pt: 'Não falo português. Fala inglês?', es: 'No hablo español. ¿Habla inglés?', pro: 'нау фалу португеш. фала інґлеш? / но аблo еспаньол. абла інґлес?' },
+      { ua: 'З Днем народження, Олекса!', pt: 'Feliz aniversário, Oleksa!', es: '¡Feliz cumpleaños, Oleksa!', pro: 'феліш анівершаріу / феліс кумпліаньос' },
+    ],
+  },
 };
 
 // ─────────────────────────────────────────────
@@ -554,24 +561,24 @@ export const DICTIONARY = {
 
 /** @type {Food[]} */
 export const FOODS = [
-  { n: 'Francesinha', d: "Сендвіч з м'ясом і соусом — символ Порту", city: '📍 Порту — Café Santiago (Passos Manuel 226)' },
-  { n: 'Pastéis de Nata', d: 'Португальські тарти з кремом — найкращі у світі', city: '📍 Порту — Manteigaria (Rua do Almada 83)' },
-  { n: 'Bacalhau à Brás', d: 'Тріска з картоплею і яйцем — національна страва', city: '📍 Порту — будь-який ресторан' },
-  { n: 'Sardinhas Grelhadas', d: 'Сардини на грилі — пік сезону у липні! €6-8', city: '📍 Matosinhos — будь-яка tasca' },
-  { n: 'Bifana', d: 'Свинина в булочці — вуличний фастфуд €2.50-4', city: '📍 По всій Португалії — у padarias' },
-  { n: 'Polvo à Lagareiro', d: 'Восьминіг з картоплею в оливковій олії', city: '📍 Viana do Castelo — ресторани порту' },
-  { n: 'Caldo Verde', d: 'Зелений суп з кале і chouriço — душа Португалії', city: '📍 По всій Португалії — у menú' },
-  { n: 'Pulpo a la Gallega', d: 'Восьминіг на дерев\'яній дошці з паприкою і сіллю €12-18', city: '📍 Arcade → Pontevedra — A Pulpeira' },
-  { n: 'Pimientos de Padrón', d: '"Одні гострі, інші ні"! Лотерея €4-6', city: '📍 Padrón — будь-яке кафе в місті' },
-  { n: 'Empanada Gallega', d: 'Галісійський пиріг з тунцем або м\'ясом €2-4 шматок', city: '📍 По всій Галісії — у padarias' },
-  { n: 'Tarta de Santiago', d: 'Мигдалевий торт з хрестом Якова — без глютену!', city: '📍 Santiago — Confitería Mercedes (Rúa do Vilar 6)' },
-  { n: 'Queixo de Tetilla', d: "М'який галісійський сир грудкою", city: '📍 По всій Галісії — на ринках' },
-  { n: 'Mejillones (мідії)', d: 'Кращі мідії на маршруті, al vapor або con vinagre', city: '📍 Arcade — A Pulpeira de Arcade (середа/нед)' },
-  { n: 'Mariscada Gallega', d: 'Морепродукти-парад: краби, мідії, percebes — як шоу', city: '📍 Vigo або Santiago — marisquería' },
-  { n: 'Vinho Verde', d: 'Молоде шумке з Минью (по якому йдете!), 9-11%', city: '📍 Вся Північна Португалія — у кожному bar' },
-  { n: 'Albariño', d: 'Флагман Галісії — біле вино з Rías Baixas', city: '📍 Caldas, Pontevedra — у кожному ресторані' },
-  { n: 'Queimada', d: 'Ритуал: orujo + цукор + кава — підпалюють на столі', city: '📍 Santiago — після вечері в ресторані' },
-  { n: 'Estrella Galicia', d: 'Галісійське пиво — найкраще до pulpo', city: '📍 По всій Галісії — у кожному bar' },
+  { n: 'Francesinha', d: "Сендвіч з м'ясом і соусом — символ Порту", city: 'Порту — Café Santiago (Passos Manuel 226)' },
+  { n: 'Pastéis de Nata', d: 'Португальські тарти з кремом — найкращі у світі', city: 'Порту — Manteigaria (Rua do Almada 83)' },
+  { n: 'Bacalhau à Brás', d: 'Тріска з картоплею і яйцем — національна страва', city: 'Порту — будь-який ресторан' },
+  { n: 'Sardinhas Grelhadas', d: 'Сардини на грилі — пік сезону у липні! €6-8', city: 'Matosinhos — будь-яка tasca' },
+  { n: 'Bifana', d: 'Свинина в булочці — вуличний фастфуд €2.50-4', city: 'По всій Португалії — у padarias' },
+  { n: 'Polvo à Lagareiro', d: 'Восьминіг з картоплею в оливковій олії', city: 'Viana do Castelo — ресторани порту' },
+  { n: 'Caldo Verde', d: 'Зелений суп з кале і chouriço — душа Португалії', city: 'По всій Португалії — у menú' },
+  { n: 'Pulpo a la Gallega', d: 'Восьминіг на дерев\'яній дошці з паприкою і сіллю €12-18', city: 'Arcade → Pontevedra — A Pulpeira' },
+  { n: 'Pimientos de Padrón', d: '"Одні гострі, інші ні"! Лотерея €4-6', city: 'Padrón — будь-яке кафе в місті' },
+  { n: 'Empanada Gallega', d: 'Галісійський пиріг з тунцем або м\'ясом €2-4 шматок', city: 'По всій Галісії — у padarias' },
+  { n: 'Tarta de Santiago', d: 'Мигдалевий торт з хрестом Якова — без глютену!', city: 'Santiago — Confitería Mercedes (Rúa do Vilar 6)' },
+  { n: 'Queixo de Tetilla', d: "М'який галісійський сир грудкою", city: 'По всій Галісії — на ринках' },
+  { n: 'Mejillones (мідії)', d: 'Кращі мідії на маршруті, al vapor або con vinagre', city: 'Arcade — A Pulpeira de Arcade (середа/нед)' },
+  { n: 'Mariscada Gallega', d: 'Морепродукти-парад: краби, мідії, percebes — як шоу', city: 'Vigo або Santiago — marisquería' },
+  { n: 'Vinho Verde', d: 'Молоде шумке з Минью (по якому йдете!), 9-11%', city: 'Вся Північна Португалія — у кожному bar' },
+  { n: 'Albariño', d: 'Флагман Галісії — біле вино з Rías Baixas', city: 'Caldas, Pontevedra — у кожному ресторані' },
+  { n: 'Queimada', d: 'Ритуал: orujo + цукор + кава — підпалюють на столі', city: 'Santiago — після вечері в ресторані' },
+  { n: 'Estrella Galicia', d: 'Галісійське пиво — найкраще до pulpo', city: 'По всій Галісії — у кожному bar' },
 ];
 
 // ─────────────────────────────────────────────
@@ -772,15 +779,15 @@ export const EXERCISES = {
 
 /** @type {App[]} */
 export const APPS = [
-  { n: 'Buen Camino', d: 'Офлайн карти, етапи, альберге', i: 'shell', ios: 'https://apps.apple.com/us/app/buen-camino-de-santiago-app/id858222947', and: 'https://play.google.com/store/apps/details?id=com.editorialbuencamino.buencamino' },
-  { n: 'Camino Ninja', d: 'Детальні карти і альберге', i: 'ninja', ios: 'https://apps.apple.com/us/app/camino-ninja-app/id1491232190', and: 'https://play.google.com/store/apps/details?id=ninja.camino.app' },
-  { n: 'Wise Pilgrim Portugués', d: '€6 — найдетальніші карти PT маршруту', i: 'pin', ios: 'https://apps.apple.com/ua/app/wise-pilgrim-camino-portugu%C3%A9s/id983056779', and: 'https://play.google.com/store/apps/details?id=com.wisepilgrim.portuguese' },
-  { n: 'Komoot', d: 'GPS трекінг, офлайн маршрути', i: 'map', ios: 'https://apps.apple.com/us/app/komoot-hike-bike-run/id447374873', and: 'https://play.google.com/store/apps/details?id=de.komoot.android' },
-  { n: 'Google Translate', d: 'Завантажити офлайн пакети PT + ES!', i: 'globe', ios: 'https://apps.apple.com/us/app/google-translate/id414706506', and: 'https://play.google.com/store/apps/details?id=com.google.android.apps.translate' },
-  { n: 'Maps.me', d: 'Офлайн карти всього маршруту', i: 'pin', ios: 'https://apps.apple.com/us/app/maps-me-offline-maps-gps-nav/id510623322', and: 'https://play.google.com/store/apps/details?id=com.mapswithme.maps.pro' },
-  { n: 'ALSA автобуси', d: 'Іспанські автобуси — бронювати заздалегідь', i: 'bus', ios: 'https://apps.apple.com/us/app/alsa-buy-coach-tickets/id444511709', and: 'https://play.google.com/store/apps/details?id=com.mo2o.alsa&hl=uk' },
-  { n: 'AlertCops', d: "Прямий зв'язок з іспанською поліцією", i: 'sos', ios: 'https://apps.apple.com/us/app/alertcops/id1273718252', and: 'https://play.google.com/store/search?q=AlertCops&c=apps' },
-  { n: 'Geocaching', d: 'Схованки на маршруті — квест для Олекси', i: 'target', ios: 'https://apps.apple.com/us/iphone/search?term=Geocaching', and: 'https://play.google.com/store/apps/details?id=com.groundspeak.geocaching.intro' },
+  { n: 'Buen Camino', d: 'Офлайн карти, етапи, альберге', i: 'shell', img: 'assets/files/BuenCaminoApp.jpg', ios: 'https://apps.apple.com/us/app/buen-camino-de-santiago-app/id858222947', and: 'https://play.google.com/store/apps/details?id=com.editorialbuencamino.buencamino' },
+  { n: 'Camino Ninja', d: 'Детальні карти і альберге', i: 'ninja', img: 'assets/files/CaminoNinjaApp.jpg', ios: 'https://apps.apple.com/us/app/camino-ninja-app/id1491232190', and: 'https://play.google.com/store/apps/details?id=ninja.camino.app' },
+  { n: 'Wise Pilgrim Portugués', d: '€6 — найдетальніші карти PT маршруту', i: 'pin', img: 'assets/files/WisePilgrimApp.jpg', ios: 'https://apps.apple.com/ua/app/wise-pilgrim-camino-portugu%C3%A9s/id983056779', and: 'https://play.google.com/store/apps/details?id=com.wisepilgrim.portuguese' },
+  { n: 'Komoot', d: 'GPS трекінг, офлайн маршрути', i: 'map', img: 'assets/files/KomootApp.jpg', ios: 'https://apps.apple.com/us/app/komoot-hike-bike-run/id447374873', and: 'https://play.google.com/store/apps/details?id=de.komoot.android' },
+  { n: 'Google Translate', d: 'Завантажити офлайн пакети PT + ES!', i: 'globe', img: 'assets/files/GoogleTranslateApp.jpg', ios: 'https://apps.apple.com/us/app/google-translate/id414706506', and: 'https://play.google.com/store/apps/details?id=com.google.android.apps.translate' },
+  { n: 'Maps.me', d: 'Офлайн карти всього маршруту', i: 'pin', img: 'assets/files/MapsMeApp.jpg', ios: 'https://apps.apple.com/us/app/maps-me-offline-maps-gps-nav/id510623322', and: 'https://play.google.com/store/apps/details?id=com.mapswithme.maps.pro' },
+  { n: 'ALSA автобуси', d: 'Іспанські автобуси — бронювати заздалезідь', i: 'bus', img: 'assets/files/AlsaApp.jpg', ios: 'https://apps.apple.com/us/app/alsa-buy-coach-tickets/id444511709', and: 'https://play.google.com/store/apps/details?id=com.mo2o.alsa&hl=uk' },
+  { n: 'AlertCops', d: "Прямий зв'язок з іспанською поліцією", i: 'sos', img: 'assets/files/AlertCopsApp.jpg', ios: 'https://apps.apple.com/us/app/alertcops/id1273718252', and: 'https://play.google.com/store/search?q=AlertCops&c=apps' },
+  { n: 'Geocaching', d: 'Схованки на маршруті — квест для Олекси', i: 'target', img: 'assets/files/GeocachingApp.jpg', ios: 'https://apps.apple.com/us/iphone/search?term=Geocaching', and: 'https://play.google.com/store/apps/details?id=com.groundspeak.geocaching.intro' },
 ];
 
 // ─────────────────────────────────────────────
@@ -886,14 +893,14 @@ export const CITY_COORDS = {
   '25.07': { lat: 42.88, lon: -8.54, name: 'Santiago' },
 };
 
-/** @type {Record<number, string>} WMO weather code → emoji */
+/** @type {Record<number, string>} WMO weather code -> SVG icon ID */
 export const WMO_ICON = {
-  0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
-  45: '🌫️', 48: '🌫️',
-  51: '🌦️', 53: '🌦️', 55: '🌦️',
-  61: '🌧️', 63: '🌧️', 65: '🌧️',
-  80: '🌦️', 81: '🌧️', 82: '⛈️',
-  95: '⚡', 96: '⚡', 99: '⚡',
+  0: 'sun', 1: 'sun', 2: 'sun', 3: 'cloud',
+  45: 'cloud', 48: 'cloud',
+  51: 'rain', 53: 'rain', 55: 'rain',
+  61: 'rain', 63: 'rain', 65: 'rain',
+  80: 'rain', 81: 'rain', 82: 'storm',
+  95: 'bolt', 96: 'bolt', 99: 'bolt',
 };
 
 /** @type {Record<number, string>} WMO weather code → Ukrainian description */

@@ -92,9 +92,6 @@ function boot() {
 
 /** Wire up all interactive elements on the login screen. */
 function initLoginScreen() {
-  // NOTE: pilgrim buttons (including Guest) are hardcoded in index.html.
-  // Do NOT replace innerHTML — that would destroy the static Guest button.
-  // Use event delegation on the container instead.
   const stepChoose = document.getElementById('step-choose');
   if (stepChoose) {
     stepChoose.addEventListener('click', (e) => {
@@ -102,19 +99,10 @@ function initLoginScreen() {
       if (btn) handlePilgrimSelect(btn.dataset.pilgrim);
     });
   }
-
-  document.getElementById('backBtn').addEventListener('click', showPilgrimList);
-  document.getElementById('submitBtn').addEventListener('click', checkPassword);
-
-  document.getElementById('passwordInput').addEventListener('keypress', e => {
-    if (e.key === 'Enter') checkPassword();
-  });
-
-  document.getElementById('pwToggle').addEventListener('click', togglePwVisibility);
 }
 
 /**
- * Move from the pilgrim-choice step to the password step.
+ * Move from the pilgrim-choice step to entering the app.
  * @param {string} pilgrimId
  */
 function handlePilgrimSelect(pilgrimId) {
@@ -124,70 +112,9 @@ function handlePilgrimSelect(pilgrimId) {
     return;
   }
 
-  if (pilgrimId === 'guest') {
-    selectedPilgrim = 'guest';
-    enterApp(selectedPilgrim);
-    return;
-  }
-
   selectedPilgrim = pilgrimId;
-  pwAttempts = 0;
-
-  const p = PILGRIMS[pilgrimId];
-  document.getElementById('passwordWelcome').textContent = `Вітаємо, ${p.name}!`;
-  document.getElementById('passwordHint').textContent = p.hint;
-  document.getElementById('passwordInput').value = '';
-
-  const errEl = document.getElementById('passwordError');
-  errEl.classList.remove('show');
-  errEl.textContent = 'Не той пароль. Спробуй ще раз!';
-
-  document.getElementById('step-choose').style.display = 'none';
-  document.getElementById('step-password').classList.add('active');
-  setTimeout(() => document.getElementById('passwordInput').focus(), 100);
-}
-
-/** Go back to the pilgrim-choice step. */
-function showPilgrimList() {
-  document.getElementById('step-password').classList.remove('active');
-  document.getElementById('step-choose').style.display = 'grid';
-  selectedPilgrim = null;
-}
-
-/** Toggle the password field between hidden/visible. */
-function togglePwVisibility() {
-  pwVisible = !pwVisible;
-  const inp = document.getElementById('passwordInput');
-  inp.type = pwVisible ? 'text' : 'password';
-  document.getElementById('pwToggle').innerHTML = `<svg class="icon"><use href="#icon-${pwVisible ? 'eye-off' : 'eye'}"></svg>`;
-}
-
-/**
- * Validate the entered password.
- * Also detects the "сантьяго" Easter-egg trigger for The Way mode.
- */
-function checkPassword() {
-  const raw = document.getElementById('passwordInput').value.trim().toLowerCase();
-  const correct = PILGRIMS[selectedPilgrim].password.toLowerCase();
-  const isTheWayAttempt = raw.replace(/\s/g, '').includes('сантьяго');
-
-  if (raw === correct || isTheWayAttempt) {
-    pwAttempts = 0;
-
-    if (isTheWayAttempt) activateTheWayMode();
-
-    setSavedPilgrim(selectedPilgrim);
-    enterApp(selectedPilgrim);
-  } else {
-    pwAttempts++;
-    const errEl = document.getElementById('passwordError');
-    errEl.textContent = pwAttempts >= 3
-      ? `Ти шо не можеш правильно написати "${correct}"?`
-      : 'Не той пароль. Спробуй ще раз!';
-    errEl.classList.remove('show');
-    // Trigger the CSS animation with a micro-delay
-    requestAnimationFrame(() => errEl.classList.add('show'));
-  }
+  setSavedPilgrim(selectedPilgrim);
+  enterApp(selectedPilgrim);
 }
 
 // ─────────────────────────────────────────────────────────────

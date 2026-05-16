@@ -129,7 +129,7 @@ export function buildStageProgress() {
 
   if (now > end) {
     return `<div class="stage-progress">
-      <div class="stage-progress-label">🏆 Kamiño завершено! Buen Camino!</div>
+      <div class="stage-progress-label"><svg class="icon" style="margin-right:5px;color:var(--gold);"><use href="#icon-trophy"></svg> Kamiño завершено! Buen Camino!</div>
     </div>`;
   }
 
@@ -144,7 +144,7 @@ export function buildStageProgress() {
   }
 
   return `<div class="stage-progress">
-    <div class="stage-progress-label">🐾 Твій Camiño зараз</div>
+    <div class="stage-progress-label"><svg class="icon" style="margin-right:5px;"><use href="#icon-walk"></svg> Твій Camiño зараз</div>
     <div class="stage-track">
       <div class="stage-fill" style="width:${pct}%"></div>
       <span class="stage-shell" style="left:${pct}%"><svg class="icon" style="width:18px;height:18px;"><use href="#shell-shape"></svg></span>
@@ -185,7 +185,7 @@ export async function loadWeatherForDay(dayIdx, dateStr, coordKey) {
   if (diffDays > 14) {
     wdg.innerHTML = `
       <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
-        <div class="weather-title">🏹 ${coords.name}</div>
+        <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
         <div style="font-size:13px;opacity:0.8;font-style:italic;text-align:center;padding:10px 0;">
           Погода недоступна, з'явиться ближче до дати.<br>
           <span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Переглянути прогноз в Google ↗</span>
@@ -202,27 +202,27 @@ export async function loadWeatherForDay(dayIdx, dateStr, coordKey) {
     const wc = data.daily.weathercode[0];
     const tmax = Math.round(data.daily.temperature_2m_max[0]);
     const tmin = Math.round(data.daily.temperature_2m_min[0]);
-    const icon = WMO_ICON[wc] ?? '🌤️';
+    const icon = WMO_ICON[wc] ?? 'sun';
     const desc = WMO_DESC[wc] ?? '';
 
     const ponchoAdvice = (tmax > 22 || wc >= 61)
-      ? `<div style="margin-top:8px;font-size:12px;color:#fff;background:rgba(200,85,61,0.8);padding:6px 10px;border-radius:4px;text-align:center;">🌧️ Рекомендуємо пончо в рюкзаку!</div>`
+      ? `<div style="margin-top:8px;font-size:12px;color:#fff;background:rgba(200,85,61,0.8);padding:6px 10px;border-radius:4px;text-align:center;"><svg class="icon" style="margin-right:5px;"><use href="#icon-rain"></svg> Рекомендуємо пончо в рюкзаку!</div>`
       : '';
 
     wdg.innerHTML = `
       <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
-        <div class="weather-title">🏹 ${coords.name}</div>
+        <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
         <div class="weather-grid">
-          <div class="weather-cell"><span class="weather-icon">${icon}</span><div class="weather-temp">${tmax}°</div><div class="weather-desc">${desc}</div></div>
-          <div class="weather-cell"><span class="weather-icon">🌕</span><div class="weather-temp">${tmax}°</div><div class="weather-desc">День</div></div>
-          <div class="weather-cell"><span class="weather-icon">🌑</span><div class="weather-temp">${tmin}°</div><div class="weather-desc">Ніч</div></div>
+          <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-${icon}"></svg></span><div class="weather-temp">${tmax}°</div><div class="weather-desc">${desc}</div></div>
+          <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-sun"></svg></span><div class="weather-temp">${tmax}°</div><div class="weather-desc">День</div></div>
+          <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-moon"></svg></span><div class="weather-temp">${tmin}°</div><div class="weather-desc">Ніч</div></div>
         </div>
         ${ponchoAdvice}
       </a>`;
   } catch {
     wdg.innerHTML = `
       <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
-        <div class="weather-title">🏹 ${coords.name}</div>
+        <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
         <div style="font-size:13px;opacity:0.8;text-align:center;padding:10px 0;">
           Помилка завантаження.<br>
           <span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Переглянути в Google ↗</span>

@@ -131,10 +131,10 @@ const KONAMI_SEQUENCE = [
   'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
   'b', 'a',
 ];
-const RAIN_EMOJIS = ['🐚', '⭐', '🌊', '🌀', '✨', '🎉'];
+const RAIN_ICONS = ['shell-shape', 'star', 'bolt', 'sparkles', 'target', 'walk'];
 
 /**
- * Create a shell / emoji rain effect.
+ * Create a shell / icon rain effect.
  */
 export function triggerKonami() {
   const el = document.getElementById('konamiEffect');
@@ -146,7 +146,8 @@ export function triggerKonami() {
   for (let i = 0; i < 60; i++) {
     const div = document.createElement('div');
     div.className = 'konami-shell';
-    div.textContent = RAIN_EMOJIS[Math.floor(Math.random() * RAIN_EMOJIS.length)];
+    const iconId = RAIN_ICONS[Math.floor(Math.random() * RAIN_ICONS.length)];
+    div.innerHTML = `<svg class="icon" style="width:24px;height:24px;"><use href="#icon-${iconId}"></svg>`;
     div.style.left = `${Math.random() * 100}%`;
     div.style.animationDelay = `${Math.random() * 1.5}s`;
     div.style.animationDuration = `${2 + Math.random() * 2}s`;
