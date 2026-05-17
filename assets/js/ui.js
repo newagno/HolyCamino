@@ -76,7 +76,7 @@ export function renderApp(id) {
     <section class="section"        id="s-playlist">${buildPlaylist()}</section>
     <section class="section"        id="s-check">${buildCheck()}</section>
 
-    <footer class="footer"><div><svg class="icon" style="width:24px;height:24px;"><use href="#shell-shape"></svg></div><div>Buen Camino, ${displayName}!</div></footer>
+    <footer class="footer"><div><img src="assets/files/camino.svg" alt="Мушля" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"></div><div>Buen Camino, ${displayName}!</div></footer>
   `;
 
   // Wire up all interactive pieces
@@ -119,7 +119,7 @@ function buildHeader(p, id) {
     <div class="header-left">
       <div class="header-title">
         <span class="shell-icon" id="shellEgg" role="button" tabindex="0" aria-label="Секретний елемент">
-          <svg class="icon"><use href="#shell-shape"></svg>
+          <img src="assets/files/camino.svg" alt="Мушля" class="icon" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;">
         </span>
         Твою ж Каміно!
       </div>

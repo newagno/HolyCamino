@@ -147,7 +147,7 @@ export function buildStageProgress() {
     <div class="stage-progress-label"><svg class="icon" style="margin-right:5px;"><use href="#icon-walk"></svg> Твій Camiño зараз</div>
     <div class="stage-track">
       <div class="stage-fill" style="width:${pct}%"></div>
-      <span class="stage-shell" style="left:${pct}%"><svg class="icon" style="width:18px;height:18px;"><use href="#shell-shape"></svg></span>
+      <span class="stage-shell" style="left:${pct}%"><img src="assets/files/camino.svg" alt="Мушля" style="width:18px;height:18px;object-fit:contain;vertical-align:middle;"></span>
     </div>
     <div class="stage-city">${city}</div>
   </div>`;
