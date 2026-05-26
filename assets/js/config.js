@@ -227,6 +227,7 @@ export const ROUTE = [
       { n: 'Bairro da Pesqueira', i: 'Рибальський квартал. Там продають штампи-наліпка з місцевою символікою "Siglas Poveiras', m: 'https://maps.app.goo.gl/Sm11QHhNcaTL5DPX9', stamp: true, secret: true },
       { n: 'Igreja Matriz de Esposende', i: 'Барокова церква в центрі — маленькі міста дають найколоритніші печатки', m: 'https://maps.google.com/?q=Igreja+Matriz+Esposende', stamp: true, secret: false },
       { n: 'Aqueduto de Santa Clara (Vila do Conde)', i: '999 арок по дорозі', m: 'https://maps.google.com/?q=Aqueduto+Santa+Clara+Vila+do+Conde', stamp: false, secret: false },
+      { n: '🍽️ Diversus - Cafe & Snacks', i: 'Тости, креветки, рекомендація від поломників⭐', m: 'https://maps.app.goo.gl/oE9w93v3Vw4ULe4s5', stamp: false, secret: false },
       { n: 'Forte de São João Baptista', i: 'Океанський форт XVII ст.', m: 'https://maps.google.com/?q=Forte+São+João+Esposende', stamp: false, secret: false },
     ],
     albs: [
