@@ -247,6 +247,7 @@ export async function loadWeatherForDay(dayIdx, dateStr, coordKey) {
 
 /**
  * Subtle parallax on the decorative shell backgrounds.
+*/
 export function initParallax() {
   let pending = false;
 
