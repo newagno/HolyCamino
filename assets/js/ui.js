@@ -20,8 +20,7 @@ import {
   getBookingState, toggleBookingItem,
 } from './storage.js';
 
-import { buildStageProgress, loadWeatherForDay } from './utils.js';
-import { applyNightMode, shouldAutoNight } from './utils.js';
+import { buildStageProgress, loadWeatherForDay, applyNightMode, shouldAutoNight } from './utils.js';
 import { initShellEgg, initLogoLongPress } from './easterEggs.js';
 
 // ─────────────────────────────────────────────
