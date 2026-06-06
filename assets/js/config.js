@@ -22,6 +22,7 @@ export const TRIP_START = new Date('2026-07-11T16:25:00');
  * @property {string} [model]
  * @property {string} [comment]
  * @property {string} [link]
+ * @property {string} category
  */
 
 /**
@@ -44,7 +45,7 @@ export const PILGRIMS = {
   },
   oleksa: {
     name: 'Олекса', initial: 'О', password: 'устурой',
-    hint: 'Ти хотіла б, щоб тебе так називали (часник)'
+    hint: 'Ти хотіла б, щоб тебя так називали (часник)'
   },
   hanna: {
     name: 'Ганна', initial: 'Г', password: 'пес',
@@ -57,43 +58,43 @@ export const PILGRIMS = {
 };
 
 export const GLOBAL_GEAR = [
-  { name: 'Credential', comment: 'Паспорт пілігрима» на Шляху Святого Якова' },
-  { name: 'Квитки', comment: 'Wizz Air, докупити Priority' },
-  { name: 'Рюкзак', comment: 'Pinguin / Osprey / Forclaz 28-35L (макс 5-6 кг!)' },
-  { name: 'Кросівки трейлові', comment: 'Розношувати 50-100 км вдома!' },
-  { name: 'Дощовик-пончо', comment: 'Decathlon Forclaz' },
-  { name: 'Палиці трекінгові', comment: 'Купимо в Порту Forclaz MT100' },
-  { name: 'Silk liner', comment: 'Для сну в альберге' },
-  { name: 'Шльопанці/Крокси', comment: 'Для душу та відпочинку' },
-  { name: 'Футболка синтетична (2 шт)', comment: 'Швидкосохнучі' },
-  { name: 'Сорочка UPF', comment: 'Для захисту від сонця' },
-  { name: 'Фліска', comment: 'На прохолодні ранки' },
-  { name: 'Шорти', comment: 'Зручні для ходьби' },
-  { name: 'Спортивки/легінси', comment: 'Для вечора' },
-  { name: 'Нижня білизна (2-3 пари)', comment: 'Спортивна' },
-  { name: 'Шкарпетки мерінос (3 пари)', comment: 'Smartwool / Darn Tough / Forclaz' },
-  { name: 'Вазелін', comment: 'Жирне змащування стоп зранку проти водяних мозолів' },
-  { name: 'Окуляри', comment: 'Сонцезахисні (3 рівень)' },
-  { name: 'Кепка / Панамка', comment: 'Від сонця' },
-  { name: 'Бананка / поясна сумка', comment: 'Для документів і грошей' },
-  { name: 'Купальник / Плавки', comment: 'Для океану' },
-  { name: 'Рушник мікрофібра', comment: 'Швидкосохнучий' },
-  { name: 'Сонцезахисний крем SPF50+', comment: 'Обов\'язково!' },
-  { name: 'Антифрикційний крем', comment: 'Від натирання між ногами' },
-  { name: 'Пластирі Compeed', comment: 'Від пухирів' },
-  { name: 'Електроліти', comment: 'Для відновлення солей' },
-  { name: 'Пляшка для води', comment: 'Soft Flask або звичайна 1-1.5L' },
-  { name: 'Налобний ліхтарик', comment: 'Для ранніх виходів' },
-  { name: 'Маска для сну + беруші', comment: 'Must-have в альберге!' },
-  { name: 'Power bank', comment: '10000mAh' },
-  { name: 'Прищіпки + мотузка 3м', comment: 'Для сушіння одягу' },
-  { name: 'Подовжувач / Трійник', comment: 'В альберге мало розеток, на 4-х людей це спасіння' },
-  { name: 'Сонцезахисний бальзам для губ', comment: 'З SPF 30+, щоб губи не потріскалися від вітру та сонця' },
-  { name: 'Засіб для прання (міні)', comment: 'Рідке мило або концентрат для щоденного прання одягу' },
-  { name: 'Вологі серветки / Антисептик', comment: 'Для гігієни на маршруті вдень' },
-  { name: 'Мультитул / Ніж', comment: 'Купити в Порту (не пустять в літак)' },
-  { name: 'Щоденник Камінó + ручка', comment: 'Для записів' },
-  { name: 'Мушля Vieira на рюкзак', comment: 'Символ паломника' },
+  { name: 'Credential', comment: 'Паспорт пілігрима» на Шляху Святого Якова', category: 'documents' },
+  { name: 'Квитки', comment: 'Wizz Air, докупити Priority', category: 'documents' },
+  { name: 'Рюкзак', comment: 'Pinguin / Osprey / Forclaz 28-35L (макс 5-6 кг!)', category: 'gear' },
+  { name: 'Кросівки трейлові', comment: 'Розношувати 50-100 км вдома!', category: 'clothing' },
+  { name: 'Дощовик-пончо', comment: 'Decathlon Forclaz', category: 'clothing' },
+  { name: 'Палиці трекінгові', comment: 'Купимо в Порту Forclaz MT100', category: 'gear' },
+  { name: 'Silk liner', comment: 'Для сну в альберге', category: 'gear' },
+  { name: 'Шльопанці/Крокси', comment: 'Для душу та відпочинку', category: 'clothing' },
+  { name: 'Футболка синтетична (2 шт)', comment: 'Швидкосохнучі', category: 'clothing' },
+  { name: 'Сорочка UPF', comment: 'Для захисту від сонця', category: 'clothing' },
+  { name: 'Фліска', comment: 'На прохолодні ранки', category: 'clothing' },
+  { name: 'Шорти', comment: 'Зручні для ходьби', category: 'clothing' },
+  { name: 'Спортивки/легінси', comment: 'Для вечора', category: 'clothing' },
+  { name: 'Нижня білизна (2-3 пари)', comment: 'Спортивна', category: 'clothing' },
+  { name: 'Шкарпетки мерінос (3 пари)', comment: 'Smartwool / Darn Tough / Forclaz', category: 'clothing' },
+  { name: 'Вазелін', comment: 'Жирне змащування стоп зранку проти водяних мозолів', category: 'hygiene' },
+  { name: 'Окуляри', comment: 'Сонцезахисні (3 рівень)', category: 'gear' },
+  { name: 'Кепка / Панамка', comment: 'Від сонця', category: 'clothing' },
+  { name: 'Бананка / поясна сумка', comment: 'Для документів і грошей', category: 'gear' },
+  { name: 'Купальник / Плавки', comment: 'Для океану', category: 'clothing' },
+  { name: 'Рушник мікрофібра', comment: 'Швидкосохнучий', category: 'hygiene' },
+  { name: 'Сонцезахисний крем SPF50+', comment: 'Обов\'язково!', category: 'hygiene' },
+  { name: 'Антифрикційний крем', comment: 'Від натирання між ногами', category: 'hygiene' },
+  { name: 'Пластирі Compeed', comment: 'Від пухирів', category: 'medical' },
+  { name: 'Електроліти', comment: 'Для відновлення солей', category: 'medical' },
+  { name: 'Пляшка для води', comment: 'Soft Flask або звичайна 1-1.5L', category: 'gear' },
+  { name: 'Налобний ліхтарик', comment: 'Для ранніх виходів', category: 'gear' },
+  { name: 'Маска для сну + беруші', comment: 'Must-have в альберге!', category: 'other' },
+  { name: 'Power bank', comment: '10000mAh', category: 'gear' },
+  { name: 'Прищіпки + мотузка 3м', comment: 'Для сушіння одягу', category: 'other' },
+  { name: 'Подовжувач / Трійник', comment: 'В альберге мало розеток, на 4-х людей це спасіння', category: 'gear' },
+  { name: 'Сонцезахисний бальзам для губ', comment: 'З SPF 30+, щоб губи не потріскалися від вітру та сонця', category: 'hygiene' },
+  { name: 'Засіб для прання (міні)', comment: 'Рідке мило або концентрат для щоденного прання одягу', category: 'hygiene' },
+  { name: 'Вологі серветки / Антисептик', comment: 'Для гігієни на маршруті вдень', category: 'hygiene' },
+  { name: 'Мультитул / Ніж', comment: 'Купити в Порту (не пустять в літак)', category: 'gear' },
+  { name: 'Щоденник Камінó + ручка', comment: 'Для записів', category: 'other' },
+  { name: 'Мушля Vieira на рюкзак', comment: 'Символ паломника', category: 'other' },
 ];
 
 // ─────────────────────────────────────────────
@@ -117,6 +118,7 @@ export const GLOBAL_GEAR = [
  * @property {string} m  - Maps URL
  * @property {string} [c] - Comment
  * @property {boolean} stamp
+ * @property {string} [type]
  */
 
 /**
@@ -140,12 +142,13 @@ export const GLOBAL_GEAR = [
  * @property {RoutePlace[]} places
  * @property {RouteAlb[]} albs
  * @property {RouteStamp[]} stamps
+ * @property {{ up: number, down: number }} elevation
  */
 
 /** @type {RouteDay[]} */
 export const ROUTE = [
   {
-    date: '11.07', day: 'Сб', title: 'Бухарест → Порту', route: 'День прильоту', km: 0, type: 'travel',
+    date: '2026-07-11', day: 'Сб', title: 'Бухарест → Порту', route: 'День прильоту', km: 0, type: 'travel',
     desc: 'Виліт о 16:25, прибуття в Порту о 18:45. Метро Лінія E (Violet) до Trindade, 27 хв, €2.30 (Andante Z4 квиток). Або Uber XL ~€20-25.',
     hl: 'Перший вечір — не поспішай. Francesinha на вечерю.)',
     places: [
@@ -163,11 +166,12 @@ export const ROUTE = [
       { n: 'Albergue Peregrinos Porto', p: '€32,5/паломника', b: 'https://albergueperegrinosporto.pt/', m: 'https://maps.app.goo.gl/yCtDPjanBnhahxEg9', c: 'Ночівля 11 і 12 липня тут(ЗАБРОНЬОВАНО)', stamp: true },
     ],
     stamps: [
-      { place: 'Albergue Peregrinos Porto', note: 'Штамп при заселенні' } // Обов'язково у фігурних дужках
+      { place: 'Albergue Peregrinos Porto', note: 'Штамп при заселенні' }
     ],
+    elevation: { up: 0, down: 0 }
   },
   {
-    date: '12.07', day: 'Нд', title: 'Порту', route: 'День Credencial', km: 0, type: 'rest',
+    date: '2026-07-12', day: 'Нд', title: 'Порту', route: 'День Credencial', km: 0, type: 'rest',
     desc: 'Головна задача — отримати Credencial у Sé do Porto. Весь день по набережній і пляжах, Matosinhos, Jardins do Palácio de Cristal, Mercado do Bolhão.',
     hl: 'У Livraria Lello купити мушлю Vieira на рюкзак у Sé — €2-5.',
     places: [
@@ -192,14 +196,15 @@ export const ROUTE = [
     stamps: [
       { place: 'Igreja Paroquial de Santo Ildefonso', note: 'Штамп із зображенням азулежу' },
       { place: 'Sé do Porto', note: 'Кафедральний собор, Перший штамп Камінó! Видають Credencial (€2) + печатку' },
-    ]
+    ],
+    elevation: { up: 50, down: 50 }
   },
   {
-    date: '13.07', day: 'Пн', title: 'Porto → Vila do Conde', route: '🚶 СТАРТ! Senda Litoral', km: 28, type: 'walking',
-    desc: "Старт від Sé о 6:30. Весь день по набережній і пляжах Matosinhos. Через passadiços (дерев'яний настил над дюнами) → Mindelo → Costa → Vila do Conde.",
+    date: '2026-07-13', day: 'Пн', title: 'Porto → Vila do Conde', route: '🚶 СТАРТ! Senda Litoral', km: 28, type: 'walking',
+    desc: "Старт від Sé о 6:30. Весь день по набережній і пляжах Matosinhos. Через passadiços (дерев'яний настил над дюнами) → Mindelo → Costa → Vila do Conde. Промзону Leixões наполегливо рекомендується проїхати на метро (лінія A) до Matosinhos Mercado.",
     hl: '⚡ Лайфхак: промзону Leixões можна проїхати метро лінією A до Matosinhos Mercado. Це прийнятно для компанії.',
     places: [
-      { n: 'Foz do Douro', i: 'Старт маршруту. Маяк, Форт São João da Foz', m: 'https://maps.google.com/?q=Foz+do+Douro+lighthouse', stamp: false, secret: false },
+      { n: 'Foz do Douro', i: 'Старт маршруту. Маяк, Форт São João да Foz', m: 'https://maps.google.com/?q=Foz+do+Douro+lighthouse', stamp: false, secret: false },
       { n: 'Castelo do Queijo', i: 'Фортеця на березі океану. Поруч - Praia do Seixo (дикий пляж) і Farol de Felgueiras (маяк). Чудове місце для початку шляху.', m: 'https://maps.app.goo.gl/7HVBLLmNNtoBJnqx7', stamp: true, secret: false },
       { n: 'Cividade de Terroso', i: 'Бронзове/залізне поселення, один з найкращих castros Португалії', m: 'https://maps.app.goo.gl/jKwD7p7nC4R3qbq58', stamp: false, secret: false },
       { n: 'Praia de Mindelo', i: 'Тихий пляж', m: 'https://maps.app.goo.gl/QUkyYuoH6MhKyUPZ8', stamp: false, secret: false },
@@ -222,9 +227,10 @@ export const ROUTE = [
       { place: 'Mosteiro de Santa Clara', note: 'Монастир XIV ст. — рідкісна готична печатка' },
       { place: 'Nau Quinhentista', note: 'Морська печатка — символ Великих відкриттів' },
     ],
+    elevation: { up: 150, down: 140 }
   },
   {
-    date: '14.07', day: 'Вт', title: 'Vila do Conde → Esposende', route: '🚶 Boardwalk через дюни', km: 23, type: 'walking',
+    date: '2026-07-14', day: 'Вт', title: 'Vila do Conde → Esposende', route: '🚶 Boardwalk через дюни', km: 23, type: 'walking',
     desc: 'Boardwalk вздовж пляжів, частково по берегу. A Ver-o-Mar → Aguçadoura → Apúlia → passadiços над дюнами → Esposende.',
     hl: 'Секрет: Moinhos de Apúlia — старі вітряні млини серед дюн. Унікальна фотозона!',
     places: [
@@ -240,12 +246,12 @@ export const ROUTE = [
       { n: 'InnEsposende Sports Hostel', p: '€14+/€37+ кімната', b: 'https://www.innesposende.com/', m: 'https://maps.app.goo.gl/3UNxL4wVthtoqafNA', c: 'З басейном' },
     ],
     stamps: [
-      {
-        place: 'Igreja Matriz de Esposende', note: 'Маленькі міста — найколоритніші бароко печатки!'
-      }],
+      { place: 'Igreja Matriz de Esposende', note: 'Маленькі міста — найколоритніші бароко печатки!' }
+    ],
+    elevation: { up: 120, down: 120 }
   },
   {
-    date: '15.07', day: 'Ср', title: 'Esposende → Viana do Castelo', route: '🚶 Маршрут вглиб країни', km: 25, type: 'walking',
+    date: '2026-07-15', day: 'Ср', title: 'Esposende → Viana do Castelo', route: '🚶 Маршрут вглиб країни', km: 25, type: 'walking',
     desc: "Маршрут іде внутрь країни. Marinhas → Belinho → Antas → перехід річки Neiva по кам'яних плитах БЕЗ ПЕРИЛ → Anha → Darque → Viana do Castelo.",
     hl: "⭐ Перехід річки Neiva по кам'яних плитах без перил — легендарний найфотогенічніший момент Camino! Взяти воду на весь день — повністю внутрішній маршрут.",
     places: [
@@ -270,9 +276,10 @@ export const ROUTE = [
       { place: 'Capela de Santo Amaro', note: 'Справжня перлина!' },
       { place: 'Câmara Municipal (мерія)', note: 'Офіційна печатка з гербом міста' },
     ],
+    elevation: { up: 220, down: 210 }
   },
   {
-    date: '16.07', day: 'Чт', title: 'Viana do Castelo → Caminha', route: '🚶 До кордону', km: 27, type: 'walking',
+    date: '2026-07-16', day: 'Чт', title: 'Viana do Castelo → Caminha', route: '🚶 До кордону', km: 27, type: 'walking',
     desc: 'Короткі виходи у Vila Praia de Âncora. Areosa → Carreço → Afife → Moledo → Mata Nacional do Camarido → Caminha.',
     hl: 'З причалу Caminha відкривається найкраща точка фото на заході сонця — Monte de Santa Tegra підсвічена сонцем, річка Мінью попереду. ПАРОМ В ІСПАНІЮ ЗВІДСИ!',
     places: [
@@ -296,9 +303,10 @@ export const ROUTE = [
       { place: 'Caminha Main Church', note: 'XV ст. — прямо на площі з фонтаном', m: 'https://maps.app.goo.gl/qRvy7pWdtyR221N47' },
       { place: '🛥️ Паромна компанія Xacobeo Transfer', note: 'Паром через Мінью — рідкісна печатка! Просити перед посадкою' },
     ],
+    elevation: { up: 180, down: 180 }
   },
   {
-    date: '17.07', day: 'Пт', title: 'Caminha → A Guarda → Baiona', route: '🛥️ ПОРОМ + Іспанія!', km: 32, type: 'walking-hard',
+    date: '2026-07-17', day: 'Пт', title: 'Caminha → A Guarda → Baiona', route: '🛥️ ПОРОМ + Іспанія!', km: 22, type: 'walking-hard',
     desc: 'НАЙВАЖЧИЙ ДЕНЬ! Старт о 5:30! Пором через устя Мінью → A Guarda (Іспанія!) → скелясте узбережжя Галісії → Mosteiro de Oia → Baiona. Найкрасивіший відрізок маршруту!',
     hl: '🛥️ XACOBEO TRANSFER: €6/паломника. Розклад 2026: з Caminha 7:30–16:30 (кожні 30–60 хв). Бронювати на xacobeotransfer.com',
     places: [
@@ -312,7 +320,7 @@ export const ROUTE = [
       { n: 'Monteferro Peninsula', i: 'Півострів з фантастичним видом на острови Cíes. Мало хто з паломників доходить. Дикий, вітряний, дуже красивий', m: 'https://maps.google.com/?q=Monteferro+Baiona', stamp: false, secret: true },
     ],
     albs: [
-      { n: 'Public Pilgrims Hostel of A Guarda', p: '€10/паломника (якщо зупинка в A Guarda)', b: 'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-peregrinos-a-guarda/', m: 'https://maps.app.goo.gl/yaq9DpGZ7EcTcNuQ7' },
+      { n: 'Public Pilgrims Hostel of A Guarda', p: '€10/паломника (якщо зупинка в A Guarda)', b: 'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-peregrinos-a-guarda/', m: 'https://maps.app.goo.gl/yaq9DpGZ7EcTcNuQ7', type: 'municipal', c: 'Жива черга, не бронюється. Приходити до 14:00' },
       { n: 'Albergue Playa de Sabarís', p: '€15/паломника', b: 'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-playa-de-sabaris-baiona/', m: 'https://maps.app.goo.gl/NYyhYdF7SVxgiJURA' },
       { n: 'Albergue Estela do Mar', p: '€18/паломника', b: 'https://esteladomar.com/', m: 'https://maps.app.goo.gl/jtrM1JZMUd9miS8J9', c: 'На березі' },
     ],
@@ -322,10 +330,11 @@ export const ROUTE = [
       { place: 'Castelo de Monterreal', note: 'У фортеці', m: 'https://maps.app.goo.gl/3TR5Rsvvhdfbxk2n8' },
       { place: 'Réplica La Pinta', note: 'Копія корабля Колумба — така печатка є тільки тут в усьому світі!' },
     ],
+    elevation: { up: 400, down: 390 }
   },
   {
-    date: '18.07', day: 'Сб', title: 'Baiona → Vigo', route: '🚶 Початок останніх 100 км', km: 26, type: 'walking',
-    desc: 'Маршрут частково іде вглиб країни. Senda da Foz через пляжі Praia América, Patos, Samil — рекомендується літоральний варіант, найкрасивіший. Ponte Romana da Ramallosa. Не йдіть через промисловий порт Віго. Тримайтеся маршруту Senda del Agua — це стежка з видами на затоку (Ria de Vigo).',
+    date: '2026-07-18', day: 'Сб', title: 'Baiona → Vigo', route: '🚶 Початок останніх 100 км', km: 22, type: 'walking',
+    desc: 'Маршрут частково іде вглиб країни. Senda da Foz через пляжі Praia América, Patos, Samil — рекомендується літоральний варіант, найкрасивіший. Ponte Romana da Ramallosa. Не йдіть через промисловий порт Віго. Тримайтеся маршруту Senda del Agua — це стежка з видами на затоку (Ria de Vigo). ⚠️ Попередження: на цій ділянці (Senda del Agua) відчутна нестача джерел питної води. Обов\'язково мати із собою запас води мінімум 1.5 л зранку!',
     hl: 'З цього моменту — останні 100 км! Потрібно тепер 2 штампи/день для Compostela.',
     places: [
       { n: 'Basílica de Santa María la Mayor (Vigo)', i: 'Важлива відмітка — початок останніх 100 км для Compostela', m: 'https://maps.google.com/?q=Concatedral+Santa+María+Vigo', stamp: true, secret: false },
@@ -337,16 +346,17 @@ export const ROUTE = [
     ],
     albs: [
       { n: 'R4 Vigo Hostel', p: '€10/паломника', b: 'https://maps.google.com/?q=Albergue+Peregrinos+Vigo', m: 'https://maps.app.goo.gl/EppV4ujM28vVSmhh6', c: 'красиве історичне місце біля церкви' },
-      { n: 'Albergue Publico de Peregrinos de Vigo', p: '€15/паломника', b: 'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-peregrinos-vigo/', m: 'https://maps.app.goo.gl/6Ceupq4kyS1sY1c68' },
+      { n: 'Albergue Publico de Peregrinos de Vigo', p: '€15/паломника', b: 'https://www.alberguescaminosantiago.com/camino-portugues-por-la-costa/albergue-peregrinos-vigo/', m: 'https://maps.app.goo.gl/6Ceupq4kyS1sY1c68', type: 'municipal', c: 'Жива черга, не бронюється. Приходити до 14:00' },
     ],
     stamps: [
       { place: 'Basílica de Santa María la Mayor', note: '⚠️ З цього моменту — 2 штампи на день!' },
       { place: 'Будь-яке кафе на маршруті', note: '2-й щоденний штамп' },
     ],
+    elevation: { up: 350, down: 350 }
   },
   {
-    date: '19.07', day: 'Нд', title: 'Vigo → Redondela', route: "🚶 З'єднання маршрутів", km: 16, type: 'walking-easy',
-    desc: 'Ліси, села. Senda da Traída das Augas — лісова стежка вздовж старого водогону з панорамою на ria de Vigo. Короткий легкий день.',
+    date: '2026-07-19', day: 'Нд', title: 'Vigo → Redondela', route: "🚶 З'єднання маршрутів", km: 14, type: 'walking-easy',
+    desc: 'Ліси, села. Senda da Traída das Augas — лісова стежка вздовж старого водогону з панорамою на ria de Vigo. Короткий легкий день. ⚠️ Попередження: на цій ділянці (Senda del Agua) відчутна нестача джерел питної води. Обов\'язково мати із собою запас води мінімум 1.5 л зранку!',
     hl: 'Redondela = злиття Coastal і Central маршрутів. Тепер значно більше паломників!',
     places: [
       { n: 'Viaduto de Pontevedra (Viaducto Redondela)', i: 'Залізничний віадук — архітектурна домінанта Redondela', m: 'https://maps.google.com/?q=Viaduto+Pontevedra+Redondela', stamp: false, secret: false },
@@ -355,14 +365,15 @@ export const ROUTE = [
       { n: 'Albergue O Refuxio da Jeruxa', i: 'Donativo, господарі співають для паломників — найтепліший прийом маршруту', m: 'https://maps.google.com/?q=Albergue+O+Refuxio+da+Jeruxa+Redondela', stamp: false, secret: true },
     ],
     albs: [
-      { n: "Albergue de peregrinos Casa da Torre (Xunta)", p: '€15/паломника', b: 'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-redondela/', m: 'https://maps.app.goo.gl/i2EYWJSnxAfsJPF76', c: "Стара кам'яна вежа в центрі, 50 ліжок" },
+      { n: "Albergue de peregrinos Casa da Torre (Xunta)", p: '€15/паломника', b: 'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-redondela/', m: 'https://maps.app.goo.gl/i2EYWJSnxAfsJPF76', type: 'municipal', c: "Стара кам'яна вежа в центрі, 50 ліжок. Жива черга, не бронюється. Приходити до 14:00" },
       { n: 'O Refuxio de la Jerezana', p: '€5-10 пожертва', b: 'https://orefuxio.org/en/home/', m: 'https://maps.app.goo.gl/QMLcKaiPgksKse247' },
       { n: "O Refuxio D'Anton", p: '€5-10 пожертва', b: 'https://menuyvinos.com/orefuxio/', m: 'https://maps.app.goo.gl/bmBpAhkC5Zgy171J7', c: 'Найтепліший прийом' },
     ],
     stamps: [{ place: 'Igrexa de Santiago de Redondela', note: 'Злиття Coastal і Central маршрутів' }],
+    elevation: { up: 200, down: 220 }
   },
   {
-    date: '20.07', day: 'Пн', title: 'Redondela → Pontevedra', route: '🚶 Через Arcade з мідіями', km: 20, type: 'walking',
+    date: '2026-07-20', day: 'Пн', title: 'Redondela → Pontevedra', route: '🚶 Через Arcade з мідіями', km: 18, type: 'walking',
     desc: 'Ліси, села. Через Arcade (10 км) — знаменита своїми мідіями! Обідня зупинка: mejillones al vapor €6-8, pulpo a feira €12. Ponte Sampaio (битва 1809).',
     hl: 'Pontevedra — Igrexa Peregrina у формі мушлі! Єдина в Іспанії церква у плані у вигляді гребінця-мушлі Якова. Меса для паломників щодня 19:30.',
     places: [
@@ -376,15 +387,16 @@ export const ROUTE = [
     ],
     albs: [
       { n: 'ACOLÁ hostel', p: '€15-25 ліжко / €55-110 кімната', b: 'https://acolahostel.com/', m: 'https://maps.app.goo.gl/nE9dgoyWdMzyBAsP6', c: '⭐ Приватніше для компанії' },
-      { n: 'Albergue público Virxe Peregrina', p: '€10/паломника', b: 'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-pontevedra/', m: 'https://maps.app.goo.gl/drf9iPX17miJBMfo9', c: '56-86 ліжок, без бронювання' },
+      { n: 'Albergue público Virxe Peregrina', p: '€10/паломника', b: 'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-pontevedra/', m: 'https://maps.app.goo.gl/drf9iPX17miJBMfo9', type: 'municipal', c: '56-86 ліжок, без бронювання. Жива черга, не бронюється. Приходити до 14:00' },
     ],
     stamps: [
       { place: 'Igrexa da Virxe Peregrina', note: 'Церква має форму мушлі гребінця. Штамп унікальний — круглої форми з символом паломниці. Меса 19:30.' },
       { place: 'Будь-яке кафе чи церква', note: '2-й щоденний штамп' },
     ],
+    elevation: { up: 320, down: 310 }
   },
   {
-    date: '21.07', day: 'Вт', title: 'Pontevedra → Caldas de Reis', route: '🚶 Виноградники Albariño', km: 21, type: 'walking',
+    date: '2026-07-21', day: 'Вт', title: 'Pontevedra → Caldas de Reis', route: '🚶 Виноградники Albariño', km: 19, type: 'walking',
     desc: 'Ліси, села. Виноградники Albariño на гранітних pergolas, евкаліптові ліси, річки.',
     hl: 'Caldas de Reis = "Гарячі джерела королів". Fonte das Burgas — БЕЗКОШТОВНІ гарячі джерела просто на вулиці, вода 40-50°C. Замочити ноги 20 хв = рай!',
     places: [
@@ -394,7 +406,7 @@ export const ROUTE = [
       { n: '🏰 Castelo de Soutomaior (детур)', i: 'Красивий середньовічний замок + чудові камелії в саду. 10–12 км в обидві сторони від маршруту, але дуже варте для тих, хто любить історію', m: 'https://maps.google.com/?q=Castelo+de+Soutomaior', stamp: false, secret: true },
     ],
     albs: [
-      { n: 'Albergue Público de Peregrinos de Caldas de Reis', p: '€15/паломника', b: 'https://www.roomreserve.online/es/albergue-de-caldas-de-reis-urraca-caldas-de-reis/', m: 'https://maps.app.goo.gl/vNePZsTgTY6bneLv6', c: 'Біля мосту, 80 ліжок' },
+      { n: 'Albergue Público de Peregrinos de Caldas de Reis', p: '€15/паломника', b: 'https://www.roomreserve.online/es/albergue-de-caldas-de-reis-urraca-caldas-de-reis/', m: 'https://maps.app.goo.gl/vNePZsTgTY6bneLv6', type: 'municipal', c: 'Біля мосту, 80 ліжок. Жива черга, не бронюється. Приходити до 14:00' },
       { n: 'Hotel O Cruceiro', p: '€10', b: 'https://www.hotelcruceiro.com/', m: 'https://maps.app.goo.gl/wAxpjKcuhH1FQTcp9', c: 'З басейном' },
       { n: 'ALBERGUE de Caldas de Reis URRACA', p: '€15', b: 'https://www.google.com/maps/place/ALBERGUE+de+Caldas+de+Reis+URRACA', m: 'https://www.google.com/maps/place/ALBERGUE+de+Caldas+de+Reis+URRACA' },
     ],
@@ -402,9 +414,10 @@ export const ROUTE = [
       { place: 'Fonte das Burgas', note: 'Попросити печатку в альберге — особлива!' },
       { place: 'Iglesia de Santo Tomé', note: 'Єдина в Галісії церква — Томас Бекет' },
     ],
+    elevation: { up: 210, down: 190 }
   },
   {
-    date: '22.07', day: 'Ср', title: 'Caldas → Padrón', route: '🚶 Дім легенди', km: 19, type: 'walking',
+    date: '2026-07-22', day: 'Ср', title: 'Caldas → Padrón', route: '🚶 Дім легенди', km: 19, type: 'walking',
     desc: "Ліси, села. Річкові долини, кам'яні hórreos (зерносховища на ніжках). Передостанній день перед Сантьяго.",
     hl: 'Padrón — під вівтарем Igrexa de Santiago знаходиться PEDRÓN — камінь до якого пришвартувався човен з тілом Якова з Єрусалима. Звідси назва міста! Padrón peppers — лотерея гострих перчиків.',
     places: [
@@ -414,16 +427,17 @@ export const ROUTE = [
       { n: '🍽️ Pimientos de Padrón', i: '"Uns pican e outros non" — лотерея! Одні гострі, інші ні. Замовляти всім €4-6', m: 'https://maps.app.goo.gl/XJWYWVBqNos4azGj7 ', stamp: false, secret: false },
     ],
     albs: [
-      { n: "Albergue de peregrinos de Padrón", p: '€15/паломника', b: 'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-padron/', m: 'https://maps.app.goo.gl/udndMuGKrNG43Fw99' },
+      { n: "Albergue de peregrinos de Padrón", p: '€15/паломника', b: 'https://www.alberguescaminosantiago.com/camino-portugues/albergue-de-peregrinos-de-padron/', m: 'https://maps.app.goo.gl/udndMuGKrNG43Fw99', type: 'municipal', c: 'Жива черга, не бронюється. Приходити до 14:00' },
       { n: '🤫 Convento Padres Franciscanos ~ San Antonio de Herbón', p: 'donativo', b: 'https://maps.app.goo.gl/nXz4d6aBjqtoTjYK8', m: 'https://maps.app.goo.gl/nXz4d6aBjqtoTjYK8', c: '3 км від Padrón — вечеря, молитва, спільне святкування. Особливий досвід!' },
     ],
     stamps: [
       { place: 'Iglesia de Santiago de Padrón', note: 'Місце прибуття мощів! Одна з головних печаток. В офісі туризму Padrón дають спеціальний сертифікат Pedronía, якщо ви відвідаєте святі місця міста.' },
       { place: 'Santiaguiño do Monte', note: 'Секретна печатка — печера апостола Якова' },
     ],
+    elevation: { up: 150, down: 170 }
   },
   {
-    date: '23.07', day: 'Чт', title: 'Padrón → SANTIAGO', route: '🏆 ФІНІШ!', km: 24, type: 'walking-finish',
+    date: '2026-07-23', day: 'Чт', title: 'Padrón → SANTIAGO', route: '🏆 ФІНІШ!', km: 24, type: 'walking-finish',
     desc: 'Ліси, села. Евкаліпти, A Escravitude (барокова церква), Milladoiro. Перший погляд на собор з Monte do Gozo — емоційний момент. Rúa do Franco → Praza do Obradoiro.',
     hl: '🏆 Pilgrim Office (Rúa das Carretas 33, 8:00-20:00) — Compostela БЕЗКОШТОВНА. Certificate of Distance €3, тубус €3. Заповнити форму онлайн за 1-2 дні: oficinadelperegrino.com → QR-код.',
     places: [
@@ -437,12 +451,13 @@ export const ROUTE = [
     ],
     albs: [
       { n: 'Albergue Seminario Menor', p: '€24-40/паломника (приватна кімната)', b: 'https://seminariomenorsantiago.com/', m: 'https://maps.app.goo.gl/XR4o3RkZ2RE6v21M6', c: '🔴 Бронювати ПРЯМО через сайт, НЕ через Booking!' },
-      { n: 'Albergue Peregrinos San Lázaro', p: '€10/паломника', b: 'https://www.alberguescaminosantiago.com/albergue-san-lazaro-santiago/', m: 'https://maps.app.goo.gl/xGw2o1wvFmRTdmqP7' },
+      { n: 'Albergue Peregrinos San Lázaro', p: '€10/паломника', b: 'https://www.alberguescaminosantiago.com/albergue-san-lazaro-santiago/', m: 'https://maps.app.goo.gl/xGw2o1wvFmRTdmqP7', type: 'municipal', c: 'Жива черга, не бронюється. Приходити до 14:00' },
     ],
     stamps: [{ place: 'Pilgrims Reception Office', note: '🏆 ОСТАННЯ ПЕЧАТКА перед Compostela!' }],
+    elevation: { up: 450, down: 200 }
   },
   {
-    date: '24.07', day: 'Пт', title: 'Santiago + Fisterra', route: 'Кінець світу + Apóstolo', km: 0, type: 'special', special: 'birthday-holiday',
+    date: '2026-07-24', day: 'Пт', title: 'Santiago + Fisterra', route: 'Кінець світу + Apóstolo', km: 0, type: 'special', special: 'birthday-holiday',
     desc: 'Ранком — Pilgrim Mass (Botafumeiro!). Автобус Monbus до Fisterra (~90 хв, €13). Захід сонця на маяку Faro de Fisterra. Повернення до Сантьяго. 🎆 23:30 — FUEGOS DEL APÓSTOLO на Praza do Obradoiro!',
     hl: 'Fuegos del Apóstolo — піротехнічний мультимедійний спектакль, що "підпалює" собор. 30,000+ людей! Приходити на Praza за 1.5 год (з 21:30). Унікальний раз на рік!',
     places: [
@@ -457,9 +472,10 @@ export const ROUTE = [
       { n: 'Albergue Peregrinos San Lázaro', p: '€10/паломника', b: 'https://www.alberguescaminosantiago.com/albergue-san-lazaro-santiago/', m: 'https://maps.app.goo.gl/xGw2o1wvFmRTdmqP7' },
     ],
     stamps: [{ place: 'Faro de Fisterra (маяк)', note: 'Унікальна печатка маяка — 0,00 km від Fisterra!' }],
+    elevation: { up: 100, down: 100 }
   },
   {
-    date: '25.07', day: 'Сб', title: 'Santiago → Порту → Бухарест', route: 'День Святого Якова + виліт', km: 0, type: 'travel', special: 'apostolo-mass',
+    date: '2026-07-25', day: 'Сб', title: 'Santiago → Порту → Бухарест', route: 'День Святого Якова + виліт', km: 0, type: 'travel', special: 'apostolo-mass',
     desc: '🎉 День Святого Якова! Урочиста Меса 10:30 з Botafumeiro гарантовано (доступ обмежений). Звичайні меси 13:00, 16:00, 19:30. ALSA автобус Santiago → OPO (~3 год, €25). Виліт 19:20!',
     hl: '⏰ Хронологія: 08:00 сніданок → 09:30 Pilgrim Mass → 12:00 ALSA автобус → 15:15 OPO → 17:30 check-in Wizz Air → 19:20 виліт 🛫',
     places: [
@@ -469,6 +485,7 @@ export const ROUTE = [
     ],
     albs: [],
     stamps: [],
+    elevation: { up: 0, down: 0 }
   },
 ];
 
@@ -538,7 +555,7 @@ export const DICTIONARY = {
     title: 'Екстрені',
     phrases: [
       { ua: 'Допоможіть!', pt: 'Socorro!', es: '¡Socorro!', pro: 'сокорру / сокорро' },
-      { ua: 'Викличте лікаря!', pt: 'Chame um médico!', es: '¡Llame a un médico!', pro: 'шаме ум медіку' },
+      { ua: 'Викличте лікаря!', pt: 'Chame um medico!', es: '¡Llame a un médico!', pro: 'шаме ум медіку' },
       { ua: 'Де лікарня?', pt: 'Onde fica o hospital?', es: '¿Dónde está el hospital?', pro: 'онде фіка / донде еста' },
       { ua: 'Де аптека?', pt: 'Onde fica a farmácia?', es: '¿Dónde está la farmacia?', pro: 'онде фіка а фармасія' },
       { ua: 'Я заблукав/заблукала', pt: 'Estou perdido/a', es: 'Estoy perdido/a', pro: 'іштоу пердіду' },
@@ -563,6 +580,7 @@ export const DICTIONARY = {
  * @property {string} n  - Name
  * @property {string} d  - Description
  * @property {string} city
+ * @property {string} country
  */
 
 /** @type {Food[]} */
@@ -584,7 +602,7 @@ export const FOODS = [
   { n: 'Pimientos de Padrón', d: 'Дрібні зелені перчики, обсмажені в оливковій олії з морською сіллю. Лотерея: одні гострі, інші ні!', city: 'Padrón — будь-яке кафе чи таверна в місті', country: 'es' },
   { n: 'Empanada Gallega', d: 'Традиційний галісійський закритий пиріг з тонкого тіста з соковитою начинкою з тунця, тріски або м\'яса', city: 'По всій Галісії — купувати шматками у padarias (пекарнях)', country: 'es' },
   { n: 'Raxo Gallego', d: 'Шматочки свинячої вирізки, мариновані в часнику та паприці, обсмажені та подані на подушці з картоплі фрі', city: 'Caldas de Reis / Padrón — ситна і дешева вечеря паломника', country: 'es' },
-  { n: 'Churrasco Gallego', d: 'М’ясні свинячі або яловичі реберця, смажені на відкритому вогні на великому грилі. Порятунок після рибної дієти', city: 'По всій Галісії — шукати вивіски Parrillada', country: 'es' },
+  { n: 'Churrasco Gallego', d: 'М’ясні свинячі або яловичі реберця, смажені на відкритому вогні на великому грилі. Порятунок після рибної дієти', city: 'По всій Галісії — шукати вивіски/Parrillada', country: 'es' },
   { n: 'Caldo Gallego', d: 'Наваристий густий суп із картоплі, білої квасолі, місцевої зелені grelos та шматочків сала або чорізо', city: 'По всій Галісії — у складі Menú del Día (меню дня)', country: 'es' },
   { n: 'Queso Ulloa', d: 'Національний м\'який галісійський сир із коров\'ячого молока. Має ніжну кремову текстуру та нейтральний смак', city: 'По всій Галісії — у продуктових лавках', country: 'es' },
   { n: 'Queixo de Tetilla', d: 'Найвідоміший галісійський сир у формі конуса. М\'який, злегка кислуватий, ідеально плавиться на хлібі', city: 'По всій Галісії — на продуктових ринках Mercado', country: 'es' },
@@ -611,7 +629,7 @@ export const FOODS = [
  * @property {string[]} steps
  */
 
-/** @type {Record<'before'|'during', Exercise[]>} */
+/** @type {Record<'before'|'during'|'mindset', Exercise[]>} */
 export const EXERCISES = {
   before: [
     {
@@ -768,6 +786,17 @@ export const EXERCISES = {
       ],
     },
     {
+      n: '☀️ Літній режим ходьби (Липень)',
+      dur: 'Щодня',
+      comic: '"Хто рано встає, той не згорить на сонці"',
+      fig: 'sun',
+      steps: [
+        'Золотий час у липні: старт о 06:00.',
+        'Мета — пройти 15 км до 12:00, щоб уникнути пікової спеки.',
+        'Після 12:00 температура стрімко росте, тінь зникає — бережіть сили.'
+      ]
+    },
+    {
       n: '🐚 Каміно: Як дійти і не зламатись',
       dur: 'Загальне',
       comic: '"Коротка інструкція з виживання на довгій дистанції"',
@@ -893,21 +922,21 @@ export const CHECKLIST = [
 
 /** @type {Record<string, CityCoord>} */
 export const CITY_COORDS = {
-  '11.07': { lat: 41.15, lon: -8.61, name: 'Порту' },
-  '12.07': { lat: 41.15, lon: -8.61, name: 'Порту' },
-  '13.07': { lat: 41.35, lon: -8.75, name: 'Vila do Conde' },
-  '14.07': { lat: 41.53, lon: -8.78, name: 'Esposende' },
-  '15.07': { lat: 41.69, lon: -8.83, name: 'Viana do Castelo' },
-  '16.07': { lat: 41.87, lon: -8.84, name: 'Caminha' },
-  '17.07': { lat: 41.97, lon: -8.87, name: 'A Guarda / Baiona' },
-  '18.07': { lat: 42.12, lon: -8.85, name: 'Vigo' },
-  '19.07': { lat: 42.27, lon: -8.61, name: 'Redondela' },
-  '20.07': { lat: 42.43, lon: -8.64, name: 'Pontevedra' },
-  '21.07': { lat: 42.60, lon: -8.55, name: 'Caldas de Reis' },
-  '22.07': { lat: 42.74, lon: -8.66, name: 'Padrón' },
-  '23.07': { lat: 42.88, lon: -8.54, name: 'Santiago' },
-  '24.07': { lat: 42.88, lon: -8.54, name: 'Santiago + Fisterra' },
-  '25.07': { lat: 42.88, lon: -8.54, name: 'Santiago' },
+  '2026-07-11': { lat: 41.15, lon: -8.61, name: 'Порту' },
+  '2026-07-12': { lat: 41.15, lon: -8.61, name: 'Порту' },
+  '2026-07-13': { lat: 41.35, lon: -8.75, name: 'Vila do Conde' },
+  '2026-07-14': { lat: 41.53, lon: -8.78, name: 'Esposende' },
+  '2026-07-15': { lat: 41.69, lon: -8.83, name: 'Viana do Castelo' },
+  '2026-07-16': { lat: 41.87, lon: -8.84, name: 'Caminha' },
+  '2026-07-17': { lat: 41.97, lon: -8.87, name: 'A Guarda / Baiona' },
+  '2026-07-18': { lat: 42.12, lon: -8.85, name: 'Vigo' },
+  '2026-07-19': { lat: 42.27, lon: -8.61, name: 'Redondela' },
+  '2026-07-20': { lat: 42.43, lon: -8.64, name: 'Pontevedra' },
+  '2026-07-21': { lat: 42.60, lon: -8.55, name: 'Caldas de Reis' },
+  '2026-07-22': { lat: 42.74, lon: -8.66, name: 'Padrón' },
+  '2026-07-23': { lat: 42.88, lon: -8.54, name: 'Santiago' },
+  '2026-07-24': { lat: 42.88, lon: -8.54, name: 'Santiago + Fisterra' },
+  '2026-07-25': { lat: 42.88, lon: -8.54, name: 'Santiago' },
 };
 
 /** @type {Record<number, string>} WMO weather code -> SVG icon ID */
@@ -945,17 +974,17 @@ export const STAGE_DAYS = [
   { date: '2026-07-15', city: 'Esposende → Viana', km: 51 },
   { date: '2026-07-16', city: 'Viana → Caminha', km: 76 },
   { date: '2026-07-17', city: 'Caminha → Baiona', km: 103 },
-  { date: '2026-07-18', city: 'Baiona → Vigo', km: 135 },
-  { date: '2026-07-19', city: 'Vigo → Redondela', km: 161 },
-  { date: '2026-07-20', city: 'Redondela → Pontevedra', km: 177 },
-  { date: '2026-07-21', city: 'Pontevedra → Caldas', km: 197 },
-  { date: '2026-07-22', city: 'Caldas → Padrón', km: 218 },
-  { date: '2026-07-23', city: 'Padrón → Santiago', km: 237 },
-  { date: '2026-07-24', city: '🏆 Santiago! Fisterra!', km: 261 },
+  { date: '2026-07-18', city: 'Baiona → Vigo', km: 125 },
+  { date: '2026-07-19', city: 'Vigo → Redondela', km: 147 },
+  { date: '2026-07-20', city: 'Redondela → Pontevedra', km: 161 },
+  { date: '2026-07-21', city: 'Pontevedra → Caldas', km: 179 },
+  { date: '2026-07-22', city: 'Caldas → Padrón', km: 198 },
+  { date: '2026-07-23', city: 'Padrón → Santiago', km: 217 },
+  { date: '2026-07-24', city: '🏆 Santiago! Fisterra!', km: 241 },
 ];
 
 /** Total route distance in km */
-export const TOTAL_KM = 261;
+export const TOTAL_KM = 241;
 
 // ─────────────────────────────────────────────
 // BLISTER METER

@@ -173,13 +173,23 @@ export async function loadWeatherForDay(dayIdx, dateStr, coordKey) {
   const wdg = container.querySelector('.weather-widget');
   if (!wdg) return;
 
-  // Build an ISO date from "DD.MM" format
-  const [dd, mm] = coordKey.split('.');
-  const isoDate = `2026-${mm}-${dd}`;
+  // Build an ISO date from format
+  let isoDate = coordKey;
+  let displayDate = dateStr;
+  if (coordKey.includes('-')) {
+    // Already ISO
+    const parts = coordKey.split('-');
+    if (parts.length === 3) {
+      displayDate = `${parts[2]}.${parts[1]}`;
+    }
+  } else {
+    const [dd, mm] = coordKey.split('.');
+    isoDate = `2026-${mm}-${dd}`;
+  }
   const targetDate = new Date(isoDate);
   const diffDays = (targetDate - new Date()) / 86_400_000;
 
-  const extLink = `https://www.google.com/search?q=погода+${encodeURIComponent(coords.name)}+${dateStr}`;
+  const extLink = `https://www.google.com/search?q=погода+${encodeURIComponent(coords.name)}+${displayDate}`;
 
   // Open-Meteo only has a 16-day forecast window
   if (diffDays > 14) {
@@ -237,8 +247,6 @@ export async function loadWeatherForDay(dayIdx, dateStr, coordKey) {
 
 /**
  * Subtle parallax on the decorative shell backgrounds.
- * Passive scroll listener — no layout thrashing.
- */
 export function initParallax() {
   let pending = false;
 

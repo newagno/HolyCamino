@@ -1709,8 +1709,21 @@ body.the-way-mode .the-way-rain {
 
 .ex-comic-fig {
   flex-shrink: 0;
-  width: 75px;
-  height: 75px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  background: var(--paper);
+  border-radius: 8px;
+  border: 1.5px solid var(--paper-dark);
+}
+
+.ex-comic-fig svg {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
 }
 
 .ex-comic-txt {
@@ -2962,10 +2975,15 @@ body.the-way-mode .the-way-link {
     font-size: 32px;
   }
 
-  /* Exercise comic figure: smaller on mobile */
+  /* Exercise comic figure: slightly smaller on mobile */
   .ex-comic-fig {
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .ex-comic-fig svg {
+    width: 26px;
+    height: 26px;
   }
 
   .ex-comic-txt {
@@ -3582,4 +3600,141 @@ body.the-way-mode .food-card-title {
 body.the-way-mode .food-card-city {
   color: #CCC;
   border-top-color: #FFF;
+}
+
+/* ── Gear Checklist Filters, Blister Reset & SOS Button ── */
+.gear-filters {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gear-search-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--paper-dark);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.gear-search-input:focus {
+  outline: none;
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(200, 85, 61, 0.15);
+}
+
+.gear-filter-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-chip {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--paper-dark);
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+  background: var(--paper-dark);
+  color: var(--ink);
+}
+
+.filter-chip.active {
+  background: var(--terracotta);
+  border-color: var(--terracotta);
+  color: #ffffff;
+}
+
+body.night-mode .filter-chip.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+
+body.the-way-mode .filter-chip {
+  border-radius: 0;
+  border: 2px solid #FFF;
+  background: #000;
+  color: #FFF;
+}
+
+body.the-way-mode .filter-chip.active {
+  background: #FFF;
+  color: #000;
+}
+
+body.the-way-mode .gear-search-input {
+  border-radius: 0;
+  border: 2px solid #FFF;
+  background: #000;
+  color: #FFF;
+}
+
+body.the-way-mode .gear-search-input:focus {
+  box-shadow: 5px 5px 0px #FFF;
+}
+
+.emergency-call-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: #fff;
+  color: var(--terracotta) !important;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.2s, background-color 0.2s;
+  cursor: pointer;
+  animation: sosPulse 2s infinite;
+}
+
+.emergency-call-btn:hover {
+  background: var(--paper);
+  transform: scale(1.02);
+}
+
+body.night-mode .emergency-call-btn {
+  background: var(--paper-dark);
+  color: var(--ink) !important;
+}
+
+body.the-way-mode .emergency-call-btn {
+  border-radius: 0;
+  border: 2px solid #FFF;
+  background: #000;
+  color: #FFF !important;
+  animation: none;
+}
+
+@keyframes sosPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
 }

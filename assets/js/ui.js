@@ -318,6 +318,7 @@ function buildRoute() {
 
     const tags = [
       d.km ? `<span class="day-tag km"><svg class="icon" style="font-size:10px;margin-right:3px;"><use href="#icon-walk"></svg> ${d.km} км</span>` : '',
+      d.elevation ? `<span class="day-tag elevation" style="background:var(--paper-dark);color:var(--ink);"><svg class="icon" style="font-size:10px;margin-right:2px;"><use href="#icon-up"></use></svg>${d.elevation.up}м <svg class="icon" style="font-size:10px;margin-left:5px;margin-right:2px;"><use href="#icon-down"></use></svg>${d.elevation.down}м</span>` : '',
       d.type === 'walking-hard' ? '<span class="day-tag"><svg class="icon" style="font-size:10px;margin-right:3px;"><use href="#icon-alert"></svg> Складно</span>' : '',
       d.type === 'walking-easy' ? '<span class="day-tag"><svg class="icon" style="font-size:10px;margin-right:3px;"><use href="#icon-happy"></svg> Легко</span>' : '',
       d.type === 'walking-finish' ? '<span class="day-tag"><svg class="icon" style="font-size:10px;margin-right:3px;"><use href="#icon-trophy"></svg> Фініш!</span>' : '',
@@ -349,7 +350,7 @@ function buildRoute() {
         const key = `${i}-${aIdx}`;
         const isBooked = (a.c?.includes('ЗАБРОНЬОВАНО') ?? false) || bookingState[key];
         const cleanComment = (a.c ?? '').replace('(ЗАБРОНЬОВАНО)', '').replace('ЗАБРОНЬОВАНО', '').trim();
-        const mapLink = a.m || `https://www.google.com/maps/search/${encodeURIComponent(a.n)}`;
+        const mapLink = a.m || `https://www.google.com/maps/search/$${encodeURIComponent(a.n)}`;
         const bookLink = a.b ? `<a class="det-book-btn" href="${a.b}" target="_blank" rel="noopener noreferrer"><svg class="icon" style="margin-right:3px;"><use href="#icon-ticket"></svg> Book</a>` : '';
         const bookedBadge = isBooked ? '<div class="booked-badge"><svg class="icon" style="margin-right:3px;"><use href="#icon-check"></svg> ЗАБРОНЬОВАНО</div>' : '';
         const bookedClass = isBooked ? 'booked' : '';
@@ -389,7 +390,7 @@ function buildRoute() {
     // Weather widget placeholder (only for days with coords)
     const weatherHTML = CITY_COORDS[d.date] ? `
       <div id="weather-${i}" class="detail-section">
-        <div class="det-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-cloud"></svg> Погода на ${d.date}</div>
+        <div class="det-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-cloud"></svg> Погода на ${formatDateDisplay(d.date)}</div>
         <div class="weather-widget"><div class="weather-loading"><svg class="icon" style="margin-right:5px;animation:spin 2s linear infinite;"><use href="#icon-globe"></svg> Завантажуємо…</div></div>
       </div>` : '';
 
@@ -412,7 +413,7 @@ function buildRoute() {
          aria-expanded="false" aria-label="${d.date} ${d.title}">
       <div style="display:flex;justify-content:space-between;align-items:baseline;">
         <div>
-          <div class="day-date">${d.date}</div>
+          <div class="day-date">${formatDateDisplay(d.date)}</div>
           <div class="day-dow">${d.day} · ${injectIcons(d.route)}</div>
         </div>
       </div>
@@ -451,7 +452,7 @@ function buildRouteTools() {
 function initRouteTools() {
   document.getElementById('todayRouteBtn')?.addEventListener('click', () => {
     const today = new Date();
-    const key = `${String(today.getDate()).padStart(2, '0')}.${String(today.getMonth() + 1).padStart(2, '0')}`;
+    const key = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     const found = ROUTE.findIndex((day) => day.date === key);
     const idx = found >= 0 ? found : 0;
     const target = document.querySelector(`.day-card[data-i="${idx}"]`);
@@ -592,10 +593,6 @@ function openGearModal(pid) {
   const p = PILGRIMS[pid];
   const state = getGearState(pid);
 
-  // Use GLOBAL_GEAR, mark checked if state has it true
-  const hasItems = GLOBAL_GEAR.filter(it => state[it.name]);
-  const needItems = GLOBAL_GEAR.filter(it => !state[it.name]);
-
   const gearRow = (it, checked) => `
     <div class="gear-item" style="border-left-color:${checked ? 'var(--olive)' : 'var(--terracotta)'}">
       <div class="gear-item-check${checked ? ' checked' : ''}"
@@ -612,18 +609,61 @@ function openGearModal(pid) {
 
   const blisterVal = getBlisterValue(pid);
 
+  const CATEGORIES = [
+    { id: 'documents', title: 'Документи / Квитки 📄' },
+    { id: 'gear', title: 'Спорядження 🎒' },
+    { id: 'clothing', title: 'Одяг / Взуття 👕' },
+    { id: 'hygiene', title: 'Гігієна / Косметика 🧼' },
+    { id: 'medical', title: 'Аптечка / Медицина 🩹' },
+    { id: 'other', title: 'Різне / Дрібниці 🌀' },
+  ];
+
+  const categoriesHTML = CATEGORIES.map(cat => {
+    const items = GLOBAL_GEAR.filter(it => (it.category || 'other') === cat.id);
+    if (!items.length) return '';
+
+    const itemsHTML = items.map(it => {
+      const checked = !!state[it.name];
+      return gearRow(it, checked);
+    }).join('');
+
+    return `
+      <div class="gear-section category-${cat.id}" data-cat="${cat.id}">
+        <div class="gear-section-title">${cat.title}</div>
+        ${itemsHTML}
+      </div>
+    `;
+  }).join('');
+
   document.getElementById('pilgrimModalContent').innerHTML = `
     <h2 class="modal-title">${p.name}</h2>
     <div class="modal-subtitle">загальний список речей · відмічай чекбоксами</div>
     <div class="blister-meter">
-      <div class="blister-label"><svg class="icon" style="margin-right:5px;"><use href="#icon-brain"></svg> Blister Meter <svg class="icon" style="margin-left:5px;"><use href="#icon-brain"></svg></div>
+      <div class="blister-label" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <span style="display:flex; align-items:center;"><svg class="icon" style="margin-right:5px; vertical-align:middle;"><use href="#icon-bandage"></use></svg> Blister Meter</span>
+        <button class="tool-btn mini" id="reset-blister-${pid}" style="margin:0; padding:2px 8px; font-size:11px;">Скинути стан ніг</button>
+      </div>
       <input class="blister-slider" type="range" min="0" max="10"
              value="${blisterVal}" id="blister-${pid}"
              aria-label="Blister Meter">
       <div class="blister-display" id="blister-txt-${pid}">${getBlisterText(blisterVal)}</div>
     </div>
-    ${hasItems.length ? `<div class="gear-section has"><div class="gear-section-title"><svg class="icon" style="margin-right:7px;color:var(--olive);"><use href="#icon-check"></svg> Вже є (${hasItems.length})</div>${hasItems.map((it) => gearRow(it, true)).join('')}</div>` : ''}
-    ${needItems.length ? `<div class="gear-section need"><div class="gear-section-title"><svg class="icon" style="margin-right:7px;color:var(--terracotta);"><use href="#icon-cart"></svg> Купити (${needItems.length})</div>${needItems.map((it) => gearRow(it, false)).join('')}</div>` : ''}
+    
+    <div class="gear-filters">
+      <input type="search" id="gear-search-input" class="gear-search-input" placeholder="Пошук речей (наприклад, вазелін)..." aria-label="Пошук речей">
+      <div class="gear-filter-chips">
+        <button class="filter-chip active" data-cat="all">Всі</button>
+        ${CATEGORIES.map(cat => {
+          const emoji = cat.title.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\p{Emoji}/gu)?.[0] || '';
+          const name = cat.title.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|\p{Emoji}/gu, '').replace(/\//g, '').trim();
+          return `<button class="filter-chip" data-cat="${cat.id}">${emoji} ${name}</button>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="gear-sections-container">
+      ${categoriesHTML}
+    </div>
   `;
 
   // Gear item check toggle
@@ -639,17 +679,6 @@ function openGearModal(pid) {
       const row = el.closest('.gear-item');
       if (row instanceof HTMLElement) {
         row.style.borderLeftColor = newChecked ? 'var(--olive)' : 'var(--terracotta)';
-
-        const targetSection = document.querySelector(`.gear-section.${newChecked ? 'has' : 'need'}`);
-        if (targetSection) targetSection.appendChild(row);
-
-        document.querySelectorAll('.gear-section').forEach((sec) => {
-          const title = sec.querySelector('.gear-section-title');
-          if (!title) return;
-          const count = sec.querySelectorAll('.gear-item').length;
-          title.textContent = sec.classList.contains('has')
-            ? `✅ Вже є (${count})` : `🛒 Купити (${count})`;
-        });
       }
     };
 
@@ -661,7 +690,7 @@ function openGearModal(pid) {
     });
   });
 
-  // Blister slider
+  // Blister slider and reset listeners
   const slider = document.getElementById(`blister-${pid}`);
   const display = document.getElementById(`blister-txt-${pid}`);
   if (slider && display) {
@@ -671,6 +700,66 @@ function openGearModal(pid) {
       display.textContent = getBlisterText(val);
     });
   }
+
+  const resetBlisterBtn = document.getElementById(`reset-blister-${pid}`);
+  if (resetBlisterBtn && slider && display) {
+    resetBlisterBtn.addEventListener('click', () => {
+      slider.value = '0';
+      setBlisterValue(pid, 0);
+      display.textContent = getBlisterText(0);
+    });
+  }
+
+  // Filter and search logic
+  const searchInput = document.getElementById('gear-search-input');
+  const chips = document.querySelectorAll('.filter-chip');
+  let activeCat = 'all';
+  let searchQuery = '';
+
+  const updateGearFilters = () => {
+    const sections = document.querySelectorAll('.gear-section');
+    sections.forEach(section => {
+      const sectionCat = section.getAttribute('data-cat');
+      const items = section.querySelectorAll('.gear-item');
+      let visibleItemsCount = 0;
+
+      items.forEach(item => {
+        const itemName = item.querySelector('strong').textContent.toLowerCase();
+        const itemComment = (item.querySelector('.comment')?.textContent || '').toLowerCase();
+        const matchesSearch = itemName.includes(searchQuery) || itemComment.includes(searchQuery);
+
+        if (matchesSearch) {
+          item.style.display = '';
+          visibleItemsCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      const matchesCat = activeCat === 'all' || sectionCat === activeCat;
+      if (matchesCat && visibleItemsCount > 0) {
+        section.style.display = '';
+      } else {
+        section.style.display = 'none';
+      }
+    });
+  };
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      updateGearFilters();
+    });
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeCat = chip.getAttribute('data-cat') ?? 'all';
+      updateGearFilters();
+    });
+  });
 
   const modal = document.getElementById('pilgrimModal');
   if (modal) { modal.classList.add('show'); document.body.style.overflow = 'hidden'; }
@@ -866,74 +955,26 @@ function buildExercises() {
     <div id="ex-content"></div>`;
 }
 
-/** @param {string} type - figure key */
+/** * Уніфіковані іконки для вправ. 
+ * Використовуємо stroke="currentColor" для автоматичної адаптації під колір тексту/теми.
+ */
 function getExerciseSVG(type) {
+  const commonAttrs = 'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"';
   const svgs = {
-    walking: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M25 65L35 45L30 25M35 45L50 65M30 25L45 20L55 35" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="48" cy="15" r="5" stroke="var(--ink)" stroke-width="2.5"/>
-      <path d="M22 28C22 28 25 15 35 15C45 15 48 28 48 28" stroke="var(--terracotta)" stroke-width="2" stroke-dasharray="3 3"/>
-      <rect x="25" y="28" width="12" height="15" rx="2" fill="var(--terracotta)" opacity="0.2" stroke="var(--terracotta)" stroke-width="1.5"/>
-    </svg>`,
-    squat: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 65H35L30 45L45 40L55 25" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="58" cy="18" r="5" stroke="var(--ink)" stroke-width="2.5"/>
-      <path d="M35 65L45 55L60 55" stroke="var(--olive)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
-      <path d="M45 45c2 0 4 2 4 4s-2 4-4 4M55 45c-2 0-4 2-4 4s2 4 4 4" stroke="var(--ink)" stroke-width="1.5" opacity="0.3"/>
-    </svg>`,
-    stretch: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M30 65V40L60 25M30 40L15 25" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
-      <circle cx="62" cy="18" r="5" stroke="var(--ink)" stroke-width="2.5"/>
-      <path d="M30 65C45 65 60 50 60 35" stroke="var(--gold)" stroke-width="2" stroke-dasharray="4 2"/>
-    </svg>`,
-    feet: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M25 55C25 45 35 40 45 40C55 40 65 45 65 55C65 65 55 70 45 70C35 70 25 65 25 55Z" fill="var(--paper-dark)" stroke="var(--ink)" stroke-width="2"/>
-      <circle cx="30" cy="35" r="4" fill="var(--sand)"/>
-      <circle cx="40" cy="30" r="4" fill="var(--sand)"/>
-      <circle cx="50" cy="32" r="4" fill="var(--sand)"/>
-      <circle cx="60" cy="38" r="4" fill="var(--sand)"/>
-      <path d="M45 50L45 60M40 55L50 55" stroke="var(--terracotta)" stroke-width="2" stroke-linecap="round"/>
-    </svg>`,
-    morning: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="40" cy="40" r="15" stroke="var(--gold)" stroke-width="2" stroke-dasharray="4 4"/>
-      <path d="M40 10V20M40 60V70M10 40H20M60 40H70" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"/>
-      <path d="M30 50L40 30L50 50" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="40" cy="22" r="4" fill="var(--gold)"/>
-    </svg>`,
-    evening: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 50C20 33.4315 33.4315 20 50 20C53.5 20 56.8 20.6 59.9 21.7C55 24.5 52 29.8 52 35.8C52 45.2 59.8 52.8 69.2 52.8C68.1 55.9 66.5 58.7 64.3 61.1" stroke="var(--ocean)" stroke-width="2" stroke-linecap="round"/>
-      <path d="M25 65H55L40 45L25 65Z" fill="var(--paper-dark)" stroke="var(--ink)" stroke-width="2"/>
-    </svg>`,
-    feetcare: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="40" cy="55" rx="25" ry="15" stroke="var(--ink)" stroke-width="2" fill="var(--cream)"/>
-      <path d="M30 35C30 35 35 20 40 20C45 20 50 35 50 35" stroke="var(--terracotta)" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M35 55H45M40 50V60" stroke="var(--olive)" stroke-width="2"/>
-    </svg>`,
-    rest: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="15" y="45" width="50" height="15" rx="2" stroke="var(--ink)" stroke-width="2" fill="var(--sand)" opacity="0.3"/>
-      <path d="M20 45V30M60 45V35" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M35 25L45 25M30 15L50 15" stroke="var(--terracotta)" stroke-width="2" opacity="0.6"/>
-      <path d="M52 20l4 4m0-4l-4 4M58 14l4 4m0-4l-4 4" stroke="var(--ink)" stroke-width="1.5" opacity="0.4"/>
-    </svg>`,
-    mind: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M40 20C25 20 20 35 20 45C20 55 30 65 40 65C50 65 60 55 60 45C60 35 55 20 40 20Z" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M30 35C30 35 35 30 40 30C45 30 50 35 50 35" stroke="var(--terracotta)" stroke-width="2"/>
-      <circle cx="33" cy="45" r="3" fill="var(--ink)"/>
-      <circle cx="47" cy="45" r="3" fill="var(--ink)"/>
-    </svg>`,
-    physics: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M25 60L35 45L45 55L60 30" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="60" cy="30" r="4" fill="var(--terracotta)"/>
-      <path d="M25 35L35 35" stroke="var(--olive)" stroke-width="2.5" stroke-linecap="round"/>
-    </svg>`,
-    resource: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="25" y="20" width="30" height="45" rx="4" stroke="var(--ink)" stroke-width="2.5"/>
-      <path d="M35 15H45" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
-      <rect x="30" y="45" width="20" height="15" fill="var(--olive)" opacity="0.8"/>
-      <path d="M40 30V40M35 35H45" stroke="var(--terracotta)" stroke-width="2" stroke-linecap="round"/>
-    </svg>`,
+    walking: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M10 20l2-6-1-2 4 3 3-2M15 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>`,
+    squat: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M17 12l-5 5-5-5M17 17l-5 5-5-5"/></svg>`,
+    stretch: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M15 15l-3 3-3-3M15 9l-3-3-3 3"/></svg>`,
+    feet: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M5 10l3 3 3-3 3 3 3-3"/></svg>`,
+    morning: `<svg viewBox="0 0 24 24" ${commonAttrs}><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 22v-2M2 12h2M20 12h2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>`,
+    evening: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M12 3a9 9 0 1 0 9 9c0-4.6-4-9-9-9Z"/></svg>`,
+    feetcare: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M4 15c0 4 4 6 8 6s8-2 8-6"/><path d="M8 12a4 4 0 1 0 8 0"/><path d="M12 10v4M10 12h4"/></svg>`,
+    rest: `<svg viewBox="0 0 24 24" ${commonAttrs}><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+    mind: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/></svg>`,
+    physics: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
+    resource: `<svg viewBox="0 0 24 24" ${commonAttrs}><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>`,
+    sun: `<svg viewBox="0 0 24 24" ${commonAttrs}><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`
   };
-  return svgs[type] ?? '🚶';
+  return svgs[type] ?? '';
 }
 
 function renderExercises() {
@@ -1150,13 +1191,17 @@ function buildSafety() {
     <div class="section-subtitle">правила і корисне</div>
 
     <div class="safety-emergency">
-      <div class="safety-emergency-title"><svg class="icon" style="margin-right:5px;color:var(--terracotta);"><use href="#icon-sos"></svg> Екстрені номери</div>
-      <div class="safety-num">
+      <div class="safety-emergency-title"><svg class="icon" style="margin-right:5px;color:var(--paper);"><use href="#icon-sos"></svg> Екстрені номери</div>
+      <div class="safety-num" style="margin-bottom:12px;">
         <div class="safety-num-item"><span class="safety-num-val">112</span><div class="safety-num-desc">Єдиний ЄС (без SIM!)</div></div>
         <div class="safety-num-item"><span class="safety-num-val">113</span><div class="safety-num-desc">INEM Португалія</div></div>
         <div class="safety-num-item"><span class="safety-num-val">091</span><div class="safety-num-desc">Polizia Nacional ES</div></div>
         <div class="safety-num-item"><span class="safety-num-val">062</span><div class="safety-num-desc">Guardia Civil ES</div></div>
       </div>
+      <a href="tel:112" class="emergency-call-btn" id="emergencyCallBtn" onclick="return confirm('Ви впевнені, що хочете здійснити екстрений виклик 112?');">
+        <svg class="icon" style="font-size:16px; color:var(--terracotta);"><use href="#icon-phone"></use></svg>
+        <span>Викликати службу порятунку 112</span>
+      </a>
     </div>
 
     <div class="safety-card warning">
@@ -1299,6 +1344,15 @@ function getBlisterText(value) {
   return BLISTER_TEXTS[Math.min(parseInt(String(value)), 10)];
 }
 
+function formatDateDisplay(isoString) {
+  if (!isoString) return '';
+  const parts = isoString.split('-');
+  if (parts.length === 3) {
+    return `${parts[2]}.${parts[1]}`;
+  }
+  return isoString;
+}
+
 // ─────────────────────────────────────────────
 // WISDOM MODAL
 // ─────────────────────────────────────────────
@@ -1346,7 +1400,7 @@ function buildBooking() {
     const cleanComment = (alb.c ?? '').replace('(ЗАБРОНЬОВАНО)', '').replace('ЗАБРОНЬОВАНО', '').trim();
     return `
         <div class="booking-item">
-          <div class="booking-date">${day.date} · ${day.day}</div>
+          <div class="booking-date">${formatDateDisplay(day.date)} · ${day.day}</div>
           <div class="booking-main">
             <div class="booking-name">${alb.n}</div>
             <div class="booking-price">${alb.p}</div>
