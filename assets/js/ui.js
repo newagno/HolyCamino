@@ -86,6 +86,7 @@ export function renderApp(id) {
   initPilgrimCards(id);
   initDictTabs();
   initFoodRandom();
+  initFoodsList();
   initExerciseTabs();
   initChecklist();
   initWeatherLazy();
@@ -746,24 +747,59 @@ function initDictTabs() {
 // FOOD SECTION
 // ─────────────────────────────────────────────
 
+function buildFoodGridHTML(filter = 'all') {
+  return FOODS
+    .filter(f => filter === 'all' || f.country === filter)
+    .map(f => {
+      const flagSvg = f.country === 'pt'
+        ? '<svg class="icon" style="width:16px;height:16px;"><use href="#icon-flag-pt"></use></svg>'
+        : '<svg class="icon" style="width:16px;height:16px;"><use href="#icon-flag-es"></use></svg>';
+      return `
+        <div class="food-card">
+          <div class="food-card-header">
+            <div class="food-card-title">${f.n}</div>
+            <div class="food-card-flag" title="${f.country === 'pt' ? 'Португалія' : 'Іспанія'}">${flagSvg}</div>
+          </div>
+          <div class="food-card-desc">${f.d}</div>
+          <div class="food-card-city">
+            <svg class="icon" style="width:14px;height:14px;"><use href="#icon-pin"></use></svg>
+            <span>${f.city.replace(/^📍\s*/, '')}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+}
+
 function buildFood() {
   return `
     <h2 class="section-title">Що з'їсти</h2>
     <div class="section-subtitle">натисни — рандомна страва</div>
     <div class="food-randomizer">
-      <div class="food-rand-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-food"></svg> Каміно Меню</div>
-      <span class="food-spinner" id="foodSpinner" aria-hidden="true"><svg class="icon" style="width:48px;height:48px;"><use href="#icon-food"></svg></span>
+      <div class="food-rand-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-food"></use></svg> Каміно Меню</div>
+      <span class="food-spinner" id="foodSpinner" aria-hidden="true"><svg class="icon" style="width:48px;height:48px;"><use href="#icon-food"></use></svg></span>
       <div class="food-result" id="foodResult" aria-live="polite">натисни кнопку!</div>
       <div class="food-desc"   id="foodDesc">щоб дізнатися що замовити...</div>
       <div class="food-city"   id="foodCity"></div>
-      <button class="food-btn" id="foodBtn"><svg class="icon" style="margin-right:6px;"><use href="#icon-food"></svg> Що з'їсти?</button>
+      <button class="food-btn" id="foodBtn"><svg class="icon" style="margin-right:6px;"><use href="#icon-food"></use></svg> Що з'їсти?</button>
     </div>
-    <div style="background:var(--paper);padding:14px;border-radius:4px;border:1px solid var(--paper-dark);">
-      <div style="font-family:'Caveat',cursive;font-size:20px;color:var(--terracotta);margin-bottom:8px;"><svg class="icon" style="margin-right:5px;"><use href="#icon-scroll"></svg> Menu del Peregrino</div>
+    <div style="background:var(--paper);padding:14px;border-radius:4px;border:1px solid var(--paper-dark);margin-bottom:20px;">
+      <div style="font-family:'Caveat',cursive;font-size:20px;color:var(--terracotta);margin-bottom:8px;"><svg class="icon" style="margin-right:5px;"><use href="#icon-scroll"></use></svg> Menu del Peregrino</div>
       <p style="font-size:13px;color:var(--ink-soft);line-height:1.5;">
         <strong>€10-15/паломника</strong> — 3 страви (закуска / основна / десерт) + хліб + вино або сік.
         Обід 13:00-16:00, вечеря 18:30-19:00.
       </p>
+    </div>
+    
+    <div class="foods-list-wrap">
+      <div class="foods-list-title">Список згаданих продуктів, їжі та напоїв</div>
+      <div class="foods-tabs" role="tablist">
+        <button class="foods-tab active" data-filter="all" role="tab" aria-selected="true">Всі</button>
+        <button class="foods-tab" data-filter="pt" role="tab" aria-selected="false"><svg class="icon" style="width:16px;height:16px;margin-right:4px;"><use href="#icon-flag-pt"></use></svg> Португалія</button>
+        <button class="foods-tab" data-filter="es" role="tab" aria-selected="false"><svg class="icon" style="width:16px;height:16px;margin-right:4px;"><use href="#icon-flag-es"></use></svg> Іспанія / Галісія</button>
+      </div>
+      <div class="foods-grid" id="foodsGrid">
+        ${buildFoodGridHTML('all')}
+      </div>
     </div>`;
 }
 
@@ -786,9 +822,28 @@ function initFoodRandom() {
       const food = FOODS[Math.floor(Math.random() * FOODS.length)];
       result.textContent = food.n;
       desc.textContent = food.d;
-      city.innerHTML = `<svg class="icon" style="width:14px;height:14px;margin-right:4px;"><use href="#icon-pin"></svg>${food.city.replace(/^📍\s*/, '')}`;
+      city.innerHTML = `<svg class="icon" style="width:14px;height:14px;margin-right:4px;"><use href="#icon-pin"></use></svg>${food.city.replace(/^📍\s*/, '')}`;
       [result, desc, city].forEach((el) => { el.style.opacity = '1'; });
     }, 1_400);
+  });
+}
+
+function initFoodsList() {
+  const tabs = document.querySelectorAll('.foods-tab');
+  const grid = document.getElementById('foodsGrid');
+  if (!tabs.length || !grid) return;
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      const filter = tab.getAttribute('data-filter') || 'all';
+      grid.innerHTML = buildFoodGridHTML(filter);
+    });
   });
 }
 

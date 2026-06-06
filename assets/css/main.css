@@ -3423,3 +3423,163 @@ body.the-way-mode .det-book-btn:hover {
   border-color: var(--gold);
   box-shadow: 0 0 15px rgba(201, 166, 75, 0.2);
 }
+
+/* ── Foods List Section ─────────────────────────────────────── */
+.foods-list-wrap {
+  margin-top: 24px;
+}
+
+.foods-list-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--ink);
+  border-bottom: 1px solid var(--paper-dark);
+  padding-bottom: 6px;
+}
+
+.foods-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+.foods-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.foods-tab {
+  background: var(--paper);
+  border: 1px solid var(--paper-dark);
+  padding: 8px 16px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--ink-soft);
+  border-radius: 4px;
+  transition: all .2s;
+  white-space: nowrap;
+}
+
+.foods-tab:hover {
+  background: var(--paper-dark);
+}
+
+.foods-tab.active {
+  background: var(--terracotta);
+  color: var(--paper);
+  border-color: var(--terracotta);
+}
+
+.foods-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 600px) {
+  .foods-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.food-card {
+  background: var(--paper);
+  padding: 16px;
+  border-radius: 6px;
+  border: 1px solid var(--paper-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.food-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.food-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.food-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--terracotta-dark);
+  line-height: 1.2;
+}
+
+.food-card-flag {
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.food-card-desc {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.food-card-city {
+  font-family: 'Caveat', cursive;
+  font-size: 15px;
+  color: var(--olive-dark);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px dashed var(--paper-dark);
+  padding-top: 6px;
+  margin-top: 4px;
+}
+
+.night-mode .food-card-title {
+  color: var(--gold);
+}
+
+.night-mode .food-card-city {
+  color: var(--ink-soft);
+}
+
+/* Film Noir / The Way Mode overrides */
+body.the-way-mode .foods-tab {
+  background: #000;
+  border: 2px solid #FFF;
+  border-radius: 0;
+  color: #FFF;
+}
+body.the-way-mode .foods-tab.active {
+  background: #FFF;
+  color: #000;
+}
+body.the-way-mode .food-card {
+  background: #000;
+  border: 2px solid #FFF;
+  border-radius: 0;
+  box-shadow: 5px 5px 0px #FFF;
+}
+body.the-way-mode .food-card:hover {
+  background: #111;
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0px #FFF;
+}
+body.the-way-mode .food-card-title {
+  color: #FFF;
+  text-shadow: 0 0 5px rgba(255, 255, 255, .4);
+}
+body.the-way-mode .food-card-city {
+  color: #CCC;
+  border-top-color: #FFF;
+}
