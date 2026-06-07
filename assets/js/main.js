@@ -99,6 +99,40 @@ function initLoginScreen() {
       if (btn) handlePilgrimSelect(btn.dataset.pilgrim);
     });
   }
+
+  const backBtn = document.getElementById('backBtn');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      document.getElementById('step-password')?.classList.remove('active');
+      const stepChooseDiv = document.getElementById('step-choose');
+      if (stepChooseDiv) stepChooseDiv.style.display = 'block';
+      selectedPilgrim = null;
+    });
+  }
+
+  const submitBtn = document.getElementById('submitBtn');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', checkPassword);
+  }
+
+  const passwordInput = document.getElementById('passwordInput');
+  if (passwordInput) {
+    passwordInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') checkPassword();
+    });
+  }
+
+  const pwToggle = document.getElementById('pwToggle');
+  if (pwToggle) {
+    pwToggle.addEventListener('click', () => {
+      const inp = /** @type {HTMLInputElement} */ (document.getElementById('passwordInput'));
+      if (inp) {
+        pwVisible = !pwVisible;
+        inp.type = pwVisible ? 'text' : 'password';
+        pwToggle.textContent = pwVisible ? '🙈' : '👁';
+      }
+    });
+  }
 }
 
 /**
@@ -113,8 +147,71 @@ function handlePilgrimSelect(pilgrimId) {
   }
 
   selectedPilgrim = pilgrimId;
-  setSavedPilgrim(selectedPilgrim);
-  enterApp(selectedPilgrim);
+  pwAttempts = 0;
+  const p = PILGRIMS[selectedPilgrim];
+
+  // If password is empty (e.g. guest), log in directly
+  if (!p.password) {
+    setSavedPilgrim(selectedPilgrim);
+    enterApp(selectedPilgrim);
+    return;
+  }
+
+  // Otherwise show password step
+  const welcomeText = document.getElementById('passwordWelcome');
+  if (welcomeText) welcomeText.textContent = `Вітаємо, ${p.name}!`;
+
+  const hintText = document.getElementById('passwordHint');
+  if (hintText) hintText.textContent = p.hint || '';
+
+  const passwordInput = /** @type {HTMLInputElement} */ (document.getElementById('passwordInput'));
+  if (passwordInput) passwordInput.value = '';
+
+  const errorText = document.getElementById('passwordError');
+  if (errorText) {
+    errorText.classList.remove('show');
+    errorText.textContent = 'Не той пароль. Спробуй ще раз!';
+  }
+
+  const stepChoose = document.getElementById('step-choose');
+  if (stepChoose) stepChoose.style.display = 'none';
+
+  const stepPassword = document.getElementById('step-password');
+  if (stepPassword) {
+    stepPassword.classList.add('active');
+    setTimeout(() => passwordInput?.focus(), 100);
+  }
+}
+
+function checkPassword() {
+  const passwordInput = /** @type {HTMLInputElement} */ (document.getElementById('passwordInput'));
+  if (!passwordInput || !selectedPilgrim) return;
+
+  const val = passwordInput.value.trim().toLowerCase();
+  const correct = PILGRIMS[selectedPilgrim].password.toLowerCase();
+
+  if (val === correct || val.replace(/\s/g, '').includes('сантьяго')) {
+    pwAttempts = 0;
+
+    if (val.replace(/\s/g, '').includes('сантьяго')) {
+      activateTheWayMode();
+    }
+
+    setSavedPilgrim(selectedPilgrim);
+    enterApp(selectedPilgrim);
+  } else {
+    pwAttempts++;
+    const errorText = document.getElementById('passwordError');
+    if (errorText) {
+      if (pwAttempts >= 3) {
+        errorText.textContent = `Ти шо не можеш правильно написати "${correct}"?`;
+      } else {
+        errorText.textContent = 'Не той пароль. Спробуй ще раз!';
+      }
+      errorText.classList.remove('show');
+      setTimeout(() => errorText.classList.add('show'), 10);
+    }
+  }
 }
 
 // ─────────────────────────────────────────────────────────────
