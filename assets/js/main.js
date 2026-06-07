@@ -289,13 +289,17 @@ if (document.readyState === 'loading') {
 function initOfflineCache() {
   if (!('serviceWorker' in navigator)) return;
   if (!location.protocol.startsWith('http')) return;
-  
-  navigator.serviceWorker.register('./sw.js').catch(() => {
+
+  navigator.serviceWorker.register('./sw.js').then((registration) => {
+    // Змусити перевірити оновлення sw.js на сервері негайно при завантаженні
+    registration.update();
+  }).catch(() => {
     // Offline cache is a nice-to-have
   });
 
-  // Automatically reload when a new service worker takes control
+  // Автоматичне перезавантаження, коли новий SW бере керування
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     window.location.reload();
   });
 }
+
