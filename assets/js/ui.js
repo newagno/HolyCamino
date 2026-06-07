@@ -796,8 +796,17 @@ function closeGearModal() {
 let dictLang = 'ua2pt';
 export function countryChip(code) {
   if (!code) return '';
-  const upper = code.toUpperCase();
-  return `<span class="country-chip country-${code.toLowerCase()}">${upper}</span>`;
+  const c = code.toLowerCase();
+  if (c === 'ua') {
+    return `<span class="country-badge"><svg width="20" height="20" viewBox="0 0 24 24" aria-label="UA"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.5" /><clipPath id="clip-ua-js"><circle cx="12" cy="12" r="10.25" /></clipPath><g clip-path="url(#clip-ua-js)"><rect x="0" y="0" width="24" height="12" fill="#4a7b9d" /><rect x="0" y="12" width="24" height="12" fill="#e4c06b" /><path d="M12 7.5v6M10.5 8.5v3.5c0 .8.7 1.5 1.5 1.5s1.5-.7 1.5-1.5V8.5M10 9.5h4M12 14.5v1.5" stroke="var(--paper)" stroke-width="1" stroke-linecap="round" fill="none" /></g></svg></span>`;
+  }
+  if (c === 'pt') {
+    return `<span class="country-badge"><svg width="20" height="20" viewBox="0 0 24 24" aria-label="PT"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.5" /><clipPath id="clip-pt-js"><circle cx="12" cy="12" r="10.25" /></clipPath><g clip-path="url(#clip-pt-js)"><rect x="0" y="0" width="10.5" height="24" fill="var(--olive)" /><rect x="10.5" y="0" width="13.5" height="24" fill="var(--terracotta)" /><path d="M10 9.5h4v2c0 1.5-2 2.5-2 2.5s-2-1-2-2.5v-2Z" stroke="#e4c06b" stroke-width="0.8" fill="none" /><path d="M12 10v3M10.5 11.5h3" stroke="#4a7b9d" stroke-width="0.6" /></g></svg></span>`;
+  }
+  if (c === 'es') {
+    return `<span class="country-badge"><svg width="20" height="20" viewBox="0 0 24 24" aria-label="ES"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.5" /><clipPath id="clip-es-js"><circle cx="12" cy="12" r="10.25" /></clipPath><g clip-path="url(#clip-es-js)"><rect x="0" y="0" width="24" height="6" fill="var(--terracotta)" /><rect x="0" y="6" width="24" height="12" fill="#e4c06b" /><rect x="0" y="18" width="24" height="6" fill="var(--terracotta)" /><path d="M9.5 13.5h5l-1-2.5 1.5 1.5 1.5-2.5 1.5 2.5 1.5-1.5-1 2.5z" stroke="var(--terracotta)" stroke-width="0.8" fill="none" /></g></svg></span>`;
+  }
+  return '';
 }
 
 export function langPair(from, to) {
@@ -987,20 +996,89 @@ function buildExercises() {
  * Використовуємо stroke="currentColor" для автоматичної адаптації під колір тексту/теми.
  */
 function getExerciseSVG(type) {
-  const commonAttrs = 'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+  const commonAttrs = 'stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"';
   const svgs = {
-    walking: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M10 20l2-6-1-2 4 3 3-2M15 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>`,
-    squat: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M17 12l-5 5-5-5M17 17l-5 5-5-5"/></svg>`,
-    stretch: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M15 15l-3 3-3-3M15 9l-3-3-3 3"/></svg>`,
-    feet: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M5 10l3 3 3-3 3 3 3-3"/></svg>`,
-    morning: `<svg viewBox="0 0 24 24" ${commonAttrs}><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 22v-2M2 12h2M20 12h2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>`,
-    evening: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M12 3a9 9 0 1 0 9 9c0-4.6-4-9-9-9Z"/></svg>`,
-    feetcare: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M4 15c0 4 4 6 8 6s8-2 8-6"/><path d="M8 12a4 4 0 1 0 8 0"/><path d="M12 10v4M10 12h4"/></svg>`,
-    rest: `<svg viewBox="0 0 24 24" ${commonAttrs}><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
-    mind: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"/></svg>`,
-    physics: `<svg viewBox="0 0 24 24" ${commonAttrs}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
-    resource: `<svg viewBox="0 0 24 24" ${commonAttrs}><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>`,
-    sun: `<svg viewBox="0 0 24 24" ${commonAttrs}><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`
+    walking: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <circle cx="13" cy="5" r="2.5" />
+      <rect x="6" y="8" width="4" height="7" rx="1" />
+      <path d="M12 7.5v5l-2.5 5.5" />
+      <path d="M12.5 12.5l2 4 1.5 3.5" />
+      <path d="M12.5 9l3 2" />
+      <path d="M12 9l-2.5 2.5" />
+      <path d="M15.5 11l2 10" />
+      <path d="M9.5 11.5L8.5 21" />
+      <path d="M4 21h16" />
+    </svg>`,
+    squat: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <circle cx="12" cy="5" r="2.5" />
+      <path d="M12 7.5v4.5l-4.5 3 4.5 4h1" />
+      <path d="M12 9h8" />
+      <path d="M5 21h14" />
+    </svg>`,
+    stretch: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <path d="M4 21h16" />
+      <path d="M16 21v-8" />
+      <path d="M16 13l-4.5-4.5-5.5 4.5" />
+      <path d="M6 13v4" />
+      <circle cx="10.5" cy="6.5" r="2.5" />
+    </svg>`,
+    feet: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <path d="M8 10.5c.8 0 1.2 1.5 1.2 3.5s-.4 4.5-1 4.5-.8-.5-.8-2.5.2-5.5.6-5.5z" />
+      <circle cx="7.8" cy="8" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="8.9" cy="8.2" r="0.6" fill="currentColor" stroke="none" />
+      <circle cx="9.7" cy="8.7" r="0.5" fill="currentColor" stroke="none" />
+      <circle cx="10.3" cy="9.3" r="0.4" fill="currentColor" stroke="none" />
+      <circle cx="10.8" cy="10" r="0.3" fill="currentColor" stroke="none" />
+      <path d="M16 10.5c-.8 0-1.2 1.5-1.2 3.5s.4 4.5 1 4.5.8-.5.8-2.5-.2-5.5-.6-5.5z" />
+      <circle cx="16.2" cy="8" r="0.8" fill="currentColor" stroke="none" />
+      <circle cx="15.1" cy="8.2" r="0.6" fill="currentColor" stroke="none" />
+      <circle cx="14.3" cy="8.7" r="0.5" fill="currentColor" stroke="none" />
+      <circle cx="13.7" cy="9.3" r="0.4" fill="currentColor" stroke="none" />
+      <circle cx="13.2" cy="10" r="0.3" fill="currentColor" stroke="none" />
+    </svg>`,
+    morning: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <path d="M2 18h20" />
+      <path d="M4 21c2.5-1 4.5-1 7 0s4.5 1 7 0 4-1 4-1" />
+      <path d="M7.5 14a4.5 4.5 0 0 1 9 0H7.5Z" />
+      <path d="M12 4v4M6.5 7.5l2.5 2.5M17.5 7.5L14.7 10.3M3 14h2.5M18.5 14H21" />
+    </svg>`,
+    evening: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <path d="M12 3a9 9 0 1 0 9 9c0-4.3-3-8-7-8.8A6.5 6.5 0 0 1 12 3Z" />
+      <path d="M19 5v2M18 6h2M14 9v2M13 10h2M18 12v2M17 13h2" />
+    </svg>`,
+    feetcare: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <path d="M4 11v3.5c0 2.5 2 3.5 5 3.5h7c2 0 3.5-1 3.5-3.5v-.5c0-1.5-.7-2-2.5-2h-3c-1.5 0-2-1.5-2.5-3.5a2.5 2.5 0 0 0-5 0c0 .8-.3 1.5-1.5 1.5l-1 .5Z" />
+      <path d="M5.5 15h3M7 13.5v3" stroke="var(--terracotta)" stroke-width="1.5" />
+    </svg>`,
+    rest: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <path d="M5 9h12v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9Z" />
+      <path d="M17 11h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2" />
+      <path d="M2 21h18" />
+      <path d="M8 6c.5-1 1-1 1-3M11 6c.5-1 1-1 1-3M14 6c.5-1 1-1 1-3" />
+    </svg>`,
+    mind: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <path d="M12 4.5c-2.5 0-4.5 2-4.5 4.5 0 1.25.5 2.4 1.3 3.2C8 13 7.5 14 7.5 15.5c0 2 1.5 3.5 3.5 3.5.5 0 1-.1 1.5-.3.5.2 1 .3 1.5.3 2 0 3.5-1.5 3.5-3.5 0-1.5-.5-2.5-1.3-3.3c.8-.8 1.3-1.95 1.3-3.2 0-2.5-2-4.5-4.5-4.5Z" />
+      <path d="M12 4.5v14.5" />
+      <path d="M9.5 9c1 .5 1.5 0 2.5-.5" />
+      <path d="M14.5 9c-1 .5-1.5 0-2.5-.5" />
+      <path d="M9 13.5c1 .5 1.5-.5 3-1" />
+      <path d="M15 13.5c-1 .5-1.5-.5-3-1" />
+    </svg>`,
+    physics: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35Z" opacity="0.15" fill="currentColor" stroke="none" />
+      <path d="M3 12h3l2-5 3 10 2-7 2 4h4" />
+    </svg>`,
+    resource: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <rect x="3" y="6" width="15" height="12" rx="2" />
+      <path d="M21 10v4" />
+      <rect x="6" y="9" width="3" height="6" rx="0.5" fill="currentColor" stroke="none" />
+      <rect x="10.5" y="9" width="3" height="6" rx="0.5" fill="currentColor" stroke="none" />
+      <rect x="15" y="9" width="3" height="6" rx="0.5" fill="currentColor" stroke="none" />
+    </svg>`,
+    sun: `<svg viewBox="0 0 24 24" ${commonAttrs}>
+      <circle cx="12" cy="12" r="5" />
+      <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.07l2.12-2.12M17.66 6.34l2.12-2.12" />
+    </svg>`
   };
   return svgs[type] ?? '';
 }

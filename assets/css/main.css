@@ -1552,24 +1552,20 @@ body.the-way-mode .the-way-rain {
   font-size: 11px;
 }
 
-/* ── Country Chips & Lang Pairs ─────────────────────────────── */
-.country-chip {
+/* ── Country Badges & Lang Pairs ────────────────────────────── */
+.country-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 3px 6px;
-  border-radius: 4px;
-  font-family: 'Manrope', sans-serif;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  line-height: 1;
   vertical-align: middle;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: transform 0.2s;
 }
-.country-ua { background: #0057B7; color: #FFD700; }
-.country-pt { background: #006600; color: #fff; }
-.country-es { background: #AA151B; color: #F1BF00; }
+.dict-tab.active .country-badge, .foods-tab.active .country-badge {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+}
 
 .lang-pair {
   display: inline-flex;
@@ -1581,10 +1577,6 @@ body.the-way-mode .the-way-rain {
   width: 10px;
   height: 10px;
   opacity: 0.6;
-}
-.dict-tab.active .country-chip,
-.foods-tab.active .country-chip {
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
 }
 .nav-label {
   display: inline-block;
@@ -2473,10 +2465,9 @@ body.francesinha-mode .accent {
   justify-content: center;
 }
 
-.hist-icon .country-chip {
-  font-size: 13px;
-  padding: 4px 8px;
-  border-radius: 12px;
+.hist-icon .country-badge {
+  width: 24px;
+  height: 24px;
 }
 
 .hist-body {
