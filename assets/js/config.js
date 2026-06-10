@@ -458,13 +458,17 @@ export const ROUTE = [
   },
   {
     date: '2026-07-24', day: 'Пт', title: 'Santiago + Fisterra', route: 'Кінець світу + Apóstolo', km: 0, type: 'special', special: 'birthday-holiday',
-    desc: 'Ранком — Pilgrim Mass (Botafumeiro!). Автобус Monbus до Fisterra (~90 хв, €13). Захід сонця на маяку Faro de Fisterra. Повернення до Сантьяго. 🎆 23:30 — FUEGOS DEL APÓSTOLO на Praza do Obradoiro!',
+    desc: 'Ранком — Pilgrim Mass (Botafumeiro!). Автобусний тур від TOXO TRAVEL до Fisterra та Costa da Morte (€52). Повернення до Сантьяго. 🎆 23:30 — FUEGOS DEL APÓSTOLO на Praza do Obradoiro!',
     hl: 'Fuegos del Apóstolo — піротехнічний мультимедійний спектакль, що "підпалює" собор. 30,000+ людей! Приходити на Praza за 1.5 год (з 21:30). Унікальний раз на рік!',
     places: [
       { n: 'Pilgrim Mass', i: 'Соббор Botafumeiro — кадильниця 53 кг летить на 65 м. Меси: 9:30, 12:00, 19:30', m: 'https://maps.google.com/?q=Catedral+Santiago', stamp: false, secret: false },
-      { n: '🚌 Автобус Monbus → Fisterra', i: '~90 хв, €13. Розклад: monbus.es', m: 'https://maps.google.com/?q=Santiago+de+Compostela+bus+station', stamp: false, secret: false },
-      { n: 'Faro de Fisterra', i: 'Маяк. Найзахідніша точка континентальної Європи. Унікальний штемпель маяка — 0,00 km!', m: 'https://maps.google.com/?q=Faro+de+Fisterra', stamp: true, secret: true },
-      { n: '🌅 Захід сонця в Fisterra', i: '~22:00 у липні. Головна причина їхати. Паломники спалюють старий одяг (традиція)', m: 'https://maps.google.com/?q=Cabo+Fisterra', stamp: false, secret: false },
+      { n: '🚌 Тур від TOXO TRAVEL', i: 'Автобусний тур до Fisterra та Costa da Morte (€52).', m: 'https://toxotravel.gal/tour/finisterre-costa-da-morte/?lang=en', stamp: false, secret: false },
+      { n: 'Muros', i: 'Рибальське містечко XV століття, оголошене історико-художньою пам\'яткою. Аркадні будиночки рибалок, вузькі вулички, краєвиди на естуарій.', m: 'https://maps.google.com/?cid=14019262240624744100', stamp: false, secret: false },
+      { n: 'Fervenza do Xallas', i: 'Єдиний у континентальній Європі водоспад, що впадає просто в море. Річка Хальяс падає з висоти 40 метрів. Видовище особливо вражає після дощів.', m: 'https://maps.google.com/?cid=3787142362035004572', stamp: false, secret: false },
+      { n: 'Faro de Fisterra', i: '«Кінець світу» для римлян і кельтів, межа між світом живих і мертвих. Знаменитий km0 Шляху Святого Якова. Відчинено 11:00–21:00 щодня.', m: 'https://maps.google.com/?cid=2047031956054418531', stamp: true, secret: true },
+      { n: 'Fisterra', i: 'Вільний час ~1.5 години: середньовічне старе місто, рибний порт і ринок, обід з галісійською кухнею (pulpo, percebes, місцеві морепродукти).', m: 'https://maps.google.com/?cid=16639787414134346451', stamp: false, secret: false },
+      { n: 'Святилище Вірхе да Барка, Мухія', i: 'Містичне місце біля самого океану: три священних каменя з легендами, хвилі б\'ють просто біля ніг. Відчинено 10:00–18:30.', m: 'https://maps.google.com/?cid=10473366910142432116', stamp: false, secret: false },
+      { n: 'Ponte Maceira', i: 'На думку багатьох, найкрасивіше село Галісії. Романський міст XIV століття через річку Тамбре і середньовічні млини. Всього 10 хвилин від Сантьяго.', m: 'https://maps.google.com/?cid=16364930098742182097', stamp: false, secret: false },
       { n: 'Fuegos del Apóstolo 23:30', i: 'Praza do Obradoiro. Феєрверки "підпалюють" собор. Унікально раз на рік!', m: 'https://maps.google.com/?q=Praza+do+Obradoiro+Santiago', stamp: false, secret: false },
     ],
     albs: [
