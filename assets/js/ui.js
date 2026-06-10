@@ -1242,18 +1242,45 @@ function showCompostela(name) {
   modal.innerHTML = `
     <div class="compostela-parchment">
       <button class="compostela-close" id="closeCompostelaBtn">✕</button>
+      
       <div class="compostela-seal">
         <img src="assets/files/camino.svg" alt="Печатка">
       </div>
+      
       <h1 class="compostela-header">La Compostela de Preparación</h1>
       <p class="compostela-latin">Hoc ante-camino certificatum officially confirms that</p>
+      
       <div class="compostela-name">${name}</div>
+      
       <p class="compostela-text">
         has successfully completed 100% of the rigorous pre-departure preparation checklist, demonstrating absolute readiness, fortitude, and pilgrim spirit for the sacred march along the <strong>Camino Português da Costa</strong>.
       </p>
+      
+      <div class="compostela-validation-zone">
+        <div class="compostela-official-stamp">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="var(--terracotta)" stroke-width="1.5" stroke-dasharray="4 2"/>
+            <circle cx="50" cy="50" r="40" fill="none" stroke="var(--terracotta)" stroke-width="1"/>
+            <text x="50" y="32" text-anchor="middle" fill="var(--terracotta)" font-size="7" font-weight="800" letter-spacing="1">COMPOSTELA</text>
+            <text x="50" y="48" text-anchor="middle" fill="var(--terracotta)" font-size="9" font-weight="900" letter-spacing="0.5">XACÓBEO</text>
+            <text x="50" y="62" text-anchor="middle" fill="var(--terracotta)" font-size="7" font-weight="600">2026</text>
+            <path d="M35 73 Q50 82 65 73" fill="none" stroke="var(--terracotta)" stroke-width="1"/>
+          </svg>
+        </div>
+        
+        <div class="compostela-signature-block">
+          <div class="compostela-sig-handwritten">
+            <svg viewBox="0 0 150 60" aria-hidden="true">
+              <path d="M15 40 Q35 15 55 35 T95 20 T135 25 M30 45 L110 15 M70 10 C80 25 55 50 85 45" fill="none" stroke="#1e3d59" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="compostela-sign-label">Secretarius Confraternitas</div>
+        </div>
+      </div>
+      
       <div class="compostela-footer">
         <div class="compostela-date">Porto, Anno Domini 2026</div>
-        <div class="compostela-signature">Confraternitas Camino</div>
+        <div class="compostela-status">Status: Validus</div>
       </div>
     </div>
   `;

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'camino-v2-static-v30';
+const CACHE_NAME = 'camino-v2-static-v31';
 
 self.addEventListener('install', () => self.skipWaiting());
 
