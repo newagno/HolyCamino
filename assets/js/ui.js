@@ -347,19 +347,60 @@ function buildRoute() {
     const specialClass = isSpecial ? ` special ${isBirthday ? 'birthday' : isHoliday ? 'holiday' : ''}` : '';
 
     // Places
-    const placesHTML = d.places.length ? `
-      <div class="detail-section">
-        <div class="det-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-pin"></svg> Що подивитись / де поїсти</div>
-        ${d.places.map((p) => `
-          <div class="det-item">
-            <a class="det-name" href="${p.m}" target="_blank" rel="noopener noreferrer">
-              ${injectIcons(p.n)}
-              ${p.secret ? '<span class="secret-tag"><svg class="icon" style="font-size:9px;margin-right:2px;"><use href="#icon-shush"></svg> секрет</span>' : ''}
-              ${p.stamp ? '<span class="stamp-mark">✦</span>' : ''}
-            </a>
-            <div class="det-info">${injectIcons(p.i)}</div>
-          </div>`).join('')}
-      </div>` : '';
+    const placesHTML = d.places.length ? (() => {
+      let html = '';
+      let inTourGroup = false;
+
+      d.places.forEach((p) => {
+        const isChild = p.n.trim().startsWith('↳');
+        
+        if (isChild) {
+          if (!inTourGroup) {
+            html += `<div class="tour-children">`;
+            inTourGroup = true;
+          }
+          
+          const cleanName = p.n.replace(/^↳\s*/, '');
+          html += `
+            <div class="det-item tour-child">
+              <a class="det-name" href="${p.m}" target="_blank" rel="noopener noreferrer">
+                ${injectIcons(cleanName)}
+                ${p.secret ? '<span class="secret-tag"><svg class="icon" style="font-size:9px;margin-right:2px;"><use href="#icon-shush"></svg> секрет</span>' : ''}
+                ${p.stamp ? '<span class="stamp-mark">✦</span>' : ''}
+              </a>
+              <div class="det-info">${injectIcons(p.i)}</div>
+            </div>`;
+        } else {
+          if (inTourGroup) {
+            html += `</div>`;
+            inTourGroup = false;
+          }
+          
+          const isTourParent = p.n.includes('Тур') || p.n.includes('TRAVEL');
+          const itemClass = isTourParent ? 'det-item tour-parent' : 'det-item';
+
+          html += `
+            <div class="${itemClass}">
+              <a class="det-name" href="${p.m}" target="_blank" rel="noopener noreferrer">
+                ${injectIcons(p.n)}
+                ${p.secret ? '<span class="secret-tag"><svg class="icon" style="font-size:9px;margin-right:2px;"><use href="#icon-shush"></svg> секрет</span>' : ''}
+                ${p.stamp ? '<span class="stamp-mark">✦</span>' : ''}
+              </a>
+              <div class="det-info">${injectIcons(p.i)}</div>
+            </div>`;
+        }
+      });
+
+      if (inTourGroup) {
+        html += `</div>`;
+      }
+
+      return `
+        <div class="detail-section">
+          <div class="det-title"><svg class="icon" style="margin-right:5px;"><use href="#icon-pin"></svg> Що подивитись / де поїсти</div>
+          ${html}
+        </div>`;
+    })() : '';
 
     // Albergues
     const bookingState = getBookingState();
@@ -1185,12 +1226,60 @@ function buildCheck() {
     <div class="check-progress" id="checkProgress">
       <div class="check-progress-bar"><span style="width:${pct}%"></span></div>
       <div class="check-progress-text">${doneCount}/${total} готово · ${pct}%</div>
-      <div class="compostela-prep" id="compostelaPrep">${pct === 100 ? '<button class="cert-btn" onclick="document.getElementById(\'certModal\').classList.add(\'visible\')"><svg class="icon" style="margin-right:5px;"><use href="#icon-scroll"></use></svg> Отримати Compostela</button>' : 'Фініш чекліста відкриє маленьку нагороду.'}</div>
+      <div class="compostela-prep" id="compostelaPrep">${pct === 100 ? '<button class="compostela-btn-gold" id="getCompostelaBtn">🏆 Отримати Compostela</button>' : 'Фініш чекліста відкриє маленьку нагороду.'}</div>
     </div>
     ${cats}`;
 }
 
+function showCompostela(name) {
+  let modal = document.getElementById('compostelaModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'compostelaModal';
+    modal.className = 'compostela-overlay';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = `
+    <div class="compostela-parchment">
+      <button class="compostela-close" id="closeCompostelaBtn">✕</button>
+      <div class="compostela-seal">
+        <img src="assets/files/camino.svg" alt="Печатка">
+      </div>
+      <h1 class="compostela-header">La Compostela de Preparación</h1>
+      <p class="compostela-latin">Hoc ante-camino certificatum officially confirms that</p>
+      <div class="compostela-name">${name}</div>
+      <p class="compostela-text">
+        has successfully completed 100% of the rigorous pre-departure preparation checklist, demonstrating absolute readiness, fortitude, and pilgrim spirit for the sacred march along the <strong>Camino Português da Costa</strong>.
+      </p>
+      <div class="compostela-footer">
+        <div class="compostela-date">Porto, Anno Domini 2026</div>
+        <div class="compostela-signature">Confraternitas Camino</div>
+      </div>
+    </div>
+  `;
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  
+  const closeBtn = document.getElementById('closeCompostelaBtn');
+  const hide = () => {
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+  };
+  closeBtn?.addEventListener('click', hide);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) hide();
+  });
+}
+
 function initChecklist() {
+  const attachCompostelaEvent = () => {
+    document.getElementById('getCompostelaBtn')?.addEventListener('click', () => {
+      const badge = document.getElementById('userBadge');
+      const name = badge ? badge.getAttribute('data-name') : 'Паломнику';
+      showCompostela(name);
+    });
+  };
+
   const updateProgress = () => {
     const items = [...document.querySelectorAll('.check-item')];
     const done = items.filter((item) => item.classList.contains('done')).length;
@@ -1201,7 +1290,14 @@ function initChecklist() {
     const prize = document.getElementById('compostelaPrep');
     if (bar) /** @type {HTMLElement} */ (bar).style.width = `${pct}%`;
     if (text) text.textContent = `${done}/${total} готово · ${pct}%`;
-    if (prize) prize.innerHTML = pct === 100 ? '<button class="cert-btn" onclick="document.getElementById(\'certModal\').classList.add(\'visible\')"><svg class="icon" style="margin-right:5px;"><use href="#icon-scroll"></use></svg> Отримати Compostela</button>' : 'Фініш чекліста відкриє маленьку нагороду.';
+    if (prize) {
+      if (pct === 100) {
+        prize.innerHTML = '<button class="compostela-btn-gold" id="getCompostelaBtn">🏆 Отримати Compostela</button>';
+        attachCompostelaEvent();
+      } else {
+        prize.textContent = 'Фініш чекліста відкриє маленьку нагороду.';
+      }
+    }
   };
 
   document.querySelectorAll('.check-item').forEach((el) => {
@@ -1222,6 +1318,9 @@ function initChecklist() {
       }
     });
   });
+
+  // Ініціалізація події при першому рендері, якщо вже 100%
+  attachCompostelaEvent();
 }
 
 // ─────────────────────────────────────────────
