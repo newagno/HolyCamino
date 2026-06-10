@@ -3421,6 +3421,65 @@ body.the-way-mode .det-book-btn:hover {
   cursor: pointer;
 }
 
+/* Certificate Modal */
+.cert-content {
+  background: var(--cream);
+  padding: 20px;
+  border-radius: 4px;
+  max-width: 450px;
+  width: 95%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.cert-border {
+  border: 4px double var(--gold);
+  padding: 30px 20px;
+  background: var(--paper);
+  position: relative;
+}
+.cert-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.cert-subtitle {
+  font-family: 'Caveat', cursive;
+  font-size: 24px;
+  color: var(--terracotta);
+  text-transform: none;
+}
+.cert-body {
+  font-size: 16px;
+  color: var(--ink);
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+.cert-seal {
+  margin: 0 auto;
+}
+.cert-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+}
+.cert-btn:hover {
+  background: #b59543;
+}
+
 /* Booking Section */
 .booking-list {
   display: grid;

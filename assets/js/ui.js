@@ -1185,7 +1185,7 @@ function buildCheck() {
     <div class="check-progress" id="checkProgress">
       <div class="check-progress-bar"><span style="width:${pct}%"></span></div>
       <div class="check-progress-text">${doneCount}/${total} готово · ${pct}%</div>
-      <div class="compostela-prep" id="compostelaPrep">${pct === 100 ? 'Compostela підготовки відкрита!' : 'Фініш чекліста відкриє маленьку нагороду.'}</div>
+      <div class="compostela-prep" id="compostelaPrep">${pct === 100 ? '<button class="cert-btn" onclick="document.getElementById(\'certModal\').classList.add(\'visible\')"><svg class="icon" style="margin-right:5px;"><use href="#icon-scroll"></use></svg> Отримати Compostela</button>' : 'Фініш чекліста відкриє маленьку нагороду.'}</div>
     </div>
     ${cats}`;
 }
@@ -1201,7 +1201,7 @@ function initChecklist() {
     const prize = document.getElementById('compostelaPrep');
     if (bar) /** @type {HTMLElement} */ (bar).style.width = `${pct}%`;
     if (text) text.textContent = `${done}/${total} готово · ${pct}%`;
-    if (prize) prize.textContent = pct === 100 ? 'Compostela підготовки відкрита!' : 'Фініш чекліста відкриє маленьку нагороду.';
+    if (prize) prize.innerHTML = pct === 100 ? '<button class="cert-btn" onclick="document.getElementById(\'certModal\').classList.add(\'visible\')"><svg class="icon" style="margin-right:5px;"><use href="#icon-scroll"></use></svg> Отримати Compostela</button>' : 'Фініш чекліста відкриє маленьку нагороду.';
   };
 
   document.querySelectorAll('.check-item').forEach((el) => {

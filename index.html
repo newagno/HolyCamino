@@ -272,6 +272,26 @@
     </div>
   </div>
 
+  <!-- ========== CERTIFICATE MODAL ========== -->
+  <div class="modal" id="certModal" role="dialog" aria-modal="true" aria-label="Compostela">
+    <div class="modal-content cert-content">
+      <button class="modal-close" id="certModalClose" onclick="document.getElementById('certModal').classList.remove('visible')" aria-label="Закрити"><svg class="icon"><use href="#icon-close"></svg></button>
+      <div id="certModalBody">
+        <div class="cert-border">
+          <div class="cert-title">La Compostela<br><span class="cert-subtitle">de Preparación</span></div>
+          <div class="cert-body">
+            Цим підтверджується, що паломник успішно пройшов усі етапи підготовки до <strong>Шляху Святого Якова</strong> (Camino Português). 
+            <br><br>Рюкзак спаковано, квитки куплено, кросівки розношено.
+            <br><br>Buen Camino!
+          </div>
+          <div class="cert-seal">
+            <svg class="icon" style="width:40px;height:40px;color:var(--terracotta);"><use href="#shell-shape"></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ========== PERSISTENT UI BUTTONS ========== -->
   <button class="ocean-toggle" id="oceanToggle" title="Звуки океану" aria-label="Увімкнути звуки океану"><svg class="icon"><use href="#icon-wave"></svg></button>
   <audio id="oceanAudio" loop src="assets/files/sound_ocean.mp3" preload="none"></audio>
