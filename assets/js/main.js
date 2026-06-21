@@ -302,6 +302,15 @@ window.addEventListener('pagehide', flushPendingWrites);
 
 function initOfflineCache() {
   if (navigator.serviceWorker) {
+    if (location.protocol.startsWith('http')) {
+      navigator.serviceWorker.register('./sw.js').then((registration) => {
+        // Змусити перевірити оновлення sw.js на сервері негайно при завантаженні
+        registration.update();
+      }).catch((err) => {
+        log('SW registration failed:', err);
+      });
+    }
+
     navigator.serviceWorker.addEventListener('controllerchange', () => {
       window.location.reload();
     });
