@@ -529,3 +529,14 @@ export function injectIcons(text) {
 
   return result;
 }
+
+export function countryChip(cc) {
+  if (cc === 'pt') return `<span style="display:inline-block;padding:2px 6px;background:var(--forest);color:#fff;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;line-height:1;">PT</span>`;
+  if (cc === 'es') return `<span style="display:inline-block;padding:2px 6px;background:var(--terracotta);color:#fff;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;line-height:1;">ES</span>`;
+  if (cc === 'ua') return `<span style="display:inline-block;padding:2px 6px;background:#0057b7;color:#ffd700;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;line-height:1;">UA</span>`;
+  return '';
+}
+
+export function langPair(from, to) {
+  return `<span style="display:inline-flex;align-items:center;gap:4px;">${countryChip(from)} <svg class="icon" style="width:10px;height:10px;opacity:.6;"><use href="#icon-right"></svg> ${countryChip(to)}</span>`;
+}

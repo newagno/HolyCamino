@@ -257,8 +257,13 @@ export function setSavedPilgrim(id) {
   setJSON(KEYS.PILGRIM, id);
 }
 
-export function clearSavedPilgrim() {
-  remove(KEYS.PILGRIM);
+export async function clearSavedPilgrim() {
+  memoryCache[KEYS.PILGRIM] = undefined;
+  try {
+    await execTx(STATE_STORE, 'readwrite', (store) => {
+      store.delete(KEYS.PILGRIM);
+    });
+  } catch(e) {}
 }
 
 // ─── Gear checklist (per pilgrim) ────────────────────────────────────────────

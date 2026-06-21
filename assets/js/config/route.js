@@ -314,7 +314,6 @@ export const ROUTE = [
     hl: 'Fuegos del Apóstolo — піротехнічний мультимедійний спектакль, що "підпалює" собор. 30,000+ людей! Приходити на Praza за 1.5 год (з 21:30). Унікальний раз на рік!',
     places: [
       { n: 'Pilgrim Mass', i: 'Соббор Botafumeiro — кадильниця 53 кг летить на 65 м. Меси: 9:30, 12:00, 19:30', m: 'https://maps.google.com/?q=Catedral+Santiago', stamp: false, secret: false },
-      { n: '🚌 Тур від TOXO TRAVEL', i: 'Автобусний тур до Fisterra та Costa da Morte (€52). Усі наступні локації входять у його маршрут.<br><a class="det-book-btn" href="https://toxotravel.gal/tour/finisterre-costa-da-morte/?lang=en" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;margin-top:8px;background:var(--olive);color:#fff;border-color:var(--olive);padding:4px 8px;border-radius:6px;text-decoration:none;"><svg class="icon" style="margin-right:5px;"><use href="#icon-ticket"></use></svg> Забронювати тур</a>', m: 'https://toxotravel.gal/tour/finisterre-costa-da-morte/?lang=en', stamp: false, secret: false },
       { n: '↳ Muros', i: 'Рибальське містечко XV століття, оголошене історико-художньою пам\'яткою. Аркадні будиночки рибалок, вузькі вулички, краєвиди на естуарій.', m: 'https://maps.google.com/?cid=14019262240624744100', stamp: false, secret: false },
       { n: '↳ Fervenza do Xallas', i: 'Єдиний у континентальній Європі водоспад, що впадає просто в море. Річка Хальяс падає з висоти 40 метрів. Видовище особливо вражає після дощів.', m: 'https://maps.google.com/?cid=3787142362035004572', stamp: false, secret: false },
       { n: '↳ Faro de Fisterra', i: '«Кінець світу» для римлян і кельтів, межа між світом живих і мертвих. Знаменитий km0 Шляху Святого Якова. Відчинено 11:00–21:00 щодня.', m: 'https://maps.google.com/?cid=2047031956054418531', stamp: true, secret: true },
@@ -324,6 +323,7 @@ export const ROUTE = [
       { n: 'Fuegos del Apóstolo 23:30', i: 'Praza do Obradoiro. Феєрверки "підпалюють" собор. Унікально раз на рік!', m: 'https://maps.app.goo.gl/X1CbYs88YUqhAkFy9', stamp: false, secret: false },
     ],
     albs: [
+      { n: '🚌 Тур від TOXO TRAVEL', p: '€52', b: 'https://toxotravel.gal/tour/finisterre-costa-da-morte/?lang=en', m: 'https://toxotravel.gal/tour/finisterre-costa-da-morte/?lang=en', c: 'Автобусний тур до Fisterra. (Усі нижчезазначені локації входять у тур)' },
       { n: 'Albergue Seminario Menor', p: '€24-40/паломника (приватна кімната)', b: 'https://seminariomenorsantiago.com/', m: 'https://maps.app.goo.gl/XR4o3RkZ2RE6v21M6', c: '🔴 Бронювати ПРЯМО через сайт, НЕ через Booking!' },
       { n: 'Albergue Peregrinos San Lázaro', p: '€10/паломника', b: 'https://www.alberguescaminosantiago.com/albergue-san-lazaro-santiago/', m: 'https://maps.app.goo.gl/xGw2o1wvFmRTdmqP7' },
     ],

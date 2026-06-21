@@ -4,9 +4,12 @@ import { formatDateDisplay } from '../utils.js';
 
 export async function buildBooking() {
   const { ROUTE } = await import('../config/route.js');
-  const booked = ROUTE.flatMap((day) => day.albs
-    .filter((a) => a.c?.includes('ЗАБРОНЬОВАНО'))
-    .map((alb) => ({ day, alb })));
+  const dynState = getBookingState();
+  const booked = ROUTE.flatMap((day, dayIdx) => day.albs
+    .map((alb, albIdx) => ({ day, alb, dayIdx, albIdx }))
+    .filter(({ alb, dayIdx, albIdx }) => 
+      alb.c?.includes('ЗАБРОНЬОВАНО') || dynState[`${dayIdx}-${albIdx}`]
+    ));
 
   return `
     <h2 class="section-title">Бронювання</h2>

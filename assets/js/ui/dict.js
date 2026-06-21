@@ -1,4 +1,4 @@
-import { injectIcons } from '../utils.js';
+import { injectIcons, langPair } from '../utils.js';
 
 export let dictLang = 'es'; // Global state inside module
 

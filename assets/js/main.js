@@ -254,8 +254,8 @@ async function enterApp(id) {
 /**
  * Clear the saved session and reload the page.
  */
-export function logout() {
-  clearSavedPilgrim();
+export async function logout() {
+  await clearSavedPilgrim();
   location.reload();
 }
 

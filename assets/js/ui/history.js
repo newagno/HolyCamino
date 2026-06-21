@@ -1,4 +1,4 @@
-// No config import needed
+import { countryChip } from '../utils.js';
 
 export function buildHistory() {
   return `
