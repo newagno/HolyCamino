@@ -303,8 +303,10 @@ window.addEventListener('pagehide', flushPendingWrites);
 // ─────────────────────────────────────────────────────────────
 
 function initOfflineCache() {
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    window.location.reload();
-  });
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      window.location.reload();
+    });
+  }
 }
 
