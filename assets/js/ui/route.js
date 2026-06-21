@@ -3,8 +3,8 @@ import { getBookingState } from '../storage.js';
 import { buildStageProgress, formatDateDisplay, injectIcons, loadWeatherForDay } from '../utils.js';
 
 export async function buildRoute() {
-  const { ROUTE, CITY_COORDS } = await import('../config/route.js');
-  const stageHTML = await buildStageProgress();
+  const { ROUTE, CITY_COORDS, STAGE_DAYS } = await import('../config/route.js');
+  const stageHTML = buildStageProgress(STAGE_DAYS);
   const lastIdx = ROUTE.length - 1;
   const bookingState = getBookingState();
 
@@ -225,10 +225,11 @@ export async function initWeatherLazy() {
   const { ROUTE, CITY_COORDS } = await import('../config/route.js');
   ROUTE.forEach((d, i) => {
     if (!CITY_COORDS[d.date]) return;
+    const coords = CITY_COORDS[d.date];
     const card = document.querySelector(`.day-card[data-i="${i}"]`);
     if (!card) return;
 
-    const load = () => loadWeatherForDay(i, d.date, d.date);
+    const load = () => loadWeatherForDay(i, d.date, coords, d.date);
     card.addEventListener('click', load, { once: true });
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') load();

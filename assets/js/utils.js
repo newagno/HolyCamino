@@ -131,8 +131,7 @@ export function startCountdown() {
  * Shown in the Route section header.
  * @returns {string} HTML string
  */
-export async function buildStageProgress() {
-  const { STAGE_DAYS } = await import('./config/route.js');
+export function buildStageProgress(STAGE_DAYS) {
   const now = new Date();
   const start = new Date('2026-07-11T16:25:00');
   const end = new Date('2026-07-24');
@@ -183,9 +182,7 @@ let weatherController = null;
  * @param {string} dateStr  - Display date e.g. "13.07"
  * @param {string} coordKey - Key in CITY_COORDS e.g. "13.07"
  */
-export async function loadWeatherForDay(dayIdx, dateStr, coordKey) {
-  const { CITY_COORDS } = await import('./config/route.js');
-  const coords = CITY_COORDS[coordKey];
+export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
   if (!coords) return;
 
   const container = document.getElementById(`weather-${dayIdx}`);
