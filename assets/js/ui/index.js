@@ -120,8 +120,9 @@ async function handleTabSwitch(tab) {
         const { buildPilgrims } = await import('./gear.js');
         target.innerHTML = buildPilgrims();
       } else if (sectionId === 's-dict') {
-        const { buildDict } = await import('./dict.js');
+        const { buildDict, renderDict } = await import('./dict.js');
         target.innerHTML = buildDict();
+        renderDict();
       } else if (sectionId === 's-food') {
         const { buildFood, initFoodRandom } = await import('./food.js');
         target.innerHTML = await buildFood();

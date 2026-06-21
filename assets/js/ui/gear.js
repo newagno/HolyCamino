@@ -1,7 +1,28 @@
-import { PILGRIMS, CHECKLIST } from '../config.js';
-import { getGearState, toggleGearItem, getChecklistState, toggleChecklistItem } from '../storage.js';
-import { injectIcons } from '../utils.js';
-import { showCompostela } from '../easterEggs.js';
+import { PILGRIMS, CHECKLIST, BLISTER_TEXTS } from '../config.js';
+import { getGearState, toggleGearItem, getChecklistState, toggleChecklistItem, getBlisterValue, setBlisterValue } from '../storage.js';
+import { injectIcons, startConfetti } from '../utils.js';
+
+function getBlisterText(val) {
+  return BLISTER_TEXTS[Math.min(val, BLISTER_TEXTS.length - 1)];
+}
+
+export function showCompostela(name) {
+  const canvas = document.getElementById('confettiCanvas');
+  if (canvas) startConfetti(canvas);
+  const modalHTML = `
+    <div id="compostelaModal" class="modal show" role="dialog" aria-modal="true" style="display:flex;">
+      <div class="modal-content" style="background:#fff;color:#333;text-align:center;padding:30px;">
+        <button class="modal-close" onclick="this.closest('.modal').remove()" aria-label="Закрити"><svg class="icon"><use href="#icon-close"></svg></button>
+        <h2 style="font-family:serif;font-size:24px;color:#8a1538;margin-bottom:10px;">Compostela</h2>
+        <div style="font-size:14px;margin-bottom:20px;font-style:italic;">Цим підтверджується, що</div>
+        <div style="font-size:28px;font-weight:bold;margin-bottom:20px;font-family:serif;">${name}</div>
+        <div style="font-size:14px;margin-bottom:20px;font-style:italic;">успішно завершив підготовку до Шляху Святого Якова!</div>
+        <div style="font-size:40px;">🏆🐚🇪🇸</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('modal-root').innerHTML = modalHTML;
+}
 
 export function buildPilgrims() {
   const cards = Object.entries(PILGRIMS)

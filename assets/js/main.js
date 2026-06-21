@@ -27,7 +27,6 @@ import {
   initScrollTop,
   initOcean,
   initPeixeLightbox,
-  initClickRipple,
   applyNightMode,
   shouldAutoNight,
   log
@@ -74,7 +73,6 @@ function boot() {
   initScrollTop();
   initOcean();
   initPeixeLightbox();
-  initClickRipple();
   initBirthdayOverlay();
   initMemesModal();
   initTheWayAudio();
