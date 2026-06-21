@@ -5,7 +5,7 @@
  * @module utils
  */
 
-import { TRIP_START, CITY_COORDS, WMO_ICON, WMO_DESC, STAGE_DAYS, TOTAL_KM } from './config.js';
+import { TRIP_START, WMO_ICON, WMO_DESC, TOTAL_KM } from './config.js';
 import { getCache, setCache } from './storage.js';
 
 /**
@@ -131,7 +131,8 @@ export function startCountdown() {
  * Shown in the Route section header.
  * @returns {string} HTML string
  */
-export function buildStageProgress() {
+export async function buildStageProgress() {
+  const { STAGE_DAYS } = await import('./config/route.js');
   const now = new Date();
   const start = new Date('2026-07-11T16:25:00');
   const end = new Date('2026-07-24');
@@ -183,6 +184,7 @@ let weatherController = null;
  * @param {string} coordKey - Key in CITY_COORDS e.g. "13.07"
  */
 export async function loadWeatherForDay(dayIdx, dateStr, coordKey) {
+  const { CITY_COORDS } = await import('./config/route.js');
   const coords = CITY_COORDS[coordKey];
   if (!coords) return;
 

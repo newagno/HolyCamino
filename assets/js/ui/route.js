@@ -4,7 +4,7 @@ import { buildStageProgress, formatDateDisplay, injectIcons, loadWeatherForDay }
 
 export async function buildRoute() {
   const { ROUTE, CITY_COORDS } = await import('../config/route.js');
-  const stageHTML = buildStageProgress();
+  const stageHTML = await buildStageProgress();
   const lastIdx = ROUTE.length - 1;
   const bookingState = getBookingState();
 

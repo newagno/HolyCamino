@@ -1,4 +1,4 @@
-import { SAFETY, USEFUL_PHRASES } from '../config.js';
+// No config import needed
 import { injectIcons } from '../utils.js';
 
 export function buildSafety() {

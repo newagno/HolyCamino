@@ -1,4 +1,4 @@
-import { PLAYLIST } from '../config.js';
+// No config import needed
 
 export function buildPlaylist() {
   return `

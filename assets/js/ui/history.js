@@ -1,4 +1,4 @@
-import { HISTORY } from '../config.js';
+// No config import needed
 
 export function buildHistory() {
   return `
