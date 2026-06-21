@@ -54,10 +54,20 @@ export async function renderApp(id) {
 }
 
 function initGlobalEvents(appContainer) {
-  appContainer.addEventListener('click', handleGlobalClick);
-  appContainer.addEventListener('keydown', (e) => {
+  document.addEventListener('click', handleGlobalClick);
+  document.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       if (handleGlobalClick(e)) e.preventDefault();
+    } else if (e.key === 'Escape') {
+      const openModal = document.querySelector('.modal.show');
+      if (openModal) {
+        if (openModal.id === 'pilgrimModal') {
+          import('./gear.js').then(m => m.closeGearModal()).catch(console.error);
+        } else {
+          openModal.classList.remove('show');
+          document.body.style.overflow = '';
+        }
+      }
     }
   });
 }
@@ -98,6 +108,12 @@ function handleGlobalClick(e) {
 
   const checkItem = e.target.closest('.check-item');
   if (checkItem && !handled) { import('./gear.js').then(m => m.handleCheckItem(checkItem)).catch(console.error); handled = true; }
+
+  const pilgrimClose = e.target.closest('#pilgrimModalClose');
+  if (pilgrimClose && !handled) { import('./gear.js').then(m => m.closeGearModal()).catch(console.error); handled = true; }
+
+  const pilgrimModal = e.target.closest('#pilgrimModal');
+  if (pilgrimModal && e.target === pilgrimModal && !handled) { import('./gear.js').then(m => m.closeGearModal()).catch(console.error); handled = true; }
 
   return handled;
 }
