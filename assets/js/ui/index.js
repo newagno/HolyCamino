@@ -3,7 +3,7 @@ import { buildHeader, buildNav, buildHero, initNavArrows, initUserMenu } from '.
 import { buildRoute, handleDayCardClick, initRouteTools, initWeatherLazy } from './route.js';
 import { initShellEgg, initLogoLongPress } from '../easterEggs.js';
 
-export function renderApp(id) {
+export async function renderApp(id) {
   const p = PILGRIMS[id];
   const app = document.getElementById('app');
   if (!app) return;
@@ -18,7 +18,7 @@ export function renderApp(id) {
     <p id="navSectionLive" class="sr-only" aria-live="polite" aria-atomic="true"></p>
 
     <main class="content-wrapper">
-      <section class="section active" id="s-route" data-loaded="true">${buildRoute()}</section>
+      <section class="section active" id="s-route" data-loaded="true">${await buildRoute()}</section>
       <section class="section" id="s-booking"></section>
       <section class="section" id="s-history"></section>
       <section class="section" id="s-pilgrims"></section>
@@ -112,7 +112,7 @@ async function handleTabSwitch(tab) {
     try {
       if (sectionId === 's-booking') {
         const { buildBooking } = await import('./booking.js');
-        target.innerHTML = buildBooking();
+        target.innerHTML = await buildBooking();
       } else if (sectionId === 's-history') {
         const { buildHistory } = await import('./history.js');
         target.innerHTML = buildHistory();
@@ -124,7 +124,7 @@ async function handleTabSwitch(tab) {
         target.innerHTML = buildDict();
       } else if (sectionId === 's-food') {
         const { buildFood, initFoodRandom } = await import('./food.js');
-        target.innerHTML = buildFood();
+        target.innerHTML = await buildFood();
         initFoodRandom();
       } else if (sectionId === 's-exercises') {
         const { buildExercises } = await import('./exercises.js');

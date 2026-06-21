@@ -1,4 +1,4 @@
-import { PILGRIMS, GEAR, CHECKLIST } from '../config.js';
+import { PILGRIMS, CHECKLIST } from '../config.js';
 import { getGearState, toggleGearItem, getChecklistState, toggleChecklistItem } from '../storage.js';
 import { injectIcons } from '../utils.js';
 import { showCompostela } from '../easterEggs.js';
@@ -19,7 +19,8 @@ export function buildPilgrims() {
     <div class="pilgrim-cards">${cards}</div>`;
 }
 
-export function openGearModal(pid) {
+export async function openGearModal(pid) {
+  const { GLOBAL_GEAR } = await import('../config/gear.js');
   const p = PILGRIMS[pid];
   const state = getGearState(pid);
 

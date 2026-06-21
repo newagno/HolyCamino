@@ -1,9 +1,9 @@
-
-import { ROUTE, CITY_COORDS } from '../config.js';
+// No static import for config
 import { getBookingState } from '../storage.js';
 import { buildStageProgress, formatDateDisplay, injectIcons, loadWeatherForDay } from '../utils.js';
 
-export function buildRoute() {
+export async function buildRoute() {
+  const { ROUTE, CITY_COORDS } = await import('../config/route.js');
   const stageHTML = buildStageProgress();
   const lastIdx = ROUTE.length - 1;
   const bookingState = getBookingState();
@@ -188,7 +188,8 @@ export function buildRouteTools() {
 }
 
 export function initRouteTools() {
-  document.getElementById('todayRouteBtn')?.addEventListener('click', () => {
+  document.getElementById('todayRouteBtn')?.addEventListener('click', async () => {
+    const { ROUTE } = await import('../config/route.js');
     const today = new Date();
     const key = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     const found = ROUTE.findIndex((day) => day.date === key);
@@ -220,7 +221,8 @@ export function handleDayCardClick(card) {
 }
 
 
-export function initWeatherLazy() {
+export async function initWeatherLazy() {
+  const { ROUTE, CITY_COORDS } = await import('../config/route.js');
   ROUTE.forEach((d, i) => {
     if (!CITY_COORDS[d.date]) return;
     const card = document.querySelector(`.day-card[data-i="${i}"]`);

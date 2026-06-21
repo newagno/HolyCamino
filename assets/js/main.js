@@ -17,6 +17,8 @@ import {
   getSavedPilgrim,
   setSavedPilgrim,
   clearSavedPilgrim,
+  initStorage,
+  flushPendingWrites
 } from './storage.js';
 import { renderApp } from './ui/index.js';
 import {
@@ -28,6 +30,7 @@ import {
   initClickRipple,
   applyNightMode,
   shouldAutoNight,
+  log
 } from './utils.js';
 import {
   initKonamiCode,
@@ -63,7 +66,7 @@ let pwVisible = false;
  * restores a saved session or shows the login screen.
  */
 function boot() {
-  console.log('Booting app...');
+  log('Booting app...');
   // Apply night-mode before anything renders
   if (shouldAutoNight()) applyNightMode(true);
 
@@ -140,9 +143,9 @@ function initLoginScreen() {
  * @param {string} pilgrimId
  */
 function handlePilgrimSelect(pilgrimId) {
-  console.log('Pilgrim selected:', pilgrimId);
+  log('Pilgrim selected:', pilgrimId);
   if (!pilgrimId || !PILGRIMS[pilgrimId]) {
-    console.warn('Invalid pilgrim ID:', pilgrimId);
+    log('Invalid pilgrim ID:', pilgrimId);
     return;
   }
 
@@ -222,12 +225,12 @@ function checkPassword() {
  * Transition from login to the main app.
  * @param {string} id - Pilgrim ID key from PILGRIMS
  */
-function enterApp(id) {
+async function enterApp(id) {
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('app').classList.add('visible');
 
   // Render the full UI
-  renderApp(id);
+  await renderApp(id);
 
   // Ensure we start at the top of the page
   window.scrollTo(0, 0);
@@ -278,26 +281,28 @@ document.addEventListener('click', e => {
 });
 
 // ─────────────────────────────────────────────────────────────
+// Event listeners
+// ─────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await initStorage();
+  boot();
+});
+
+// Flush pending IndexedDB writes before the app is frozen or closed
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    flushPendingWrites();
+  }
+});
+
+window.addEventListener('pagehide', flushPendingWrites);
+
+// ─────────────────────────────────────────────────────────────
 // Boot
 // ─────────────────────────────────────────────────────────────
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', boot);
-} else {
-  boot();
-}
 
 function initOfflineCache() {
-  if (!('serviceWorker' in navigator)) return;
-  if (!location.protocol.startsWith('http')) return;
-
-  navigator.serviceWorker.register('./sw.js').then((registration) => {
-    // Змусити перевірити оновлення sw.js на сервері негайно при завантаженні
-    registration.update();
-  }).catch(() => {
-    // Offline cache is a nice-to-have
-  });
-
-  // Автоматичне перезавантаження, коли новий SW бере керування
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     window.location.reload();
   });

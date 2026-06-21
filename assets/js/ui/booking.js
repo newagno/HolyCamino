@@ -1,8 +1,9 @@
-import { ROUTE } from '../config.js';
+// No static import for ROUTE
 import { getBookingState, toggleBookingItem } from '../storage.js';
 import { formatDateDisplay } from '../utils.js';
 
-export function buildBooking() {
+export async function buildBooking() {
+  const { ROUTE } = await import('../config/route.js');
   const booked = ROUTE.flatMap((day) => day.albs
     .filter((a) => a.c?.includes('ЗАБРОНЬОВАНО'))
     .map((alb) => ({ day, alb })));
@@ -31,7 +32,7 @@ export function buildBooking() {
   `;
 }
 
-export function handleBookingToggle(btn) {
+export async function handleBookingToggle(btn) {
   const key = btn.getAttribute('data-key');
   if (!key) return;
   const isBooked = toggleBookingItem(key);
@@ -55,5 +56,5 @@ export function handleBookingToggle(btn) {
     }
   }
   const bookingSec = document.getElementById('s-booking');
-  if (bookingSec) bookingSec.innerHTML = buildBooking();
+  if (bookingSec) bookingSec.innerHTML = await buildBooking();
 }

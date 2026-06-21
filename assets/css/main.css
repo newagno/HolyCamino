@@ -3682,7 +3682,34 @@ body.the-way-mode .det-book-btn:hover {
 
 @media (min-width: 600px) {
   .foods-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+/* ── Hardware Acceleration & Reduced Motion ───────────────── */
+.shell-bg svg {
+  will-change: transform;
+}
+
+.confetti-piece {
+  will-change: transform;
+}
+
+@keyframes shellFloat {
+  0% { transform: translate3d(0, 0px, 0) rotate(-10deg) scale(1.1); }
+  50% { transform: translate3d(0, -15px, 0) rotate(5deg) scale(1.15); }
+  100% { transform: translate3d(0, 0px, 0) rotate(-10deg) scale(1.1); }
+}
+
+@keyframes confettiFall {
+  0% { transform: translate3d(0, -10px, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate3d(0, 100vh, 0) rotate(720deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell-bg, .confetti-piece, .the-way-rain, .lightning-strike::after {
+    display: none !important;
+    animation: none !important;
   }
 }
 

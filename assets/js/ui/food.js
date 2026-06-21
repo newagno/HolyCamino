@@ -1,6 +1,6 @@
-import { FOOD_CATEGORIES, FOODS, RAND_STRINGS } from '../config.js';
+import { countryChip } from '../utils.js';
 
-export function buildFood() {
+export async function buildFood() {
   return `
     <h2 class="section-title">Що з'їсти</h2>
     <div class="section-subtitle">натисни — рандомна страва</div>
@@ -24,16 +24,17 @@ export function buildFood() {
       <div class="foods-list-title">Список згаданих продуктів, їжі та напоїв</div>
       <div class="foods-tabs" role="tablist">
         <button class="foods-tab active" data-filter="all" role="tab" aria-selected="true">Всі</button>
-        <button class="foods-tab" data-filter="pt" role="tab" aria-selected="false">${countryChip('pt')} <span class="nav-label" style="margin-left:6px;">Португалія</span></button>
-        <button class="foods-tab" data-filter="es" role="tab" aria-selected="false">${countryChip('es')} <span class="nav-label" style="margin-left:6px;">Іспанія / Галісія</span></button>
+        <button class="foods-tab" data-filter="pt" role="tab" aria-selected="false"><span class="nav-label" style="margin-left:6px;">Португалія</span></button>
+        <button class="foods-tab" data-filter="es" role="tab" aria-selected="false"><span class="nav-label" style="margin-left:6px;">Іспанія / Галісія</span></button>
       </div>
       <div class="foods-grid" id="foodsGrid">
-        ${buildFoodGridHTML('all')}
+        ${await buildFoodGridHTML('all')}
       </div>
     </div>`;
 }
 
-export function buildFoodGridHTML(filter = 'all') {
+export async function buildFoodGridHTML(filter = 'all') {
+  const { FOODS } = await import('../config/food.js');
   return FOODS
     .filter(f => filter === 'all' || f.country === filter)
     .map(f => `
@@ -51,14 +52,17 @@ export function buildFoodGridHTML(filter = 'all') {
     `).join('');
 }
 
-export function handleFoodsTab(tab) {
+export async function handleFoodsTab(tab) {
   const tabs = document.querySelectorAll('.foods-tab');
   tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
   tab.classList.add('active');
   tab.setAttribute('aria-selected', 'true');
   const filter = tab.getAttribute('data-filter') || 'all';
   const grid = document.getElementById('foodsGrid');
-  if (grid) grid.innerHTML = buildFoodGridHTML(filter);
+  if (grid) {
+    grid.innerHTML = '<div style="padding:20px;">Завантаження...</div>';
+    grid.innerHTML = await buildFoodGridHTML(filter);
+  }
 }
 
 export function initFoodRandom() {
@@ -76,7 +80,8 @@ export function initFoodRandom() {
 
     [result, desc, city].forEach((el) => { el.style.opacity = '0'; });
 
-    setTimeout(() => {
+    setTimeout(async () => {
+      const { FOODS } = await import('../config/food.js');
       const food = FOODS[Math.floor(Math.random() * FOODS.length)];
       result.textContent = food.n;
       desc.textContent = food.d;

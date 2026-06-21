@@ -1,4 +1,4 @@
-import { DICTIONARY } from '../config.js';
+import { injectIcons } from '../utils.js';
 
 export let dictLang = 'es'; // Global state inside module
 
@@ -13,8 +13,20 @@ export function buildDict() {
     <div id="dict-content"></div>`;
 }
 
-export function renderDict() {
+export async function renderDict() {
   const isPT = dictLang === 'ua2pt';
+
+  const content = document.getElementById('dict-content');
+  if (content) content.innerHTML = '<div style="padding:20px;text-align:center;">Завантаження...</div>';
+
+  let DICTIONARY;
+  try {
+    const mod = await import('../config/dict.js');
+    DICTIONARY = mod.DICTIONARY;
+  } catch (err) {
+    if (content) content.innerHTML = '<div class="error">Помилка завантаження словника</div>';
+    return;
+  }
 
   const html = Object.values(DICTIONARY).map((cat) => {
     const phrases = cat.phrases.map((ph) => {
@@ -37,7 +49,6 @@ export function renderDict() {
     return `<div class="dict-category"><div class="dict-cat-title">${cat.title}</div>${phrases}</div>`;
   }).join('');
 
-  const content = document.getElementById('dict-content');
   if (content) content.innerHTML = html;
 }
 

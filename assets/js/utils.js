@@ -6,6 +6,23 @@
  */
 
 import { TRIP_START, CITY_COORDS, WMO_ICON, WMO_DESC, STAGE_DAYS, TOTAL_KM } from './config.js';
+import { getCache, setCache } from './storage.js';
+
+/**
+ * Безпечне логування: виводить інформацію лише в локальному середовищі
+ */
+export function log(...args) {
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    console.log(...args);
+  }
+}
+
+export function formatDateDisplay(dateStr) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return dateStr;
+  
+  const parts = dateStr.split('-');
+  return `${parts[2]}.${parts[1]}`;
+}
 
 // ─────────────────────────────────────────────
 // CONFETTI
@@ -206,59 +223,71 @@ export async function loadWeatherForDay(dayIdx, dateStr, coordKey) {
     return;
   }
 
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
+  let data = null;
+  const cacheKey = `weather_${coordKey}`;
+  const cached = await getCache(cacheKey);
+  const TTL = 4 * 60 * 60 * 1000; // 4 hours in ms
 
-  // Скасовуємо попередній запит, якщо він ще виконується
-  if (weatherController) {
-    weatherController.abort();
-  }
-  weatherController = new AbortController();
+  if (cached && cached.timestamp && (Date.now() - cached.timestamp < TTL)) {
+    data = cached.data;
+  } else {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
 
-  // Запобіжник від "вічного" очікування (таймаут 8 секунд)
-  const timeoutId = setTimeout(() => weatherController.abort(), 8000);
+    // Скасовуємо попередній запит, якщо він ще виконується
+    if (weatherController) {
+      weatherController.abort();
+    }
+    weatherController = new AbortController();
 
-  try {
-    const resp = await fetch(url, { signal: weatherController.signal });
-    clearTimeout(timeoutId); // Очищаємо таймаут при успіху
+    // Запобіжник від "вічного" очікування (таймаут 8 секунд)
+    const timeoutId = setTimeout(() => weatherController.abort(), 8000);
 
-    if (!resp.ok) throw new Error(`HTTP error: ${resp.status}`);
+    try {
+      const resp = await fetch(url, { signal: weatherController.signal });
+      clearTimeout(timeoutId); // Очищаємо таймаут при успіху
 
-    const data = await resp.json();
-    const wc = data.daily.weathercode[0];
-    const tmax = Math.round(data.daily.temperature_2m_max[0]);
-    const tmin = Math.round(data.daily.temperature_2m_min[0]);
-    const icon = WMO_ICON[wc] ?? 'sun';
-    const desc = WMO_DESC[wc] ?? '';
+      if (!resp.ok) throw new Error(`HTTP error: ${resp.status}`);
 
-    const ponchoAdvice = (tmax > 22 || wc >= 61)
-      ? `<div style="margin-top:8px;font-size:12px;color:#fff;background:rgba(200,85,61,0.8);padding:6px 10px;border-radius:4px;text-align:center;"><svg class="icon" style="margin-right:5px;"><use href="#icon-rain"></svg> Рекомендуємо пончо в рюкзаку!</div>`
-      : '';
-
-    wdg.innerHTML = `
-      <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
-        <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
-        <div class="weather-grid">
-          <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-${icon}"></svg></span><div class="weather-temp">${tmax}°</div><div class="weather-desc">${desc}</div></div>
-          <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-sun"></svg></span><div class="weather-temp">${tmax}°</div><div class="weather-desc">День</div></div>
-          <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-moon"></svg></span><div class="weather-temp">${tmin}°</div><div class="weather-desc">Ніч</div></div>
-        </div>
-        ${ponchoAdvice}
-      </a>`;
-  } catch (err) {
-    if (err.name === 'AbortError') {
-      // Запит скасовано (швидкий клік або таймаут). Мовчки перериваємо виконання.
+      data = await resp.json();
+      await setCache(cacheKey, { timestamp: Date.now(), data });
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        // Запит скасовано (швидкий клік або таймаут). Мовчки перериваємо виконання.
+        return;
+      }
+      console.error('Weather fetch error:', err);
+      wdg.innerHTML = `
+        <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
+          <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
+          <div style="font-size:13px;opacity:0.8;text-align:center;padding:10px 0;">
+            Помилка завантаження.<br>
+            <span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Переглянути в Google ↗</span>
+          </div>
+        </a>`;
       return;
     }
-    console.error('Weather fetch error:', err);
-    wdg.innerHTML = `
-      <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
-        <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
-        <div style="font-size:13px;opacity:0.8;text-align:center;padding:10px 0;">
-          Помилка завантаження.<br>
-          <span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Переглянути в Google ↗</span>
-        </div>
-      </a>`;
   }
+
+  const wc = data.daily.weathercode[0];
+  const tmax = Math.round(data.daily.temperature_2m_max[0]);
+  const tmin = Math.round(data.daily.temperature_2m_min[0]);
+  const icon = WMO_ICON[wc] ?? 'sun';
+  const desc = WMO_DESC[wc] ?? '';
+
+  const ponchoAdvice = (tmax > 22 || wc >= 61)
+    ? `<div style="margin-top:8px;font-size:12px;color:#fff;background:rgba(200,85,61,0.8);padding:6px 10px;border-radius:4px;text-align:center;"><svg class="icon" style="margin-right:5px;"><use href="#icon-rain"></svg> Рекомендуємо пончо в рюкзаку!</div>`
+    : '';
+
+  wdg.innerHTML = `
+    <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
+      <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
+      <div class="weather-grid">
+        <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-${icon}"></svg></span><div class="weather-temp">${tmax}°</div><div class="weather-desc">${desc}</div></div>
+        <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-sun"></svg></span><div class="weather-temp">${tmax}°</div><div class="weather-desc">День</div></div>
+        <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-moon"></svg></span><div class="weather-temp">${tmin}°</div><div class="weather-desc">Ніч</div></div>
+      </div>
+      ${ponchoAdvice}
+    </a>`;
 }
 
 // ─────────────────────────────────────────────
