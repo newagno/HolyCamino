@@ -9,7 +9,7 @@
  */
 
 const DB_NAME = 'CaminoDB';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const STATE_STORE = 'stateStore';
 const CACHE_STORE = 'cacheStore';
 
@@ -39,6 +39,9 @@ function openDB() {
       }
       if (!database.objectStoreNames.contains(CACHE_STORE)) {
         database.createObjectStore(CACHE_STORE);
+      }
+      if (!database.objectStoreNames.contains('errorStore')) {
+        database.createObjectStore('errorStore', { autoIncrement: true });
       }
     };
     request.onsuccess = (event) => {
@@ -330,4 +333,51 @@ export function getNightModePreference() {
 
 export function setNightModePreference(on) {
   setJSON(KEYS.NIGHT_MODE, on);
+}
+
+// ─── Field Debugger ─────────────────────────────────────────────────────
+
+/**
+ * Write an error object to errorStore (autoIncrement key).
+ * @param {{ timestamp: number, type: string, message: string, stack: string }} errorData
+ */
+export async function logErrorToDB(errorData) {
+  try {
+    await execTx('errorStore', 'readwrite', (store) => {
+      store.add(errorData);
+    });
+  } catch {
+    // Silently fail — logger must never throw
+  }
+}
+
+/**
+ * Read all records from errorStore, sorted newest-first.
+ * @returns {Promise<Array>}
+ */
+export async function getErrorsFromDB() {
+  try {
+    return await execTx('errorStore', 'readonly', (store) => {
+      return new Promise((res, rej) => {
+        const req = store.getAll();
+        req.onsuccess = () => res(req.result);
+        req.onerror  = () => rej(req.error);
+      });
+    }) ?? [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Delete all records from errorStore.
+ */
+export async function clearErrorsFromDB() {
+  try {
+    await execTx('errorStore', 'readwrite', (store) => {
+      store.clear();
+    });
+  } catch {
+    // Silently fail
+  }
 }

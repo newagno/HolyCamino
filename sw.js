@@ -1,4 +1,4 @@
-const CACHE_NAME = 'camino-v2-static-v34';
+const CACHE_NAME = 'camino-v2-static-v35';
 
 const urlsToCache = [
   './',
@@ -27,10 +27,19 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
+  // Do NOT call skipWaiting() here automatically.
+  // Activation is triggered explicitly by the user via the update banner.
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
   );
+});
+
+// Receive the SKIP_WAITING signal from the page's update banner.
+// Only fires when the user explicitly clicks "Оновити".
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', (event) => {

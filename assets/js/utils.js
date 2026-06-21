@@ -171,15 +171,69 @@ export function buildStageProgress(STAGE_DAYS) {
 }
 
 // ─────────────────────────────────────────────
+// GEOLOCATION
+// ─────────────────────────────────────────────
+
+/**
+ * Wraps navigator.geolocation.getCurrentPosition in a Promise.
+ * Returns { lat, lon } on success, or null on error / denied / timeout.
+ * @param {number} [timeout=4000] - Timeout in ms
+ * @returns {Promise<{lat: number, lon: number} | null>}
+ */
+export function getUserLocation(timeout = 4000) {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) {
+      resolve(null);
+      return;
+    }
+
+    const timer = setTimeout(() => resolve(null), timeout + 100);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        clearTimeout(timer);
+        resolve({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        });
+      },
+      () => {
+        clearTimeout(timer);
+        resolve(null);
+      },
+      {
+        enableHighAccuracy: false,
+        timeout,
+        maximumAge: 5 * 60 * 1000, // accept cached position up to 5 min old
+      }
+    );
+  });
+}
+
+// ─────────────────────────────────────────────
 // WEATHER
 // ─────────────────────────────────────────────
 
 let weatherController = null;
 
 /**
+ * Returns a YYYY-MM-DD string for local today.
+ * @returns {string}
+ */
+function localTodayISO() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+/**
  * Lazy-load weather for one day card. Called on card click (once).
+ * Uses GPS coordinates when the target date is today; falls back to static coords otherwise.
  * @param {number} dayIdx   - Index into ROUTE array
  * @param {string} dateStr  - Display date e.g. "13.07"
+ * @param {object} coords   - Static coords { lat, lon, name }
  * @param {string} coordKey - Key in CITY_COORDS e.g. "13.07"
  */
 export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
@@ -191,7 +245,7 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
   const wdg = container.querySelector('.weather-widget');
   if (!wdg) return;
 
-  // Build an ISO date from format
+  // ── Resolve ISO date from coordKey ──────────────────────────
   let isoDate = coordKey;
   let displayDate = dateStr;
   if (coordKey.includes('-')) {
@@ -204,12 +258,35 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
     const [dd, mm] = coordKey.split('.');
     isoDate = `2026-${mm}-${dd}`;
   }
+
+  // ── Temporal check: is the target date today? ────────────────
+  const today = localTodayISO();
+  const isToday = isoDate === today;
+
+  // ── Geolocation (only for today) ────────────────────────────
+  let effectiveLat = coords.lat;
+  let effectiveLon = coords.lon;
+
+  if (isToday) {
+    const gps = await getUserLocation(4000);
+    if (gps) {
+      effectiveLat = gps.lat;
+      effectiveLon = gps.lon;
+    }
+  }
+
+  // ── Cache key includes actual coordinates used ───────────────
+  // Round to 4 decimal places (~11 m precision) to keep key stable for nearby positions
+  const latKey = effectiveLat.toFixed(4);
+  const lonKey = effectiveLon.toFixed(4);
+  const cacheKey = `weather_${isoDate}_${latKey}_${lonKey}`;
+
+  // ── Temporal window check (Open-Meteo 16-day limit) ─────────
   const targetDate = new Date(isoDate);
   const diffDays = (targetDate - new Date()) / 86_400_000;
 
   const extLink = `https://www.google.com/search?q=погода+${encodeURIComponent(coords.name)}+${displayDate}`;
 
-  // Open-Meteo only has a 16-day forecast window
   if (diffDays > 14) {
     wdg.innerHTML = `
       <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
@@ -222,28 +299,28 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
     return;
   }
 
+  // ── Try IndexedDB cache first ────────────────────────────────
   let data = null;
-  const cacheKey = `weather_${coordKey}`;
   const cached = await getCache(cacheKey);
-  const TTL = 4 * 60 * 60 * 1000; // 4 hours in ms
+  const TTL = 4 * 60 * 60 * 1000; // 4 hours
 
   if (cached && cached.timestamp && (Date.now() - cached.timestamp < TTL)) {
     data = cached.data;
   } else {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${effectiveLat}&longitude=${effectiveLon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
 
-    // Скасовуємо попередній запит, якщо він ще виконується
+    // Cancel any in-flight request
     if (weatherController) {
       weatherController.abort();
     }
     weatherController = new AbortController();
 
-    // Запобіжник від "вічного" очікування (таймаут 8 секунд)
+    // Hard 8-second timeout guard
     const timeoutId = setTimeout(() => weatherController.abort(), 8000);
 
     try {
       const resp = await fetch(url, { signal: weatherController.signal });
-      clearTimeout(timeoutId); // Очищаємо таймаут при успіху
+      clearTimeout(timeoutId);
 
       if (!resp.ok) throw new Error(`HTTP error: ${resp.status}`);
 
@@ -251,7 +328,6 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
       await setCache(cacheKey, { timestamp: Date.now(), data });
     } catch (err) {
       if (err.name === 'AbortError') {
-        // Запит скасовано (швидкий клік або таймаут). Мовчки перериваємо виконання.
         return;
       }
       console.error('Weather fetch error:', err);
@@ -267,6 +343,7 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
     }
   }
 
+  // ── Render weather widget ────────────────────────────────────
   const wc = data.daily.weathercode[0];
   const tmax = Math.round(data.daily.temperature_2m_max[0]);
   const tmin = Math.round(data.daily.temperature_2m_min[0]);

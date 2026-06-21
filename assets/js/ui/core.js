@@ -2,6 +2,113 @@
 import { PILGRIMS } from '../config.js';
 import { applyNightMode } from '../utils.js';
 
+// ─────────────────────────────────────────────────────────────
+// Field Debugger
+// ─────────────────────────────────────────────────────────────
+
+/** Render the error log overlay. Called after 5 rapid taps on the header title. */
+async function showErrorLog() {
+  // Dynamic import keeps storage.js out of the regular module graph for this UI file
+  const { getErrorsFromDB, clearErrorsFromDB } = await import('../storage.js');
+  const errors = await getErrorsFromDB();
+
+  // Newest first, cap at 20 entries
+  const recent = errors.slice().reverse().slice(0, 20);
+
+  // Remove existing overlay if present
+  document.getElementById('field-debugger-overlay')?.remove();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'field-debugger-overlay';
+  Object.assign(overlay.style, {
+    position:   'fixed',
+    inset:      '0',
+    zIndex:     '999999',
+    background: '#000',
+    color:      '#e0e0e0',
+    fontFamily: 'monospace',
+    fontSize:   '12px',
+    lineHeight: '1.5',
+    overflowY:  'auto',
+    padding:    '16px',
+    boxSizing:  'border-box',
+  });
+
+  const toolbar = `
+    <div style="display:flex;align-items:center;justify-content:space-between;
+                 padding-bottom:12px;border-bottom:1px solid #333;margin-bottom:12px;">
+      <strong style="font-size:14px;color:#b04632;">&#x1F41E; Field Debugger — ${recent.length} / ${errors.length} помилок</strong>
+      <span style="display:flex;gap:8px;">
+        <button id="fd-clear-btn" style="background:#b04632;color:#fff;border:none;
+          border-radius:4px;padding:6px 12px;cursor:pointer;font-family:monospace;font-size:12px;">
+          Очистити
+        </button>
+        <button id="fd-close-btn" style="background:#333;color:#e0e0e0;border:none;
+          border-radius:4px;padding:6px 12px;cursor:pointer;font-family:monospace;font-size:12px;">
+          ✕ Закрити
+        </button>
+      </span>
+    </div>`;
+
+  const rows = recent.length === 0
+    ? '<p style="color:#666;font-style:italic;">Помилок не знайдено. Все чисто! ✨</p>'
+    : recent.map((err, i) => `
+      <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #1a1a1a;">
+        <div style="color:#888;margin-bottom:4px;">
+          #${recent.length - i} &nbsp;•&nbsp;
+          <span style="color:#e0c060;">${err.type}</span> &nbsp;•&nbsp;
+          ${new Date(err.timestamp).toLocaleString('uk-UA')}
+        </div>
+        <div style="color:#ff6b6b;margin-bottom:4px;">${escHtml(err.message)}</div>
+        ${err.stack ? `<pre style="margin:0;color:#666;font-size:11px;white-space:pre-wrap;word-break:break-all;">${escHtml(err.stack)}</pre>` : ''}
+      </div>`).join('');
+
+  overlay.innerHTML = toolbar + rows;
+  document.body.appendChild(overlay);
+
+  document.getElementById('fd-close-btn').addEventListener('click', () => overlay.remove());
+  document.getElementById('fd-clear-btn').addEventListener('click', async () => {
+    await clearErrorsFromDB();
+    overlay.remove();
+  });
+}
+
+/** HTML-escape helper to safely display error messages. */
+function escHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+/**
+ * Attach 5-rapid-tap trigger to .header-title.
+ * Inter-tap gap must be ≤ 400 ms; resets automatically on timeout or after 5 taps.
+ */
+export function initFieldDebugger() {
+  const title = document.querySelector('.header-title');
+  if (!title) return;
+
+  let tapCount = 0;
+  let lastTap  = 0;
+  const THRESHOLD = 5;
+  const GAP_MS    = 400;
+
+  title.addEventListener('click', () => {
+    const now = Date.now();
+    if (now - lastTap > GAP_MS) {
+      tapCount = 0; // reset on slow tap
+    }
+    lastTap = now;
+    tapCount++;
+    if (tapCount >= THRESHOLD) {
+      tapCount = 0;
+      showErrorLog();
+    }
+  });
+}
+
+
 export const NAV_TABS = [
   { id: 'route', label: 'Маршрут' },
   { id: 'booking', label: 'Бронювання' },
@@ -141,6 +248,9 @@ export function initUserMenu() {
       applyNightMode(!document.body.classList.contains('night-mode'));
     });
   }
+
+  // Activate the 5-tap Field Debugger trigger on the header title
+  initFieldDebugger();
 }
 
 export function buildHero(p, id) {

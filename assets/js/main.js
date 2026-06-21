@@ -18,7 +18,8 @@ import {
   setSavedPilgrim,
   clearSavedPilgrim,
   initStorage,
-  flushPendingWrites
+  flushPendingWrites,
+  logErrorToDB,
 } from './storage.js';
 import { renderApp } from './ui/index.js';
 import {
@@ -41,6 +42,29 @@ import {
   isTheWayActive,
   initTheWayAudio,
 } from './easterEggs.js';
+
+// ─────────────────────────────────────────────────────────────
+// Global Error Interceptors (Field Debugger)
+// ─────────────────────────────────────────────────────────────
+
+window.addEventListener('error', (event) => {
+  logErrorToDB({
+    timestamp: Date.now(),
+    type: 'window.error',
+    message: event.message ?? String(event.error),
+    stack: event.error?.stack ?? `${event.filename}:${event.lineno}:${event.colno}`,
+  }).catch(() => {});
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  const reason = event.reason;
+  logErrorToDB({
+    timestamp: Date.now(),
+    type: 'promise.rejection',
+    message: reason instanceof Error ? reason.message : String(reason),
+    stack: reason instanceof Error ? (reason.stack ?? '') : '',
+  }).catch(() => {});
+});
 
 // ─────────────────────────────────────────────────────────────
 // Internal state
@@ -300,20 +324,122 @@ window.addEventListener('pagehide', flushPendingWrites);
 // Boot
 // ─────────────────────────────────────────────────────────────
 
-function initOfflineCache() {
-  if (navigator.serviceWorker) {
-    if (location.protocol.startsWith('http')) {
-      navigator.serviceWorker.register('./sw.js').then((registration) => {
-        // Змусити перевірити оновлення sw.js на сервері негайно при завантаженні
-        registration.update();
-      }).catch((err) => {
-        log('SW registration failed:', err);
-      });
-    }
+/**
+ * Shows a non-blocking update banner when a new Service Worker is waiting.
+ * User explicitly triggers the reload — no surprise interruptions.
+ * @param {ServiceWorker} worker - The waiting (installed) Service Worker
+ */
+function showUpdateBanner(worker) {
+  // Prevent duplicates if called multiple times
+  if (document.getElementById('sw-update-banner')) return;
 
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      window.location.reload();
+  const banner = document.createElement('div');
+  banner.id = 'sw-update-banner';
+  Object.assign(banner.style, {
+    position:        'fixed',
+    bottom:          '0',
+    left:            '0',
+    right:           '0',
+    zIndex:          '99999',
+    display:         'flex',
+    alignItems:      'center',
+    justifyContent:  'space-between',
+    gap:             '12px',
+    padding:         '14px 20px',
+    background:      '#000000',
+    borderTop:       '1px solid #333',
+    boxShadow:       '0 -4px 24px rgba(0,0,0,0.6)',
+    fontFamily:      'Manrope, sans-serif',
+    fontSize:        '14px',
+    color:           '#e0e0e0',
+    animation:       'sw-slide-up 0.35s cubic-bezier(.22,1,.36,1) both',
+  });
+
+  // Inject keyframe once
+  if (!document.getElementById('sw-banner-style')) {
+    const style = document.createElement('style');
+    style.id = 'sw-banner-style';
+    style.textContent = `
+      @keyframes sw-slide-up {
+        from { transform: translateY(100%); opacity: 0; }
+        to   { transform: translateY(0);   opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  banner.innerHTML = `
+    <span style="display:flex;align-items:center;gap:8px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b04632"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      Доступна нова версія маршруту
+    </span>
+    <button id="sw-update-btn" style="
+      padding: 8px 18px;
+      background: #b04632;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: Manrope, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    ">Оновити</button>
+  `;
+
+  document.body.appendChild(banner);
+
+  const btn = document.getElementById('sw-update-btn');
+  if (btn) {
+    btn.addEventListener('mouseenter', () => { btn.style.background = '#c8553d'; });
+    btn.addEventListener('mouseleave', () => { btn.style.background = '#b04632'; });
+    btn.addEventListener('click', () => {
+      btn.textContent = '...';
+      btn.disabled = true;
+      worker.postMessage({ type: 'SKIP_WAITING' });
     });
   }
+}
+
+function initOfflineCache() {
+  if (!navigator.serviceWorker) return;
+  if (!location.protocol.startsWith('http')) return;
+
+  // Auto-reload the moment the new SW takes control
+  let reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (reloading) return; // Guard against double-reload
+    reloading = true;
+    window.location.reload();
+  });
+
+  navigator.serviceWorker.register('./sw.js')
+    .then((reg) => {
+      // Trigger an immediate network check for a new sw.js
+      reg.update();
+
+      // Track any worker discovered during this session
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        if (!newWorker) return;
+
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            // A new SW is waiting AND there is an existing controller:
+            // this is a genuine update (not first install) — notify the user.
+            showUpdateBanner(newWorker);
+          }
+        });
+      });
+    })
+    .catch((err) => {
+      log('SW registration failed:', err);
+    });
 }
 
