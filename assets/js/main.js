@@ -18,7 +18,7 @@ import {
   setSavedPilgrim,
   clearSavedPilgrim,
 } from './storage.js';
-import { renderApp, buildPilgrimList } from './ui.js';
+import { renderApp } from './ui/index.js';
 import {
   startCountdown,
   initParallax,

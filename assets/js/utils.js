@@ -157,6 +157,8 @@ export function buildStageProgress() {
 // WEATHER
 // ─────────────────────────────────────────────
 
+let weatherController = null;
+
 /**
  * Lazy-load weather for one day card. Called on card click (once).
  * @param {number} dayIdx   - Index into ROUTE array
@@ -206,8 +208,21 @@ export async function loadWeatherForDay(dayIdx, dateStr, coordKey) {
 
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
 
+  // Скасовуємо попередній запит, якщо він ще виконується
+  if (weatherController) {
+    weatherController.abort();
+  }
+  weatherController = new AbortController();
+
+  // Запобіжник від "вічного" очікування (таймаут 8 секунд)
+  const timeoutId = setTimeout(() => weatherController.abort(), 8000);
+
   try {
-    const resp = await fetch(url);
+    const resp = await fetch(url, { signal: weatherController.signal });
+    clearTimeout(timeoutId); // Очищаємо таймаут при успіху
+
+    if (!resp.ok) throw new Error(`HTTP error: ${resp.status}`);
+
     const data = await resp.json();
     const wc = data.daily.weathercode[0];
     const tmax = Math.round(data.daily.temperature_2m_max[0]);
@@ -229,7 +244,12 @@ export async function loadWeatherForDay(dayIdx, dateStr, coordKey) {
         </div>
         ${ponchoAdvice}
       </a>`;
-  } catch {
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      // Запит скасовано (швидкий клік або таймаут). Мовчки перериваємо виконання.
+      return;
+    }
+    console.error('Weather fetch error:', err);
     wdg.innerHTML = `
       <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
         <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
@@ -450,4 +470,34 @@ export function initClickRipple() {
       }, i * 150);
     }
   }, { passive: true });
+}
+
+
+export function injectIcons(text) {
+  if (!text) return '';
+  let result = text;
+  
+  const mapping = {
+    '🍽️': 'food',
+    '🚶': 'walk',
+    '🛥️': 'boat',
+    '⚡': 'bolt',
+    '🎆': 'sparkles',
+    '🎸': 'guitar',
+    '🛫': 'plane',
+    '⚠️': 'warning',
+    '🤫': 'shush',
+    '📍': 'pin',
+    '⛪': 'church',
+    '🐚': 'shell-shape',
+    '🦴': 'bandage',
+    '🎒': 'backpack'
+  };
+
+  Object.entries(mapping).forEach(([emoji, icon]) => {
+    const regex = new RegExp(emoji, 'g');
+    result = result.replace(regex, `<svg class="icon" style="width:1.1em;height:1.1em;vertical-align:text-bottom;margin-right:2px;"><use href="#icon-${icon}"></svg>`);
+  });
+
+  return result;
 }

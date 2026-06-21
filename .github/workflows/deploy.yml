@@ -1,0 +1,44 @@
+name: Deploy HolyCamino to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Inject Cache Hash into Service Worker
+        run: |
+          COMMIT_HASH=${GITHUB_SHA::7}
+          # Надійна заміна всього рядка з кешем
+          sed -i "s/^const CACHE_NAME = .*/const CACHE_NAME = 'camino-v2-static-${COMMIT_HASH}';/" sw.js
+          echo "Cache injected: camino-v2-static-${COMMIT_HASH}"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
