@@ -1,9 +1,8 @@
-const CACHE_NAME = 'camino-v2-static-v31';
+const CACHE_NAME = 'camino-v2-static-v32';
 
 self.addEventListener('install', () => self.skipWaiting());
 
 self.addEventListener('activate', (event) => {
-  // Delete all old caches on activate
   event.waitUntil(
     caches.keys()
       .then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
