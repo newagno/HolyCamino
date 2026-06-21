@@ -87,11 +87,25 @@ h3 {
 .icon {
   width: 1.2em;
   height: 1.2em;
-  fill: currentColor;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   display: inline-block;
   vertical-align: middle;
   flex-shrink: 0;
+  transition: color 0.2s ease, stroke-width 0.2s ease;
 }
+
+/* Розміри для різних контекстів */
+.icon-sm { width: 16px; height: 16px; }
+.icon-md { width: 24px; height: 24px; }
+.icon-lg { width: 32px; height: 32px; }
+
+/* Специфічні контексти */
+.nav-icon { stroke-width: 1.5; }
+.day-tag .icon { stroke-width: 2.5; width: 10px; height: 10px; }
 
 /* ── Shell Background ───────────────────────────────────────── */
 .shell-bg {
