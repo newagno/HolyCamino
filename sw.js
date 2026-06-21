@@ -1,4 +1,4 @@
-const CACHE_NAME = 'camino-v2-static-v35';
+const CACHE_NAME = 'camino-v2-static-v36';
 
 const urlsToCache = [
   './',
@@ -21,8 +21,25 @@ const urlsToCache = [
   './assets/js/ui/safety.js',
   './assets/js/ui/playlist.js',
   './assets/js/ui/gear.js',
+  './assets/js/config/dict.js',
+  './assets/js/config/food.js',
+  './assets/js/config/gear.js',
+  './assets/js/config/route.js',
   './assets/files/camino.svg',
   './assets/files/logo.png',
+  './assets/files/logo-180.png',
+  './assets/files/logo-192.png',
+  './assets/files/logo-512.png',
+  './assets/files/peixe.jpg',
+  './assets/files/AlertCopsApp.jpg',
+  './assets/files/AlsaApp.jpg',
+  './assets/files/BuenCaminoApp.jpg',
+  './assets/files/CaminoNinjaApp.jpg',
+  './assets/files/GeocachingApp.jpg',
+  './assets/files/GoogleTranslateApp.jpg',
+  './assets/files/KomootApp.jpg',
+  './assets/files/MapsMeApp.jpg',
+  './assets/files/WisePilgrimApp.jpg',
   './manifest.json'
 ];
 

@@ -144,8 +144,9 @@ async function handleTabSwitch(tab) {
         target.innerHTML = await buildFood();
         initFoodRandom();
       } else if (sectionId === 's-exercises') {
-        const { buildExercises } = await import('./exercises.js');
+        const { buildExercises, renderExercises } = await import('./exercises.js');
         target.innerHTML = buildExercises();
+        renderExercises();
       } else if (sectionId === 's-apps') {
         const { buildApps } = await import('./apps.js');
         target.innerHTML = buildApps();
