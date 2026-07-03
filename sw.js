@@ -1,4 +1,4 @@
-const CACHE_NAME = 'camino-v2-static-v36';
+const CACHE_NAME = 'camino-v2-static-v37';
 
 const urlsToCache = [
   './',
