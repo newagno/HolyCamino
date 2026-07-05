@@ -2116,33 +2116,57 @@ body.the-way-mode .the-way-rain {
 
 /* ── Weather Widget ─────────────────────────────────────────── */
 .weather-widget {
-  background: linear-gradient(135deg, var(--ocean), #3a5a6e);
-  color: #fff;
-  padding: 14px 16px;
-  border-radius: 4px;
-  margin: 10px 0;
+  background: var(--paper-dark);
+  color: var(--ink);
+  padding: 16px;
+  border-radius: 8px;
+  margin: 12px 0;
+  border: 1px solid var(--paper-dark);
+  box-shadow: 0 4px 12px var(--shadow);
+  transition: background 0.3s, border-color 0.3s;
+}
+
+body.night-mode .weather-widget {
+  background: #1f110a;
+  border-color: #2c1810;
+  color: #faf4e3;
 }
 
 .weather-title {
   font-family: 'Caveat', cursive;
-  font-size: 18px;
-  margin-bottom: 8px;
-  opacity: .9;
+  font-size: 20px;
+  margin-bottom: 12px;
+  opacity: .95;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .weather-grid {
   display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .weather-cell {
-  background: rgba(255, 255, 255, .12);
-  padding: 8px 12px;
-  border-radius: 4px;
+  background: var(--paper);
+  border: 1px solid var(--paper-dark);
+  border-radius: 6px;
+  padding: 10px 8px;
   text-align: center;
   flex: 1;
-  min-width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 96px;
+  min-width: 0; /* Prevents overflow inside flex container */
+  transition: background 0.3s, border-color 0.3s;
+}
+
+body.night-mode .weather-cell {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .weather-icon {
@@ -2151,18 +2175,17 @@ body.the-way-mode .the-way-rain {
   margin-bottom: 2px;
 }
 
-.weather-temp {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 20px;
-  font-weight: 700;
-}
-
 .weather-desc {
-  font-size: 10px;
+  font-size: 9px;
   opacity: .8;
   text-transform: uppercase;
   letter-spacing: .05em;
   margin-top: 2px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 
 .weather-loading {
@@ -2171,16 +2194,170 @@ body.the-way-mode .the-way-rain {
   font-size: 13px;
 }
 
-.temp-highlight {
-  font-weight: 700;
-  font-size: 1.15em;
+/* Cell 1 Details */
+.weather-cell.condition {
+  justify-content: space-between;
 }
 
-.weather-advice {
-  margin-top: 8px;
-  font-size: 12px;
-  padding: 6px 10px;
+.condition-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.temp-range {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  font-family: 'Cormorant Garamond', serif;
+  margin: 2px 0;
+}
+
+.temp-day {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--terracotta);
+}
+
+body.night-mode .temp-day {
+  color: #ff8b73;
+}
+
+.temp-divider {
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+.temp-night {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ocean);
+}
+
+body.night-mode .temp-night {
+  color: #9cb8c5;
+}
+
+.precipitation-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.precipitation-row .icon {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2.5;
+}
+
+/* Metric Display for Cell 2 & 3 */
+.metric-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.metric-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.65;
+  margin-top: 2px;
+  font-weight: 600;
+}
+
+/* ── Hourly Forecast (Row 2) ─────────────────────────────────── */
+.weather-hourly {
+  margin-top: 14px;
+  border-top: 1px solid var(--paper-dark);
+  padding-top: 12px;
+}
+
+body.night-mode .weather-hourly {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.hourly-title {
+  font-family: 'Caveat', cursive;
+  font-size: 17px;
+  margin-bottom: 8px;
+  opacity: 0.85;
+}
+
+.weather-hourly-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar for hourly forecast row to keep it sleek */
+.weather-hourly-row::-webkit-scrollbar {
+  height: 4px;
+}
+
+.weather-hourly-row::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.weather-hourly-row::-webkit-scrollbar-thumb {
+  background: var(--paper-dark);
+  border-radius: 2px;
+}
+
+body.night-mode .weather-hourly-row::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.weather-hourly-col {
+  background: var(--paper);
+  border: 1px solid var(--paper-dark);
   border-radius: 4px;
+  padding: 6px 8px;
+  min-width: 58px;
+  flex-shrink: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+body.night-mode .weather-hourly-col {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.hourly-time {
+  font-size: 9px;
+  opacity: 0.6;
+}
+
+.hourly-icon .icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+.hourly-temp {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ── Weather Advice ─────────────────────────────────────────── */
+.weather-advice {
+  margin-top: 12px;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
   text-align: center;
   display: flex;
   align-items: center;
@@ -2190,21 +2367,35 @@ body.the-way-mode .the-way-rain {
 }
 
 .weather-advice.rain {
-  background: rgba(30, 144, 255, 0.22);
-  border: 1px solid rgba(30, 144, 255, 0.45);
-  color: #d1e8ff;
+  background: rgba(90, 125, 140, 0.12);
+  border: 1px solid rgba(90, 125, 140, 0.25);
+  color: var(--ocean);
+}
+
+body.night-mode .weather-advice.rain {
+  color: #9cb8c5;
 }
 
 .weather-advice.heat {
-  background: rgba(200, 85, 61, 0.25);
-  border: 1px solid rgba(200, 85, 61, 0.5);
-  color: #ffdacc;
+  background: rgba(200, 85, 61, 0.1);
+  border: 1px solid rgba(200, 85, 61, 0.22);
+  color: var(--terracotta);
+}
+
+body.night-mode .weather-advice.heat {
+  color: #ff8b73;
 }
 
 .weather-advice.cold {
-  background: rgba(176, 196, 222, 0.18);
-  border: 1px solid rgba(176, 196, 222, 0.4);
-  color: #ebf5ff;
+  background: rgba(44, 24, 16, 0.04);
+  border: 1px solid rgba(44, 24, 16, 0.12);
+  color: var(--ink-soft);
+}
+
+body.night-mode .weather-advice.cold {
+  background: rgba(250, 244, 227, 0.04);
+  border-color: rgba(250, 244, 227, 0.1);
+  color: var(--paper);
 }
 
 /* ── Stage Progress ─────────────────────────────────────────── */

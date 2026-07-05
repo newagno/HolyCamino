@@ -279,7 +279,7 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
   // Round to 4 decimal places (~11 m precision) to keep key stable for nearby positions
   const latKey = effectiveLat.toFixed(4);
   const lonKey = effectiveLon.toFixed(4);
-  const cacheKey = `weather_${isoDate}_${latKey}_${lonKey}`;
+  const cacheKey = `weather_v5_${isoDate}_${latKey}_${lonKey}`;
 
   // ── Temporal window check (Open-Meteo 16-day limit) ─────────
   const targetDate = new Date(isoDate);
@@ -307,7 +307,7 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
   if (cached && cached.timestamp && (Date.now() - cached.timestamp < TTL)) {
     data = cached.data;
   } else {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${effectiveLat}&longitude=${effectiveLon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${effectiveLat}&longitude=${effectiveLon}&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum&hourly=temperature_2m,weather_code&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
 
     // Cancel any in-flight request
     if (weatherController) {
@@ -343,30 +343,122 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
     }
   }
 
+  // ── Sea Surface Temperature logic ────────────────────────────
+  const isCoastal = ['Порту', 'Vila do Conde', 'Esposende', 'Viana', 'Caminha', 'Baiona', 'Vigo', 'Redondela'].some(name => coords.name.includes(name));
+  let waterTemp = null;
+
+  if (isCoastal) {
+    const latKey = effectiveLat.toFixed(4);
+    const lonKey = effectiveLon.toFixed(4);
+    const marineCacheKey = `marine_${isoDate}_${latKey}_${lonKey}`;
+    const cachedMarine = await getCache(marineCacheKey);
+    if (cachedMarine && cachedMarine.timestamp && (Date.now() - cachedMarine.timestamp < TTL)) {
+      waterTemp = cachedMarine.data;
+    } else {
+      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${effectiveLat}&longitude=${effectiveLon}&daily=sea_surface_temperature&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
+      try {
+        const marineResp = await fetch(marineUrl);
+        if (marineResp.ok) {
+          const marineData = await marineResp.json();
+          if (marineData.daily && marineData.daily.sea_surface_temperature && marineData.daily.sea_surface_temperature[0] !== null) {
+            waterTemp = Math.round(marineData.daily.sea_surface_temperature[0]);
+            await setCache(marineCacheKey, { timestamp: Date.now(), data: waterTemp });
+          }
+        }
+      } catch (err) {
+        console.warn('Marine API fetch failed:', err);
+      }
+    }
+  }
+
   // ── Render weather widget ────────────────────────────────────
   const wc = data.daily.weathercode[0];
   const tmax = Math.round(data.daily.temperature_2m_max[0]);
   const tmin = Math.round(data.daily.temperature_2m_min[0]);
+  const uvIndex = data.daily.uv_index_max ? data.daily.uv_index_max[0] : 0;
+  const precip = data.daily.precipitation_sum ? Math.round(data.daily.precipitation_sum[0] * 10) / 10 : 0;
   const icon = WMO_ICON[wc] ?? 'sun';
   const desc = WMO_DESC[wc] ?? '';
 
   let adviceHTML = '';
   if (wc >= 61) {
-    adviceHTML = `<div class="weather-advice rain"><svg class="icon" style="margin-right:5px;"><use href="#icon-rain"></svg> Рекомендуємо пончо зверху рюкзака!</div>`;
+    adviceHTML = `<div class="weather-advice rain"><svg class="icon" style="margin-right:5px;"><use href="#icon-rain"></use></svg> Рекомендуємо пончо зверху рюкзака!</div>`;
   } else if (tmax >= 25) {
-    adviceHTML = `<div class="weather-advice heat"><svg class="icon" style="margin-right:5px;"><use href="#icon-sun"></svg> Спекотно! Онови запас води та намастись кремом.</div>`;
+    adviceHTML = `<div class="weather-advice heat"><svg class="icon" style="margin-right:5px;"><use href="#icon-sun"></use></svg> Спекотно! Онови запас води та намастись кремом.</div>`;
   } else if (tmin <= 10) {
-    adviceHTML = `<div class="weather-advice cold"><svg class="icon" style="margin-right:5px;"><use href="#icon-moon"></svg> Прохолодний ранок, тримай фліску під рукою.</div>`;
+    adviceHTML = `<div class="weather-advice cold"><svg class="icon" style="margin-right:5px;"><use href="#icon-moon"></use></svg> Прохолодний ранок, тримай фліску под рукою.</div>`;
+  }
+
+  // ── Build hourly forecast ────────────────────────────────────
+  const hourlyTimes = ['01:00', '04:00', '07:00', '10:00', '13:00', '16:00', '19:00', '22:00'];
+  const hourlyIndices = [1, 4, 7, 10, 13, 16, 19, 22];
+
+  let hourlyHTML = '';
+  if (data.hourly && data.hourly.temperature_2m) {
+    for (let idx = 0; idx < hourlyTimes.length; idx++) {
+      const timeVal = hourlyTimes[idx];
+      const arrayIdx = hourlyIndices[idx];
+      const tempVal = Math.round(data.hourly.temperature_2m[arrayIdx]);
+      const wcodeVal = data.hourly.weather_code ? data.hourly.weather_code[arrayIdx] : 0;
+      const iconName = WMO_ICON[wcodeVal] ?? 'sun';
+
+      hourlyHTML += `
+        <div class="weather-hourly-col">
+          <div class="hourly-time">${timeVal}</div>
+          <span class="weather-icon hourly-icon"><svg class="icon"><use href="#icon-${iconName}"></use></svg></span>
+          <div class="hourly-temp">${tempVal}°</div>
+        </div>
+      `;
+    }
   }
 
   wdg.innerHTML = `
     <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
       <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
+      
+      <!-- Row 1: Main Daily Metrics (3 Cells) -->
       <div class="weather-grid">
-        <div class="weather-cell condition"><span class="weather-icon"><svg class="icon"><use href="#icon-${icon}"></svg></span><div class="weather-desc">${desc}</div></div>
-        <div class="weather-cell day"><span class="weather-icon"><svg class="icon"><use href="#icon-sun"></svg></span><div class="weather-temp"><span class="temp-highlight">${tmax}°</span></div><div class="weather-desc">День</div></div>
-        <div class="weather-cell night"><span class="weather-icon"><svg class="icon"><use href="#icon-moon"></svg></span><div class="weather-temp">${tmin}°</div><div class="weather-desc">Ніч</div></div>
+        <!-- Cell 1: Temperatures & Precipitation -->
+        <div class="weather-cell condition">
+          <div class="condition-meta">
+            <span class="weather-icon"><svg class="icon"><use href="#icon-${icon}"></use></svg></span>
+            <span class="weather-desc">${desc}</span>
+          </div>
+          <div class="temp-range">
+            <span class="temp-day">${tmax}°</span>
+            <span class="temp-divider">/</span>
+            <span class="temp-night">${tmin}°</span>
+          </div>
+          <div class="precipitation-row">
+            <span class="precip-icon"><svg class="icon"><use href="#icon-rain"></use></svg></span>
+            <span class="precip-val">${precip} мм</span>
+          </div>
+        </div>
+
+        <!-- Cell 2: Water Temperature -->
+        <div class="weather-cell water">
+          <span class="weather-icon"><svg class="icon"><use href="#icon-wave"></use></svg></span>
+          <div class="metric-val">${waterTemp !== null ? `${waterTemp}°` : '—'}</div>
+          <div class="metric-label">Вода</div>
+        </div>
+
+        <!-- Cell 3: UV Index -->
+        <div class="weather-cell uv">
+          <span class="weather-icon"><svg class="icon"><use href="#icon-uv"></use></svg></span>
+          <div class="metric-val">${uvIndex.toFixed(1)}</div>
+          <div class="metric-label">УФ-індекс</div>
+        </div>
       </div>
+
+      <!-- Row 2: Hourly Forecast (3-hour intervals) -->
+      <div class="weather-hourly">
+        <div class="hourly-title">Прогноз по годинах</div>
+        <div class="weather-hourly-row">
+          ${hourlyHTML}
+        </div>
+      </div>
+
+      <!-- Advice Banner -->
       ${adviceHTML}
     </a>`;
 }
