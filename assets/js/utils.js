@@ -40,7 +40,7 @@ export function startConfetti(canvas) {
   const COLORS = ['#c8553d', '#6b7d3a', '#c9a64b', '#5a7d8c', '#faf4e3', '#ff69b4', '#ffd700'];
 
   /** @type {{ x:number, y:number, r:number, color:string, vx:number, vy:number, rot:number, vr:number }[]} */
-  const pieces = Array.from({ length: 150 }, () => ({
+  const pieces = Array.from({ length: 90 }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height - canvas.height,
     r: Math.random() * 8 + 4,
@@ -350,19 +350,24 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
   const icon = WMO_ICON[wc] ?? 'sun';
   const desc = WMO_DESC[wc] ?? '';
 
-  const ponchoAdvice = (tmax > 22 || wc >= 61)
-    ? `<div style="margin-top:8px;font-size:12px;color:#fff;background:rgba(200,85,61,0.8);padding:6px 10px;border-radius:4px;text-align:center;"><svg class="icon" style="margin-right:5px;"><use href="#icon-rain"></svg> Рекомендуємо пончо в рюкзаку!</div>`
-    : '';
+  let adviceHTML = '';
+  if (wc >= 61) {
+    adviceHTML = `<div class="weather-advice rain"><svg class="icon" style="margin-right:5px;"><use href="#icon-rain"></svg> Рекомендуємо пончо зверху рюкзака!</div>`;
+  } else if (tmax >= 25) {
+    adviceHTML = `<div class="weather-advice heat"><svg class="icon" style="margin-right:5px;"><use href="#icon-sun"></svg> Спекотно! Онови запас води та намастись кремом.</div>`;
+  } else if (tmin <= 10) {
+    adviceHTML = `<div class="weather-advice cold"><svg class="icon" style="margin-right:5px;"><use href="#icon-moon"></svg> Прохолодний ранок, тримай фліску під рукою.</div>`;
+  }
 
   wdg.innerHTML = `
     <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
       <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
       <div class="weather-grid">
-        <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-${icon}"></svg></span><div class="weather-temp">${tmax}°</div><div class="weather-desc">${desc}</div></div>
-        <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-sun"></svg></span><div class="weather-temp">${tmax}°</div><div class="weather-desc">День</div></div>
-        <div class="weather-cell"><span class="weather-icon"><svg class="icon"><use href="#icon-moon"></svg></span><div class="weather-temp">${tmin}°</div><div class="weather-desc">Ніч</div></div>
+        <div class="weather-cell condition"><span class="weather-icon"><svg class="icon"><use href="#icon-${icon}"></svg></span><div class="weather-desc">${desc}</div></div>
+        <div class="weather-cell day"><span class="weather-icon"><svg class="icon"><use href="#icon-sun"></svg></span><div class="weather-temp"><span class="temp-highlight">${tmax}°</span></div><div class="weather-desc">День</div></div>
+        <div class="weather-cell night"><span class="weather-icon"><svg class="icon"><use href="#icon-moon"></svg></span><div class="weather-temp">${tmin}°</div><div class="weather-desc">Ніч</div></div>
       </div>
-      ${ponchoAdvice}
+      ${adviceHTML}
     </a>`;
 }
 

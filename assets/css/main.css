@@ -426,16 +426,6 @@ body.the-way-mode .the-way-rain {
   margin-top: 14px;
 }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-6px); }
-  75% { transform: translateX(6px); }
-}
-
 .login-card {
   margin: auto;
   background: var(--paper);
@@ -547,79 +537,6 @@ body.the-way-mode .the-way-rain {
   width: 20px;
   height: 20px;
   stroke-width: 2.5;
-}
-
-.password-form {
-  display: none;
-}
-
-.password-form.active {
-  display: block;
-  animation: slideIn .35s ease-out;
-}
-
-.password-hint {
-  background: var(--cream);
-  padding: 12px 14px;
-  border-left: 3px solid var(--terracotta);
-  margin-bottom: 14px;
-  font-style: italic;
-  font-size: 14px;
-  color: var(--ink-soft);
-  border-radius: 0 2px 2px 0;
-}
-
-.pw-wrap {
-  position: relative;
-}
-
-.password-input {
-  width: 100%;
-  padding: 14px 46px 14px 14px;
-  border: 1.5px solid var(--paper-dark);
-  background: var(--cream);
-  font-family: 'Manrope', sans-serif;
-  font-size: 17px;
-  color: var(--ink);
-  border-radius: 2px;
-  outline: none;
-  transition: border-color .2s;
-}
-
-.password-input:focus {
-  border-color: var(--terracotta);
-}
-
-.pw-toggle {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  color: var(--ink-soft);
-  padding: 4px;
-}
-
-.password-error {
-  color: var(--terracotta-dark);
-  font-size: 14px;
-  margin-top: 8px;
-  display: none;
-  font-style: italic;
-}
-
-.password-error.show {
-  display: block;
-  animation: shake .4s;
-}
-
-.password-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
 }
 
 /* ── Buttons ────────────────────────────────────────────────── */
@@ -2252,6 +2169,42 @@ body.the-way-mode .the-way-rain {
   opacity: .6;
   font-style: italic;
   font-size: 13px;
+}
+
+.temp-highlight {
+  font-weight: 700;
+  font-size: 1.15em;
+}
+
+.weather-advice {
+  margin-top: 8px;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  animation: slideIn .3s ease-out;
+}
+
+.weather-advice.rain {
+  background: rgba(30, 144, 255, 0.22);
+  border: 1px solid rgba(30, 144, 255, 0.45);
+  color: #d1e8ff;
+}
+
+.weather-advice.heat {
+  background: rgba(200, 85, 61, 0.25);
+  border: 1px solid rgba(200, 85, 61, 0.5);
+  color: #ffdacc;
+}
+
+.weather-advice.cold {
+  background: rgba(176, 196, 222, 0.18);
+  border: 1px solid rgba(176, 196, 222, 0.4);
+  color: #ebf5ff;
 }
 
 /* ── Stage Progress ─────────────────────────────────────────── */

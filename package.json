@@ -1,0 +1,15 @@
+{
+  "name": "camino-v2",
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "build:sw": "node build-sw.js",
+    "build": "npm run build:sw"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0",
+    "jsdom": "^24.0.0",
+    "workbox-build": "^7.1.0"
+  }
+}
