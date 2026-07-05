@@ -2242,15 +2242,16 @@ body.night-mode .temp-night {
 .precipitation-row {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   font-size: 10px;
   opacity: 0.8;
+  margin-top: 6px;
 }
 
 .precipitation-row .icon {
-  width: 12px;
-  height: 12px;
-  stroke-width: 2.5;
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.2;
 }
 
 /* Metric Display for Cell 2 & 3 */
@@ -2270,6 +2271,38 @@ body.night-mode .temp-night {
   font-weight: 600;
 }
 
+/* UV Index Colors */
+.uv-low {
+  color: #27ae60;
+}
+.uv-mod {
+  color: #d4a574;
+}
+.uv-high {
+  color: var(--terracotta);
+}
+.uv-ext {
+  color: var(--fire-brick);
+}
+
+body.night-mode .uv-low {
+  color: #2ecc71;
+}
+body.night-mode .uv-mod {
+  color: #ede0c2;
+}
+body.night-mode .uv-high {
+  color: #ff8b73;
+}
+body.night-mode .uv-ext {
+  color: #e74c3c;
+}
+
+/* Missing Water Temp Opacity */
+.weather-cell.missing-water {
+  opacity: 0.55;
+}
+
 /* ── Hourly Forecast (Row 2) ─────────────────────────────────── */
 .weather-hourly {
   margin-top: 14px;
@@ -2282,10 +2315,12 @@ body.night-mode .weather-hourly {
 }
 
 .hourly-title {
-  font-family: 'Caveat', cursive;
-  font-size: 17px;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  font-style: italic;
   margin-bottom: 8px;
-  opacity: 0.85;
+  opacity: 0.8;
 }
 
 .weather-hourly-row {
@@ -2295,6 +2330,7 @@ body.night-mode .weather-hourly {
   padding-bottom: 6px;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  justify-content: center;
 }
 
 /* Custom scrollbar for hourly forecast row to keep it sleek */

@@ -412,6 +412,16 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
     }
   }
 
+  const getUvClass = (uv) => {
+    if (uv <= 2.9) return 'uv-low';
+    if (uv <= 5.9) return 'uv-mod';
+    if (uv <= 7.9) return 'uv-high';
+    return 'uv-ext';
+  };
+
+  const waterCellClass = waterTemp !== null ? 'weather-cell water' : 'weather-cell water missing-water';
+  const waterCellValue = waterTemp !== null ? `${waterTemp}°` : '—';
+
   wdg.innerHTML = `
     <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
       <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
@@ -436,16 +446,16 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
         </div>
 
         <!-- Cell 2: Water Temperature -->
-        <div class="weather-cell water">
+        <div class="${waterCellClass}">
           <span class="weather-icon"><svg class="icon"><use href="#icon-wave"></use></svg></span>
-          <div class="metric-val">${waterTemp !== null ? `${waterTemp}°` : '—'}</div>
+          <div class="metric-val">${waterCellValue}</div>
           <div class="metric-label">Вода</div>
         </div>
 
         <!-- Cell 3: UV Index -->
         <div class="weather-cell uv">
           <span class="weather-icon"><svg class="icon"><use href="#icon-uv"></use></svg></span>
-          <div class="metric-val">${uvIndex.toFixed(1)}</div>
+          <div class="metric-val ${getUvClass(uvIndex)}">${uvIndex.toFixed(1)}</div>
           <div class="metric-label">УФ-індекс</div>
         </div>
       </div>
