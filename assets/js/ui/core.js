@@ -167,7 +167,7 @@ export function initNavArrows() {
 
 export function buildHeader(p, id) {
   const initial = id === 'guest' ? 'В' : p.initial;
-  const name = id === 'guest' ? 'Вуаєрист' : p.name;
+  const name = id === 'guest' ? 'Вуайєрист' : p.name;
   const isNight = document.body.classList.contains('night-mode');
   return `
   <header class="header">
