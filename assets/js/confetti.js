@@ -158,5 +158,5 @@ export function startConfetti(canvas) {
     document.addEventListener('touchstart', stopConfetti, { passive: true });
   }, 300);
 
-  confettiTimeoutId = setTimeout(stopConfetti, 5000);
+  confettiTimeoutId = setTimeout(stopConfetti, 9000);
 }
