@@ -587,7 +587,7 @@ export function applyTheme(theme) {
   if (theme === 'golden') {
     document.body.classList.add('golden-theme');
     // Golden is active, click toggles to light
-    if (btn) btn.innerHTML = `<svg class="icon"><use href="#icon-sun"></svg>`;
+    if (btn) btn.innerHTML = `<svg class="icon"><use href="#icon-sunset"></svg>`;
   } else if (theme === 'dark') {
     document.body.classList.add('night-mode');
     // Dark is active, click toggles to golden or light
@@ -634,6 +634,11 @@ export function initOcean() {
   function stopAll() {
     audio.pause();
     audio.currentTime = 0;
+    const forestAudio = /** @type {HTMLAudioElement} */ (document.getElementById('forestAudio'));
+    if (forestAudio) {
+      forestAudio.pause();
+      forestAudio.currentTime = 0;
+    }
     if (oscSrc) { try { oscSrc.stop(); oscSrc.disconnect(); } catch {} }
     if (lfoSrc) { try { lfoSrc.stop(); lfoSrc.disconnect(); } catch {} }
   }
@@ -682,39 +687,6 @@ export function initOcean() {
     lfo.start();
   }
 
-  function startForestWind() {
-    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    oscSrc = audioCtx.createBufferSource();
-    oscSrc.buffer = getBrownNoiseBuffer(audioCtx);
-    oscSrc.loop = true;
-
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 300;
-    filter.Q.value = 0.5;
-
-    const gain = audioCtx.createGain();
-    gain.gain.value = 0.25;
-
-    const lfo = audioCtx.createOscillator();
-    lfoSrc = lfo;
-    lfo.type = 'sine';
-    lfo.frequency.value = 0.05; // Slow gust
-    
-    const lfog = audioCtx.createGain();
-    lfog.gain.value = 250; 
-
-    lfo.connect(lfog);
-    lfog.connect(filter.frequency);
-
-    oscSrc.connect(filter);
-    filter.connect(gain);
-    gain.connect(audioCtx.destination);
-    oscSrc.start();
-    lfo.start();
-  }
-
   btn.addEventListener('click', () => {
     stopAll();
     
@@ -727,14 +699,18 @@ export function initOcean() {
       btn.title = 'Океан (натисніть для Лісу)';
       btn.innerHTML = `<svg class="icon"><use href="#icon-wave"></svg>`;
     } else if (audioState === 2) { // Forest
-      startForestWind();
+      const forestAudio = /** @type {HTMLAudioElement} */ (document.getElementById('forestAudio'));
+      if (forestAudio) {
+        forestAudio.volume = 0.4;
+        forestAudio.play().catch(() => {}); // ignore errors if autoplay blocked
+      }
       btn.classList.add('active');
       btn.title = 'Ліс (натисніть щоб Вимкнути)';
-      btn.innerHTML = `<svg class="icon"><use href="#icon-cloud"></svg>`;
+      btn.innerHTML = `<svg class="icon"><use href="#icon-tree"></svg>`;
     } else { // Mute
       btn.classList.remove('active');
       btn.title = 'Звуки (натисніть для Океану)';
-      btn.innerHTML = `<svg class="icon"><use href="#icon-shush"></svg>`; // Default or mute icon
+      btn.innerHTML = `<svg class="icon"><use href="#icon-volume-off"></svg>`; // Normal mute icon
     }
   });
 }
