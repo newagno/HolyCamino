@@ -50,6 +50,15 @@ function getExerciseSVG(type) {
       <path d="M35 25L45 25M30 15L50 15" stroke="var(--terracotta)" stroke-width="2" opacity="0.6"/>
       <text x="55" y="25" font-size="20">💤</text>
     </svg>`,
+    poles: `<svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 65L40 35L70 65" stroke="var(--olive)" stroke-width="2" stroke-dasharray="4 4" opacity="0.5"/>
+      <path d="M25 70L35 15M55 70L45 15" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M33 25L36 12M47 25L44 12" stroke="var(--terracotta)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M36 12C45 5 45 20 33 22" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M44 12C35 5 35 20 47 22" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <circle cx="24" cy="71" r="3" fill="var(--ink)"/>
+      <circle cx="56" cy="71" r="3" fill="var(--ink)"/>
+    </svg>`,
   };
   return svgs[type] ?? '🚶';
 }
@@ -77,6 +86,7 @@ export function renderExercises() {
         <div class="ex-name">${ex.n}</div>
         <div class="ex-dur">${ex.dur}</div>
         <div class="ex-comic-txt">"${ex.comic.replace(/"/g, '')}"</div>
+        ${ex.steps ? `<ul class="ex-steps" style="margin-top:10px; padding-left:18px; font-size:13px; color:var(--ink);">${ex.steps.map(s => `<li style="margin-bottom:6px;">${s}</li>`).join('')}</ul>` : ''}
       </div>
     </div>`).join('');
 }
