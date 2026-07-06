@@ -11,14 +11,94 @@ export function showCompostela(name) {
   const canvas = document.getElementById('confettiCanvas');
   if (canvas) startConfetti(canvas);
   const modalHTML = `
-    <div id="compostelaModal" class="modal show" role="dialog" aria-modal="true" style="display:flex;">
-      <div class="modal-content" style="background:#fff;color:#333;text-align:center;padding:30px;">
-        <button class="modal-close" onclick="this.closest('.modal').remove()" aria-label="Закрити"><svg class="icon"><use href="#icon-close"></svg></button>
-        <h2 style="font-family:serif;font-size:24px;color:#8a1538;margin-bottom:10px;">Compostela</h2>
-        <div style="font-size:14px;margin-bottom:20px;font-style:italic;">Цим підтверджується, що</div>
-        <div style="font-size:28px;font-weight:bold;margin-bottom:20px;font-family:serif;">${name}</div>
-        <div style="font-size:14px;margin-bottom:20px;font-style:italic;">успішно завершив підготовку до Шляху Святого Якова!</div>
-        <div style="font-size:40px;">🏆🐚🇪🇸</div>
+    <div id="compostelaModal" class="modal show" role="dialog" aria-modal="true" style="display:flex; align-items:center; justify-content:center; padding:16px;">
+      <div class="modal-content" style="
+        background: radial-gradient(circle, #fdfbf7 0%, #f4ecd8 100%);
+        color: #2c2523;
+        text-align: center;
+        padding: 45px 30px;
+        border: 5px solid #8a1538;
+        outline: 1px solid #c9a64b;
+        outline-offset: -12px;
+        border-radius: 4px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 0 50px rgba(139,94,60,0.15);
+        max-width: 520px;
+        width: 100%;
+        position: relative;
+        font-family: 'Georgia', 'Times New Roman', serif;
+      ">
+        <button class="modal-close" onclick="this.closest('.modal').remove()" aria-label="Закрити" style="
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          background: transparent;
+          border: none;
+          font-size: 20px;
+          color: #8a1538;
+          cursor: pointer;
+          opacity: 0.6;
+          transition: opacity 0.2s;
+        " onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">✕</button>
+
+        <h1 style="
+          font-size: 28px;
+          color: #8a1538;
+          letter-spacing: 5px;
+          margin: 10px 0 5px 0;
+          text-transform: uppercase;
+          font-weight: normal;
+          border-bottom: 1px solid rgba(138, 21, 56, 0.15);
+          display: inline-block;
+          padding-bottom: 6px;
+        ">Compostela</h1>
+        
+        <div style="
+          font-size: 13px;
+          color: #665;
+          margin: 24px 0 8px 0;
+          font-style: italic;
+          letter-spacing: 0.5px;
+        ">Цим підтверджується, що паломник</div>
+
+        <div style="
+          font-size: 38px;
+          font-family: 'Caveat', 'Georgia', cursive, serif;
+          color: #1c1514;
+          margin: 10px 0 20px 0;
+          font-weight: bold;
+          line-height: 1.2;
+        ">${name}</div>
+
+        <div style="
+          font-size: 14px;
+          color: #4a423e;
+          line-height: 1.6;
+          margin: 0 auto 35px auto;
+          max-width: 400px;
+          font-style: italic;
+        ">
+          успішно завершив повну підготовку та зібрав необхідне спорядження для проходження Шляху Святого Якова (Camino de Santiago).
+        </div>
+
+        <!-- Refined Wax Seal -->
+        <div style="
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 80px;
+          height: 80px;
+          background: radial-gradient(circle, #b21c2e 0%, #750e18 100%);
+          border-radius: 50%;
+          box-shadow: 0 5px 12px rgba(0,0,0,0.3), inset 0 0 10px rgba(0,0,0,0.4);
+          border: 2px solid #6b0c15;
+          position: relative;
+        ">
+          <!-- Camino Shell SVG inside the seal -->
+          <svg viewBox="0 0 100 100" style="width: 44px; height: 44px; fill: #e5c158; filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.4));">
+            <path d="M 50,90 C 47,88 44,70 42,60 C 32,58 15,48 10,40 C 13,38 35,46 45,52 C 45,40 38,20 35,10 C 40,15 45,35 50,45 C 55,35 60,15 65,10 C 62,20 55,40 55,52 C 65,46 87,38 90,40 C 85,48 68,58 58,60 C 56,70 53,88 50,90 Z"/>
+            <path d="M 50,45 L 50,90 M 45,52 C 46,65 47,80 50,90 M 55,52 C 54,65 53,80 50,90 M 42,60 C 44,70 47,80 50,90 M 58,60 C 56,70 53,80 50,90" stroke="#750e18" stroke-width="1.8" fill="none"/>
+          </svg>
+        </div>
       </div>
     </div>
   `;
@@ -274,21 +354,8 @@ export function handleCheckItem(el) {
   const cb = el.querySelector('.check-cb');
   if (cb) cb.textContent = done ? '✓' : '';
   
-  // Reorder visually within the category
-  const catContainer = el.closest('.check-category');
-  if (catContainer) {
-    if (done) {
-      catContainer.appendChild(el);
-    } else {
-      const firstDone = Array.from(catContainer.querySelectorAll('.check-item')).find(x => x.classList.contains('done'));
-      if (firstDone) {
-        catContainer.insertBefore(el, firstDone);
-      } else {
-        catContainer.appendChild(el);
-      }
-    }
-  }
-  
+  // Removed visual reordering to prevent Layout Shift
+  // The item will just toggle its styling (gray out / checkmark)
   // update progress
   const items = [...document.querySelectorAll('.check-item')];
   const doneCount = items.filter(item => item.classList.contains('done')).length;

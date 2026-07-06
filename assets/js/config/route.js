@@ -1,9 +1,10 @@
 export const ROUTE = [
   {
     date: '2026-07-11', day: 'Сб', title: 'Бухарест → Порту', route: 'День прильоту', km: 0, type: 'travel',
-    desc: 'Виліт о 16:25, прибуття в Порту о 18:45. Метро Лінія E (Violet) до Trindade, 27 хв, €2.30 (Andante Z4 квиток). Або Uber XL ~€20-25.',
+    desc: 'Виліт о 16:25 з Бухаресту, прибуття в Порту о 18:45 (за місцевим часом). Метро Лінія E (Violet) до Trindade, 27 хв, €2.30. Або Uber XL ~€20-25.',
     hl: 'Перший вечір — не поспішай. Francesinha на вечерю.)',
     places: [
+      { n: '🛫 Рейс Wizz Air (W6 3259)', i: 'Бухарест (OTP) 16:25 → Порту (OPO) 18:45 (за місцевим часом).', m: 'https://wizzair.com/', stamp: false, secret: false },
       { n: 'Аеропорт Sá Carneiro (OPO)', i: 'Метро лінія E до Trindade — 27 хв, €2.30', m: 'https://maps.app.goo.gl/fAgCmHnMbVTB121q8', stamp: false, secret: false },
       { n: 'Livraria Lello', i: 'Найкрасивіша книгарня світу — квитки €10-16 онлайн.', m: 'https://maps.app.goo.gl/dqg5oepJ2CM1YtT79', stamp: false, secret: true },
       { n: 'Foz do Douro', i: 'Гирло Дору, маяк, форт São João da Foz — перший погляд на океан', m: 'https://maps.google.com/?q=Foz+do+Douro+Porto', stamp: false, secret: false },
@@ -332,12 +333,13 @@ export const ROUTE = [
   },
   {
     date: '2026-07-25', day: 'Сб', title: 'Santiago → Порту → Бухарест', route: 'День Святого Якова + виліт', km: 0, type: 'travel', special: 'apostolo-mass',
-    desc: '🎉 День Святого Якова! Урочиста Меса 10:30 з Botafumeiro гарантовано (доступ обмежений). Звичайні меси 13:00, 16:00, 19:30. ALSA автобус Santiago → OPO (~3 год, €25). Виліт 19:20!',
+    desc: '🎉 День Святого Якова! Урочиста Меса 10:30 з Botafumeiro гарантовано (доступ обмежений). ALSA автобус Santiago → OPO (~3 год, €25). Виліт 19:20, прибуття в Бухарест о 01:30 (26.07 за місцевим часом).',
     hl: '⏰ Хронологія: 08:00 сніданок → 09:30 Pilgrim Mass → 12:00 ALSA автобус → 15:15 OPO → 17:30 check-in Wizz Air → 19:20 виліт 🛫',
     places: [
       { n: '⛪ Pilgrim Mass 9:30', i: '25.07 — Botafumeiro гарантовано! Приходити за 40 хв', m: 'https://maps.google.com/?q=Catedral+Santiago', stamp: false, secret: false },
       { n: '🚌 ALSA Santiago → Porto Airport', i: '~3 год, €20-30/паломника. БРОНЮВАТИ за 1-2 місяці! alsa.com', m: 'https://www.alsa.com/en', stamp: false, secret: false },
-      { n: 'Аеропорт OPO', i: 'Виліт 19:20. Check-in за 1.5 год — Wizz Air terminal T1', m: 'https://maps.google.com/?q=Porto+Airport+OPO', stamp: false, secret: false },
+      { n: 'Аеропорт OPO', i: 'Check-in за 1.5 год — Wizz Air terminal T1', m: 'https://maps.google.com/?q=Porto+Airport+OPO', stamp: false, secret: false },
+      { n: '🛫 Рейс Wizz Air', i: 'Порту (OPO) 19:20 → Бухарест (OTP) 01:30 (26.07, за місцевим часом).', m: 'https://wizzair.com/', stamp: false, secret: false },
     ],
     albs: [],
     stamps: [],
