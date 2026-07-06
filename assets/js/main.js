@@ -28,6 +28,7 @@ import {
   initScrollTop,
   initOcean,
   initPeixeLightbox,
+  applyTheme,
   applyNightMode,
   shouldAutoNight,
   log
@@ -90,8 +91,13 @@ let pwVisible = false;
  */
 function boot() {
   log('Booting app...');
-  // Apply night-mode before anything renders
-  if (shouldAutoNight()) applyNightMode(true);
+  // Apply theme before anything renders
+  const savedTheme = localStorage.getItem('camino_theme');
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  } else if (shouldAutoNight()) {
+    applyTheme('dark');
+  }
 
   // Initialise always-on helpers
   initScrollTop();

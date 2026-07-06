@@ -1,6 +1,6 @@
 
 import { PILGRIMS } from '../config.js';
-import { applyNightMode } from '../utils.js';
+import { applyNightMode, applyTheme } from '../utils.js';
 
 // ─────────────────────────────────────────────────────────────
 // Field Debugger
@@ -244,8 +244,42 @@ export function initUserMenu() {
 
   const nightBtn = document.getElementById('nightToggleH');
   if (nightBtn) {
+    let pressTimer;
+    nightBtn.addEventListener('mousedown', () => {
+      pressTimer = setTimeout(() => {
+        localStorage.setItem('camino_golden_unlocked', '1');
+        applyTheme('golden');
+        alert('✨ Golden Hour Theme Unlocked! ✨');
+      }, 4000); // 4 seconds long press
+    });
+    nightBtn.addEventListener('mouseup', () => clearTimeout(pressTimer));
+    nightBtn.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+    
+    nightBtn.addEventListener('touchstart', () => {
+      pressTimer = setTimeout(() => {
+        localStorage.setItem('camino_golden_unlocked', '1');
+        applyTheme('golden');
+        alert('✨ Golden Hour Theme Unlocked! ✨');
+      }, 4000);
+    }, {passive: true});
+    nightBtn.addEventListener('touchend', () => clearTimeout(pressTimer));
+
     nightBtn.addEventListener('click', () => {
-      applyNightMode(!document.body.classList.contains('night-mode'));
+      // Logic for short click
+      const current = localStorage.getItem('camino_theme') || (document.body.classList.contains('night-mode') ? 'dark' : 'light');
+      const hasGolden = localStorage.getItem('camino_golden_unlocked') === '1';
+
+      if (current === 'light') {
+        applyTheme('dark');
+      } else if (current === 'dark') {
+        if (hasGolden) {
+          applyTheme('golden');
+        } else {
+          applyTheme('light');
+        }
+      } else {
+        applyTheme('light');
+      }
     });
   }
 

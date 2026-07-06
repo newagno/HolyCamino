@@ -55,6 +55,7 @@ export function startConfetti(canvas) {
     vy: Math.random() * 3 + 2,
     rot: Math.random() * 360,
     vr: (Math.random() - 0.5) * 5,
+    shape: ['star', 'arrow', 'shell'][Math.floor(Math.random() * 3)]
   }));
 
   function draw() {
@@ -64,7 +65,29 @@ export function startConfetti(canvas) {
       ctx.translate(p.x, p.y);
       ctx.rotate(p.rot * Math.PI / 180);
       ctx.fillStyle = p.color;
-      ctx.fillRect(-p.r / 2, -p.r / 2, p.r, p.r * 0.6);
+      ctx.beginPath();
+      const r = p.r;
+      if (p.shape === 'star') {
+        for (let i = 0; i < 5; i++) {
+          ctx.lineTo(Math.cos((18+i*72)*Math.PI/180)*r, -Math.sin((18+i*72)*Math.PI/180)*r);
+          ctx.lineTo(Math.cos((54+i*72)*Math.PI/180)*(r/2), -Math.sin((54+i*72)*Math.PI/180)*(r/2));
+        }
+      } else if (p.shape === 'arrow') {
+        ctx.moveTo(0, -r);
+        ctx.lineTo(r, 0);
+        ctx.lineTo(r/2, 0);
+        ctx.lineTo(r/2, r);
+        ctx.lineTo(-r/2, r);
+        ctx.lineTo(-r/2, 0);
+        ctx.lineTo(-r, 0);
+      } else {
+        // shell
+        ctx.arc(0, 0, r, 0, Math.PI, true);
+        ctx.lineTo(-r/2, r/2);
+        ctx.lineTo(r/2, r/2);
+      }
+      ctx.closePath();
+      ctx.fill();
       ctx.restore();
 
       p.x += p.vx;
@@ -558,16 +581,30 @@ export function initScrollTop() {
 // NIGHT MODE
 // ─────────────────────────────────────────────
 
+export function applyTheme(theme) {
+  document.body.classList.remove('night-mode', 'golden-theme');
+  const btn = document.getElementById('nightToggleH');
+  if (theme === 'golden') {
+    document.body.classList.add('golden-theme');
+    // Golden is active, click toggles to light
+    if (btn) btn.innerHTML = `<svg class="icon"><use href="#icon-sun"></svg>`;
+  } else if (theme === 'dark') {
+    document.body.classList.add('night-mode');
+    // Dark is active, click toggles to golden or light
+    if (btn) btn.innerHTML = `<svg class="icon"><use href="#icon-sun"></svg>`;
+  } else {
+    // Light is active, click toggles to dark
+    if (btn) btn.innerHTML = `<svg class="icon"><use href="#icon-moon"></svg>`;
+  }
+  localStorage.setItem('camino_theme', theme);
+}
+
 /**
  * Apply or remove night mode class on <body>.
  * @param {boolean} on
  */
 export function applyNightMode(on) {
-  document.body.classList.toggle('night-mode', on);
-  const btn = document.getElementById('nightToggleH');
-  if (btn) {
-    btn.innerHTML = `<svg class="icon"><use href="#icon-${on ? 'sun' : 'moon'}"></svg>`;
-  }
+  applyTheme(on ? 'dark' : 'light');
 }
 
 /**
@@ -583,37 +620,44 @@ export function shouldAutoNight() {
 // OCEAN SOUND
 // ─────────────────────────────────────────────
 
-/** Wire up the ocean toggle button. Tries <audio> first, falls back to Web Audio. */
+/** Wire up the audio toggle button to cycle: Mute -> Ocean -> Forest -> Mute */
 export function initOcean() {
   const btn = document.getElementById('oceanToggle');
   const audio = /** @type {HTMLAudioElement} */ (document.getElementById('oceanAudio'));
   if (!btn || !audio) return;
 
-  let playing = false;
-  let oscSrc = /** @type {AudioBufferSourceNode|null} */ (null);
-  let lfoSrc = /** @type {OscillatorNode|null} */ (null);
-  let audioCtx = /** @type {AudioContext|null} */ (null);
+  let audioState = 0; // 0 = Mute, 1 = Ocean, 2 = Forest
+  let oscSrc = null;
+  let lfoSrc = null;
+  let audioCtx = null;
 
-  /** Synthesise ocean-like brown noise via Web Audio API. */
-  function startWebAudio() {
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || /** @type {any} */(window.webkitAudioContext))();
-    }
-    const sr = audioCtx.sampleRate;
+  function stopAll() {
+    audio.pause();
+    audio.currentTime = 0;
+    if (oscSrc) { try { oscSrc.stop(); oscSrc.disconnect(); } catch {} }
+    if (lfoSrc) { try { lfoSrc.stop(); lfoSrc.disconnect(); } catch {} }
+  }
+
+  function getBrownNoiseBuffer(ctx) {
+    const sr = ctx.sampleRate;
     const sz = sr * 4;
-    const buf = audioCtx.createBuffer(1, sz, sr);
+    const buf = ctx.createBuffer(1, sz, sr);
     const d = buf.getChannelData(0);
     let last = 0;
-
     for (let i = 0; i < sz; i++) {
       const w = Math.random() * 2 - 1;
       d[i] = (last + 0.02 * w) / 1.02;
       last = d[i];
       d[i] *= 3.5;
     }
+    return buf;
+  }
 
+  function startWebAudioOcean() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
     oscSrc = audioCtx.createBufferSource();
-    oscSrc.buffer = buf;
+    oscSrc.buffer = getBrownNoiseBuffer(audioCtx);
     oscSrc.loop = true;
 
     const filter = audioCtx.createBiquadFilter();
@@ -638,32 +682,59 @@ export function initOcean() {
     lfo.start();
   }
 
+  function startForestWind() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    oscSrc = audioCtx.createBufferSource();
+    oscSrc.buffer = getBrownNoiseBuffer(audioCtx);
+    oscSrc.loop = true;
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.value = 300;
+    filter.Q.value = 0.5;
+
+    const gain = audioCtx.createGain();
+    gain.gain.value = 0.25;
+
+    const lfo = audioCtx.createOscillator();
+    lfoSrc = lfo;
+    lfo.type = 'sine';
+    lfo.frequency.value = 0.05; // Slow gust
+    
+    const lfog = audioCtx.createGain();
+    lfog.gain.value = 250; 
+
+    lfo.connect(lfog);
+    lfog.connect(filter.frequency);
+
+    oscSrc.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    oscSrc.start();
+    lfo.start();
+  }
+
   btn.addEventListener('click', () => {
-    if (!playing) {
+    stopAll();
+    
+    audioState = (audioState + 1) % 3;
+
+    if (audioState === 1) { // Ocean
       audio.volume = 0.4;
-      audio.play()
-        .then(() => {
-          playing = true;
-          btn.classList.add('active');
-          btn.title = 'Вимкнути';
-          btn.setAttribute('aria-label', 'Вимкнути звуки океану');
-        })
-        .catch(() => {
-          startWebAudio();
-          playing = true;
-          btn.classList.add('active');
-          btn.title = 'Вимкнути';
-          btn.setAttribute('aria-label', 'Вимкнути звуки океану');
-        });
-    } else {
-      audio.pause();
-      audio.currentTime = 0;
-      if (oscSrc) { try { oscSrc.stop(); oscSrc.disconnect(); } catch { /* already stopped */ } }
-      if (lfoSrc) { try { lfoSrc.stop(); lfoSrc.disconnect(); } catch { /* already stopped */ } }
-      playing = false;
+      audio.play().catch(() => startWebAudioOcean());
+      btn.classList.add('active');
+      btn.title = 'Океан (натисніть для Лісу)';
+      btn.innerHTML = `<svg class="icon"><use href="#icon-wave"></svg>`;
+    } else if (audioState === 2) { // Forest
+      startForestWind();
+      btn.classList.add('active');
+      btn.title = 'Ліс (натисніть щоб Вимкнути)';
+      btn.innerHTML = `<svg class="icon"><use href="#icon-cloud"></svg>`;
+    } else { // Mute
       btn.classList.remove('active');
-      btn.title = 'Звуки океану';
-      btn.setAttribute('aria-label', 'Увімкнути звуки океану');
+      btn.title = 'Звуки (натисніть для Океану)';
+      btn.innerHTML = `<svg class="icon"><use href="#icon-shush"></svg>`; // Default or mute icon
     }
   });
 }
