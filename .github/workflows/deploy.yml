@@ -24,12 +24,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Inject Cache Hash into Service Worker
-        run: |
-          COMMIT_HASH=${GITHUB_SHA::7}
-          # Надійна заміна всього рядка з кешем
-          sed -i "s/^const CACHE_NAME = .*/const CACHE_NAME = 'camino-v2-static-${COMMIT_HASH}';/" sw.js
-          echo "Cache injected: camino-v2-static-${COMMIT_HASH}"
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Production Assets
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -37,7 +36,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: 'dist'
 
       - name: Deploy to GitHub Pages
         id: deployment

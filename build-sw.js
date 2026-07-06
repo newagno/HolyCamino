@@ -3,8 +3,8 @@ import workboxBuild from 'workbox-build';
 const buildSW = () => {
   return workboxBuild.injectManifest({
     swSrc: 'sw-src.js',
-    swDest: 'sw.js',
-    globDirectory: '.',
+    swDest: 'dist/sw.js',
+    globDirectory: 'dist',
     globPatterns: [
       'index.html',
       'manifest.json',
@@ -12,7 +12,7 @@ const buildSW = () => {
       'assets/js/**/*.js',
       'assets/files/*.{svg,png,jpg,mp3}'
     ],
-    // Avoid caching temp/dev files or SW source itself
+    // Avoid caching temp/dev files
     globIgnores: [
       'sw-src.js',
       'sw.js',

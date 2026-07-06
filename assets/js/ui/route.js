@@ -146,6 +146,25 @@ export async function buildRoute() {
         </p>
       </div>` : '';
 
+    const hasWarning = d.type === 'walking-hard' || d.desc.includes('⚠️') || (d.hl && d.hl.includes('⚠️'));
+    const warningHTML = hasWarning ? (() => {
+      let warningText = 'Складний етап або особливі умови!';
+      if (d.desc.includes('⚠️')) {
+        const sentences = d.desc.split(/[.!?]/);
+        const match = sentences.find(s => s.includes('⚠️'));
+        if (match) warningText = match.replace(/⚠️/g, '').trim();
+      } else if (d.hl && d.hl.includes('⚠️')) {
+        const sentences = d.hl.split(/[.!?]/);
+        const match = sentences.find(s => s.includes('⚠️'));
+        if (match) warningText = match.replace(/⚠️/g, '').trim();
+      }
+      return `
+        <div class="route-warning-banner">
+          <svg class="icon"><use href="#icon-alert"></use></svg>
+          <div class="warning-text"><strong>Увага:</strong> ${warningText}</div>
+        </div>`;
+    })() : '';
+
     return `
     <div class="day-card${specialClass}" data-i="${i}" role="button" tabindex="0"
          aria-expanded="false" aria-label="${d.date} ${d.title}">
@@ -158,6 +177,7 @@ export async function buildRoute() {
       <div class="day-route">${injectIcons(d.title)}</div>
       <div class="day-meta">${tags}</div>
       <div class="day-desc">${injectIcons(d.desc)}</div>
+      ${warningHTML}
       ${d.hl ? `<div class="day-hl"><svg class="icon" style="margin-right:5px;color:var(--gold);"><use href="#icon-sun"></svg> ${injectIcons(d.hl)}</div>` : ''}
       <div class="expand-hint" aria-hidden="true"><svg class="icon"><use href="#icon-down"></svg> натисни для деталей</div>
       <div class="day-details" id="dd-${i}">
@@ -181,33 +201,61 @@ export async function buildRoute() {
 export function buildRouteTools() {
   return `
     <div class="route-tools">
-      <div class="tool-card">
-        <button class="tool-btn" id="todayRouteBtn" type="button" style="width:100%">Сьогоднішній день маршруту</button>
-      </div>
+      <button class="tool-btn" id="todayRouteBtn" type="button">Сьогодні</button>
+      <button class="tool-btn danger" id="sosHubBtn" type="button"><svg class="icon" style="margin-right:4px;"><use href="#icon-sos"></use></svg>SOS / Довідник</button>
     </div>`;
+}
+
+async function scrollToTodayCard(isAuto = false) {
+  const { ROUTE } = await import('../config/route.js');
+  const today = new Date();
+  const key = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  const found = ROUTE.findIndex((day) => day.date === key);
+  
+  if (isAuto && found === -1) {
+    return;
+  }
+
+  const idx = found >= 0 ? found : 0;
+  const target = document.querySelector(`.day-card[data-i="${idx}"]`);
+  if (target) {
+    target.scrollIntoView({ behavior: isAuto ? 'auto' : 'smooth', block: 'center' });
+    if (target.getAttribute('aria-expanded') === 'false') {
+      const dd = document.getElementById(`dd-${idx}`);
+      dd?.classList.add('expanded');
+      target.setAttribute('aria-expanded', 'true');
+      
+      const { CITY_COORDS } = await import('../config/route.js');
+      if (CITY_COORDS[ROUTE[idx].date]) {
+        loadWeatherForDay(idx, ROUTE[idx].date, CITY_COORDS[ROUTE[idx].date], ROUTE[idx].date);
+      }
+    }
+    target.classList.add('pulse-focus');
+    setTimeout(() => target.classList.remove('pulse-focus'), 1800);
+  }
 }
 
 export function initRouteTools() {
   document.getElementById('todayRouteBtn')?.addEventListener('click', async () => {
-    const { ROUTE } = await import('../config/route.js');
-    const today = new Date();
-    const key = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    const found = ROUTE.findIndex((day) => day.date === key);
-    const idx = found >= 0 ? found : 0;
-    const target = document.querySelector(`.day-card[data-i="${idx}"]`);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      if (target.getAttribute('aria-expanded') === 'false') {
-        const dd = document.getElementById(`dd-${idx}`);
-        dd?.classList.add('expanded');
-        target.setAttribute('aria-expanded', 'true');
-      }
-      target.classList.add('pulse-focus');
-      setTimeout(() => target.classList.remove('pulse-focus'), 1800);
+    await scrollToTodayCard(false);
+  });
+
+  document.getElementById('sosHubBtn')?.addEventListener('click', () => {
+    const safetyTab = document.querySelector('.nav-tab[data-s="safety"]');
+    if (safetyTab) {
+      safetyTab.click();
+      setTimeout(() => {
+        const emergencyCard = document.querySelector('.safety-emergency');
+        emergencyCard?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
     }
   });
-}
 
+  // Auto-scroll on initial mount
+  setTimeout(async () => {
+    await scrollToTodayCard(true);
+  }, 400);
+}
 
 export function handleDayCardClick(card) {
   const idx = card.getAttribute('data-i');
@@ -215,11 +263,21 @@ export function handleDayCardClick(card) {
   const dd = document.getElementById(`dd-${idx}`);
   const isOpen = dd?.classList.toggle('expanded') ?? false;
   card.setAttribute('aria-expanded', String(isOpen));
-  if (parseInt(idx) === document.querySelectorAll('.day-card').length - 1) {
-    document.getElementById('htip')?.classList.toggle('revealed');
+  
+  const cardsCount = document.querySelectorAll('.day-card').length;
+  if (parseInt(idx) === cardsCount - 1) {
+    const htip = document.getElementById('htip');
+    if (isOpen) {
+      htip?.classList.add('revealed');
+      const canvas = document.getElementById('confettiCanvas');
+      if (canvas) {
+        import('../utils.js').then(m => m.startConfetti(canvas));
+      }
+    } else {
+      htip?.classList.remove('revealed');
+    }
   }
 }
-
 
 export async function initWeatherLazy() {
   const { ROUTE, CITY_COORDS } = await import('../config/route.js');

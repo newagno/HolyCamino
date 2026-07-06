@@ -28,11 +28,17 @@ export function formatDateDisplay(dateStr) {
 // CONFETTI
 // ─────────────────────────────────────────────
 
+let confettiFrameId = null;
+let confettiTimeoutId = null;
+
 /**
  * Animate confetti on a canvas element for ~12 seconds.
  * @param {HTMLCanvasElement} canvas
  */
 export function startConfetti(canvas) {
+  if (confettiFrameId) cancelAnimationFrame(confettiFrameId);
+  if (confettiTimeoutId) clearTimeout(confettiTimeoutId);
+
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -50,8 +56,6 @@ export function startConfetti(canvas) {
     rot: Math.random() * 360,
     vr: (Math.random() - 0.5) * 5,
   }));
-
-  let frameId;
 
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -71,11 +75,11 @@ export function startConfetti(canvas) {
         p.x = Math.random() * canvas.width;
       }
     }
-    frameId = requestAnimationFrame(draw);
+    confettiFrameId = requestAnimationFrame(draw);
   }
 
   draw();
-  setTimeout(() => cancelAnimationFrame(frameId), 12_000);
+  confettiTimeoutId = setTimeout(() => cancelAnimationFrame(confettiFrameId), 12_000);
 }
 
 // ─────────────────────────────────────────────
@@ -301,11 +305,15 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
 
   // ── Try IndexedDB cache first ────────────────────────────────
   let data = null;
+  let isOfflineFallback = false;
+  let cacheTime = null;
+
   const cached = await getCache(cacheKey);
   const TTL = 4 * 60 * 60 * 1000; // 4 hours
 
   if (cached && cached.timestamp && (Date.now() - cached.timestamp < TTL)) {
     data = cached.data;
+    cacheTime = cached.timestamp;
   } else {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${effectiveLat}&longitude=${effectiveLon}&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum&hourly=temperature_2m,weather_code&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
 
@@ -325,21 +333,30 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
       if (!resp.ok) throw new Error(`HTTP error: ${resp.status}`);
 
       data = await resp.json();
-      await setCache(cacheKey, { timestamp: Date.now(), data });
+      if (!data || !data.daily || !data.daily.weathercode) throw new Error("Malformed API response");
+      cacheTime = Date.now();
+      await setCache(cacheKey, { timestamp: cacheTime, data });
     } catch (err) {
       if (err.name === 'AbortError') {
         return;
       }
       console.error('Weather fetch error:', err);
-      wdg.innerHTML = `
-        <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
-          <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
-          <div style="font-size:13px;opacity:0.8;text-align:center;padding:10px 0;">
-            Помилка завантаження.<br>
-            <span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Переглянути в Google ↗</span>
-          </div>
-        </a>`;
-      return;
+      // Fallback to expired cache if available
+      if (cached && cached.data) {
+        data = cached.data;
+        cacheTime = cached.timestamp;
+        isOfflineFallback = true;
+      } else {
+        wdg.innerHTML = `
+          <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
+            <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
+            <div style="font-size:13px;opacity:0.8;text-align:center;padding:10px 0;">
+              Помилка завантаження.<br>
+              <span style="text-decoration:underline;color:var(--gold);margin-top:5px;display:inline-block;">Переглянути в Google ↗</span>
+            </div>
+          </a>`;
+        return;
+      }
     }
   }
 
@@ -356,17 +373,26 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
       waterTemp = cachedMarine.data;
     } else {
       const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${effectiveLat}&longitude=${effectiveLon}&daily=sea_surface_temperature&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
+      const marineController = new AbortController();
+      const marineTimeoutId = setTimeout(() => marineController.abort(), 8000);
       try {
-        const marineResp = await fetch(marineUrl);
+        const marineResp = await fetch(marineUrl, { signal: marineController.signal });
+        clearTimeout(marineTimeoutId);
         if (marineResp.ok) {
           const marineData = await marineResp.json();
-          if (marineData.daily && marineData.daily.sea_surface_temperature && marineData.daily.sea_surface_temperature[0] !== null) {
+          if (!marineData || !marineData.daily || !marineData.daily.sea_surface_temperature) throw new Error("Malformed Marine API response");
+          if (marineData.daily.sea_surface_temperature[0] !== null) {
             waterTemp = Math.round(marineData.daily.sea_surface_temperature[0]);
             await setCache(marineCacheKey, { timestamp: Date.now(), data: waterTemp });
           }
+        } else {
+          throw new Error('Marine API status error');
         }
       } catch (err) {
         console.warn('Marine API fetch failed:', err);
+        if (cachedMarine && cachedMarine.data !== undefined) {
+          waterTemp = cachedMarine.data;
+        }
       }
     }
   }
@@ -422,9 +448,18 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
   const waterCellClass = waterTemp !== null ? 'weather-cell water' : 'weather-cell water missing-water';
   const waterCellValue = waterTemp !== null ? `${waterTemp}°` : '—';
 
+  let offlineBadge = '';
+  if (isOfflineFallback) {
+    const timeStr = cacheTime ? new Date(cacheTime).toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }) : '';
+    offlineBadge = `<span class="offline-badge"><svg class="icon" style="margin-right:3px;vertical-align:text-bottom;"><use href="#icon-alert"></use></svg>Офлайн ${timeStr}</span>`;
+  }
+
   wdg.innerHTML = `
     <a href="${extLink}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:block;">
-      <div class="weather-title"><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</div>
+      <div class="weather-title" style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+        <span><svg class="icon" style="margin-right:4px;"><use href="#icon-pin"></svg> ${coords.name}</span>
+        ${offlineBadge}
+      </div>
       
       <!-- Row 1: Main Daily Metrics (3 Cells) -->
       <div class="weather-grid">
@@ -556,6 +591,7 @@ export function initOcean() {
 
   let playing = false;
   let oscSrc = /** @type {AudioBufferSourceNode|null} */ (null);
+  let lfoSrc = /** @type {OscillatorNode|null} */ (null);
   let audioCtx = /** @type {AudioContext|null} */ (null);
 
   /** Synthesise ocean-like brown noise via Web Audio API. */
@@ -588,6 +624,7 @@ export function initOcean() {
     gain.gain.value = 0.12;
 
     const lfo = audioCtx.createOscillator();
+    lfoSrc = lfo;
     const lfog = audioCtx.createGain();
     lfo.frequency.value = 0.12;
     lfog.gain.value = 0.1;
@@ -621,7 +658,8 @@ export function initOcean() {
     } else {
       audio.pause();
       audio.currentTime = 0;
-      if (oscSrc) { try { oscSrc.stop(); } catch { /* already stopped */ } }
+      if (oscSrc) { try { oscSrc.stop(); oscSrc.disconnect(); } catch { /* already stopped */ } }
+      if (lfoSrc) { try { lfoSrc.stop(); lfoSrc.disconnect(); } catch { /* already stopped */ } }
       playing = false;
       btn.classList.remove('active');
       btn.title = 'Звуки океану';

@@ -9,7 +9,15 @@ if (typeof workbox !== 'undefined') {
   // Use a Network-First strategy for general GET requests to allow offline fallback
   workbox.routing.registerRoute(
     ({ request }) => request.method === 'GET',
-    new workbox.strategies.NetworkFirst()
+    new workbox.strategies.NetworkFirst({
+      cacheName: 'camino-runtime-cache',
+      plugins: [
+        new workbox.expiration.ExpirationPlugin({
+          maxEntries: 50,
+          maxAgeSeconds: 3 * 24 * 60 * 60, // 3 days
+        }),
+      ],
+    })
   );
 
   // Standard PWA update channel

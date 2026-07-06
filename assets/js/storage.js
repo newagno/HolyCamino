@@ -84,6 +84,27 @@ export async function initStorage() {
   try {
     await openDB();
 
+    // 0. Check for Lifeboat Recovery (iOS Safari fix)
+    const lifeboatRaw = localStorage.getItem('camino_lifeboat');
+    if (lifeboatRaw) {
+      console.log('Lifeboat found! Recovering pending writes...');
+      try {
+        const lifeboatData = JSON.parse(lifeboatRaw);
+        await execTx(STATE_STORE, 'readwrite', (store) => {
+          for (const key of Object.keys(lifeboatData)) {
+            if (lifeboatData[key] === undefined) {
+               store.delete(key);
+            } else {
+               store.put(lifeboatData[key], key);
+            }
+          }
+        });
+        localStorage.removeItem('camino_lifeboat');
+      } catch (e) {
+        console.error('Lifeboat recovery failed:', e);
+      }
+    }
+
     // 1. Check if localStorage has items to migrate
     if (localStorage.length > 0) {
       console.log('Migrating localStorage to IndexedDB...');
@@ -173,20 +194,42 @@ async function executeWrite(key) {
     console.error(`Failed to write key ${key} to IDB:`, err);
   }
 }
+let isFlushing = false;
 
 /**
  * Instantly flushes all pending debounced writes to IDB.
- * Call this on visibilitychange or pagehide to prevent data loss.
+ * Intercepts timers and forces async IndexedDB execution immediately.
+ * Called on visibilitychange to prevent data loss.
+ * Implements Synchronous Lifeboat to localStorage for iOS Safari.
  */
 export function flushPendingWrites() {
-  if (pendingWrites.size === 0) return;
+  if (pendingWrites.size === 0 || isFlushing) return;
+  isFlushing = true;
   
-  // We don't await here because visibilitychange needs sync execution dispatching
+  // Synchronous Dump to localStorage for iOS Force-Quit resilience
+  const lifeboatData = {};
+  pendingWrites.forEach((_, key) => {
+    lifeboatData[key] = memoryCache[key];
+  });
+  try {
+    localStorage.setItem('camino_lifeboat', JSON.stringify(lifeboatData));
+  } catch (e) { /* Ignore quota errors */ }
+
+  const promises = [];
   pendingWrites.forEach((timer, key) => {
     clearTimeout(timer);
-    executeWrite(key);
+    promises.push(executeWrite(key));
   });
   pendingWrites.clear();
+
+  // If async IndexedDB writes succeed, clean up the lifeboat
+  Promise.all(promises).then(() => {
+    try {
+      localStorage.removeItem('camino_lifeboat');
+    } catch(e) {}
+  }).finally(() => {
+    isFlushing = false;
+  });
 }
 
 // ─── Generic Helpers (State Store) ───────────────────────────────────────────

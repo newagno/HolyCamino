@@ -311,14 +311,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   boot();
 });
 
-// Flush pending IndexedDB writes before the app is frozen or closed
+// Immediately intercept and flush pending debounced IndexedDB writes 
+// if the user closes/minimizes the app within the 500ms debounce window.
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'hidden') {
     flushPendingWrites();
   }
 });
 
-window.addEventListener('pagehide', flushPendingWrites);
+
 
 // ─────────────────────────────────────────────────────────────
 // Boot

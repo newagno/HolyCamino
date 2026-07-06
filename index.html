@@ -18,6 +18,8 @@
 </head>
 <body>
 
+  <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;" aria-hidden="true"></canvas>
+
   <!-- ========== DECORATIVE SHELL BACKGROUNDS ========== -->
   <svg style="display:none">
     <defs>
@@ -91,7 +93,6 @@
 
   <!-- ========== BIRTHDAY OVERLAY (Олекса 24.07) ========== -->
   <div class="birthday-overlay" id="birthdayOverlay" role="dialog" aria-modal="true" aria-label="День народження">
-    <canvas id="confettiCanvas" style="position:absolute;inset:0;pointer-events:none;" aria-hidden="true"></canvas>
     <div class="birthday-msg">
       <h1><svg class="icon" style="width:1.2em;height:1.2em;margin-right:8px;"><use href="#icon-cake"></svg> З Днем Народження, Олекса! <svg class="icon" style="width:1.2em;height:1.2em;margin-left:8px;"><use href="#icon-shell-shape"></svg></h1>
       <p>Сьогодні тобі виповнюється 15!<br>

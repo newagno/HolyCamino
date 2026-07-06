@@ -5,11 +5,14 @@
   "scripts": {
     "test": "vitest run",
     "build:sw": "node build-sw.js",
-    "build": "npm run build:sw"
+    "build": "node build.js && npm run build:sw"
   },
   "devDependencies": {
-    "vitest": "^2.0.0",
+    "clean-css": "^5.3.3",
+    "html-minifier-terser": "^7.2.0",
     "jsdom": "^24.0.0",
+    "terser": "^5.48.0",
+    "vitest": "^2.0.0",
     "workbox-build": "^7.1.0"
   }
 }
