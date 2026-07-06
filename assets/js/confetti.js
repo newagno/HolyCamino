@@ -1,59 +1,38 @@
 let confettiFrameId = null;
 let confettiTimeoutId = null;
 
-// Функція для спіралі (залишаємо вашу, але трохи згладжуємо параметри)
-function spiralPathString(turns = 3, steps = 80, a = 0.5, b = 0.4) {
-  let d = '';
-  for (let i = 0; i <= steps; i++) {
-    const t = (i / steps) * turns * Math.PI * 2;
-    const r = a * Math.exp(b * t * 0.15);
-    const x = r * Math.cos(t);
-    const y = r * Math.sin(t);
-    d += i === 0 ? `M ${x},${y} ` : `L ${x},${y} `;
-  }
-  return d;
-}
-
 const SHAPES = [
-  // 1. Гребінець (Scallop) — символ Camino
+  // 1. Гребінець (Camino Vieira). Ширший зверху, має пласке "вушко" в основі та радіальні ребра.
   {
-    // Більш плавний віялоподібний край і чіткі "вушка" внизу
-    body: new Path2D('M -6,18 L -10,22 L 10,22 L 6,18 C 18,15 25,0 20,-12 C 15,-22 5,-25 0,-25 C -5,-25 -15,-22 -20,-12 C -25,0 -18,15 -6,18 Z'),
-    // Радіальні лінії, що сходяться до центру основи
-    lines: new Path2D('M 0,20 L 0,-25 M -4,19 L -10,-22 M 4,19 L 10,-22 M -8,15 L -18,-12 M 8,15 L 18,-12')
+    body: new Path2D('M -6,14 L 6,14 L 9,11 C 22,11 24,-6 14,-15 C 6,-22 -6,-22 -14,-15 C -24,-6 -22,11 -9,11 Z'),
+    lines: new Path2D('M 0,14 L 0,-18 M -3,14 L -9,-15 M 3,14 L 9,-15 M -6,12 L -16,-6 M 6,12 L 16,-6')
   },
-
-  // 2. Спіральна мушля (Nautilus/Равлик)
+  // 2. Равлик (Спіраль). Асиметричний краплеподібний силует, внутрішня лінія закручується у спіраль.
   {
-    body: new Path2D(spiralPathString(3, 80, 0.5, 0.4) + ' A 18,18 0 0,0 -12,-5 C -15,5 -5,15 0,0 Z'),
-    lines: new Path2D(spiralPathString(3, 80, 0.5, 0.4))
+    body: new Path2D('M -5,18 C -22,18 -22,-18 -2,-18 C 18,-18 24,2 12,16 C 8,21 0,20 -5,18 Z'),
+    lines: new Path2D('M 10,16 C 25,-2 5,-20 -10,-10 C -20,0 -10,15 2,10 C 10,5 5,-5 -2,-2')
   },
-
-  // 3. Мидия / Двостулкова мушля (Mussel)
+  // 3. Мідія (Clam). Витягнута крапля з концентричними, вигнутими лініями росту.
   {
-    // Асиметрична краплеподібна форма
-    body: new Path2D('M -18,-10 C -25,5 -10,25 10,22 C 25,20 28,-5 15,-18 C 5,-28 -10,-25 -18,-10 Z'),
-    // Вигнуті лінії росту
-    lines: new Path2D('M -12,-5 C -15,5 -5,15 8,12 M -6,2 C -10,12 2,20 12,18 M 0,8 C -5,18 8,24 16,21')
+    body: new Path2D('M -14,14 C -22,2 -16,-16 4,-20 C 18,-20 22,6 10,16 C 2,22 -8,22 -14,14 Z'),
+    lines: new Path2D('M -8,-15 C 4,-18 12,-4 8,6 M -12,-8 C -2,-10 5,2 2,12')
   },
-
-  // 4. Конічна мушля (Auger / Cone shell)
+  // 4. Конічна мушля (Cone shell). Плавні бічні стінки, внутрішні смуги вигнуті дугою (Q) для об'єму.
   {
-    // Довгий конус із закругленим верхом і характерним низом
-    body: new Path2D('M -8,-20 C 0,-25 8,-20 6,-15 L 12,15 C 10,25 -10,25 -12,15 L -6,-15 Z'),
-    // Спіральні смуги поперек конуса
-    lines: new Path2D('M -7,-10 Q 0,-5 8,-10 M -9,0 Q 0,5 10,0 M -11,10 Q 0,15 11,10')
+    body: new Path2D('M 0,-22 C 5,-14 12,8 8,20 C 0,24 -8,24 -8,20 C -12,8 -5,-14 0,-22 Z'),
+    lines: new Path2D('M -3,-13 Q 0,-11 5,-10 M -8,-2 Q 0,0 9,-1 M -10,9 Q 0,12 10,8 M -8,18 Q 0,20 8,16')
   },
-
-  // 5. Морська зірка (Starfish)
+  // 5. Морська зірка (Starfish). М'які, вигнуті щупальця.
   {
-    // Згладжені, більш органічні щупальця
-    body: new Path2D('M 0,-22 C 2,-15 5,-8 18,-6 C 10,0 5,5 12,18 C 5,12 0,8 -12,18 C -5,5 -10,0 -18,-6 C -5,-8 -2,-15 0,-22 Z'),
-    // Центральні лінії щупалець та крапки
-    lines: new Path2D('M 0,0 L 0,-20 M 0,0 L 16,-5 M 0,0 L -16,-5 M 0,0 L 10,16 M 0,0 L -10,16')
+    body: new Path2D('M 0,-20 Q 3,-8 15,-6 Q 5,-2 12,18 Q 0,8 -12,18 Q -5,-2 -15,-6 Q -3,-8 0,-20 Z'),
+    lines: new Path2D('M 0,0 L 0,-17 M 0,0 L 12,-5 M 0,0 L -12,-5 M 0,0 L 9,15 M 0,0 L -9,15')
   }
 ];
 
+/**
+ * Анімація падіння мушель-конфеті на елементі canvas.
+ * @param {HTMLCanvasElement} canvas
+ */
 export function startConfetti(canvas) {
   if (confettiFrameId) cancelAnimationFrame(confettiFrameId);
   if (confettiTimeoutId) clearTimeout(confettiTimeoutId);
@@ -68,15 +47,15 @@ export function startConfetti(canvas) {
 
   const COLORS = ['#c8553d', '#6b7d3a', '#c9a64b', '#5a7d8c', '#8a5a44'];
 
-  const pieces = Array.from({ length: 80 }, () => ({
+  const pieces = Array.from({ length: 100 }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * -canvas.height,
-    r: (Math.random() * 1.0 + 0.6) * dpr, // Трохи зменшив масштаб, щоб не здавались велетенськими
+    r: (Math.random() * 1.1 + 0.7) * dpr,
     color: COLORS[Math.floor(Math.random() * COLORS.length)],
     vx: (Math.random() - 0.5) * 4 * dpr,
     vy: (Math.random() * 3 + 2.5) * dpr,
     rot: Math.random() * 360,
-    vr: (Math.random() - 0.5) * 3, // Трохи сповільнив обертання
+    vr: (Math.random() - 0.5) * 4,
     shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
   }));
 
@@ -92,26 +71,24 @@ export function startConfetti(canvas) {
       ctx.rotate((p.rot * Math.PI) / 180);
       ctx.scale(p.r, p.r);
 
-      // Прозорий силует (залишаємо вашу ідею, вона гарна для UI)
+      // Прозорий силует
       ctx.fillStyle = p.color;
-      ctx.globalAlpha = 0.15; // Трохи яскравіше
+      ctx.globalAlpha = 0.12;
       ctx.fill(p.shape.body);
 
-      // Контури
-      ctx.globalAlpha = 0.8;
+      // Чіткі контури та внутрішні лінії
+      ctx.globalAlpha = 0.9;
       ctx.strokeStyle = p.color;
-
-      // Роблю лінію обводки м'якшою
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.4;
+      ctx.lineCap = 'round'; // Запобігає гострим піксельним зрізам на кінцях ліній
+      ctx.lineJoin = 'round'; // Згладжує кути на стиках контурів
 
       ctx.stroke(p.shape.body);
       ctx.stroke(p.shape.lines);
 
       ctx.restore();
 
-      p.x += p.vx + Math.sin(p.y / 40) * 0.8; // Трохи сильніше погойдування на вітрі
+      p.x += p.vx + Math.sin(p.y / 30) * 0.5;
       p.y += p.vy;
       p.rot += p.vr;
 
@@ -139,5 +116,5 @@ export function startConfetti(canvas) {
     document.addEventListener('touchstart', stopConfetti, { passive: true });
   }, 300);
 
-  confettiTimeoutId = setTimeout(stopConfetti, 10000); // Зменшив до 10с (22с це занадто довго для UI анімації)
+  confettiTimeoutId = setTimeout(stopConfetti, 10000);
 }
