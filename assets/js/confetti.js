@@ -1,7 +1,8 @@
 let confettiFrameId = null;
 let confettiTimeoutId = null;
 
-function spiralPathString(turns = 2.5, steps = 60, a = 0.6, b = 0.55) {
+// Функція для спіралі (залишаємо вашу, але трохи згладжуємо параметри)
+function spiralPathString(turns = 3, steps = 80, a = 0.5, b = 0.4) {
   let d = '';
   for (let i = 0; i <= steps; i++) {
     const t = (i / steps) * turns * Math.PI * 2;
@@ -14,37 +15,45 @@ function spiralPathString(turns = 2.5, steps = 60, a = 0.6, b = 0.55) {
 }
 
 const SHAPES = [
-  // 1. Гребінець (Scallop) — віяло з радіальними ребрами
+  // 1. Гребінець (Scallop) — символ Camino
   {
-    body: new Path2D('M -18,10 C -18,-10 -8,-22 0,-22 C 8,-22 18,-10 18,10 C 12,16 6,19 0,19 C -6,19 -12,16 -18,10 Z'),
-    lines: new Path2D('M 0,19 L 0,-22 M -6,18 L -9,-18 M 6,18 L 9,-18 M -12,15 L -15,-10 M 12,15 L 15,-10'),
+    // Більш плавний віялоподібний край і чіткі "вушка" внизу
+    body: new Path2D('M -6,18 L -10,22 L 10,22 L 6,18 C 18,15 25,0 20,-12 C 15,-22 5,-25 0,-25 C -5,-25 -15,-22 -20,-12 C -25,0 -18,15 -6,18 Z'),
+    // Радіальні лінії, що сходяться до центру основи
+    lines: new Path2D('M 0,20 L 0,-25 M -4,19 L -10,-22 M 4,19 L 10,-22 M -8,15 L -18,-12 M 8,15 L 18,-12')
   },
-  // 2. Спіральна мушля равлика (Nautilus)
+
+  // 2. Спіральна мушля (Nautilus/Равлик)
   {
-    body: new Path2D(spiralPathString(2.3, 70, 0.8, 0.5) + ' Z'),
-    lines: new Path2D(spiralPathString(2.3, 70, 0.8, 0.5)),
+    body: new Path2D(spiralPathString(3, 80, 0.5, 0.4) + ' A 18,18 0 0,0 -12,-5 C -15,5 -5,15 0,0 Z'),
+    lines: new Path2D(spiralPathString(3, 80, 0.5, 0.4))
   },
-  // 3. Двостулкова мушля (Clam) — концентричні дуги росту
+
+  // 3. Мидия / Двостулкова мушля (Mussel)
   {
-    body: new Path2D('M -20,0 C -20,-14 -10,-22 0,-22 C 10,-22 20,-14 20,0 C 20,10 10,20 0,20 C -10,20 -20,10 -20,0 Z'),
-    lines: new Path2D('M -20,0 C -12,-4 12,-4 20,0 M -16,8 C -8,4 8,4 16,8 M -11,14 C -5,11 5,11 11,14'),
+    // Асиметрична краплеподібна форма
+    body: new Path2D('M -18,-10 C -25,5 -10,25 10,22 C 25,20 28,-5 15,-18 C 5,-28 -10,-25 -18,-10 Z'),
+    // Вигнуті лінії росту
+    lines: new Path2D('M -12,-5 C -15,5 -5,15 8,12 M -6,2 C -10,12 2,20 12,18 M 0,8 C -5,18 8,24 16,21')
   },
-  // 4. Конічна мушля (Cone shell)
+
+  // 4. Конічна мушля (Auger / Cone shell)
   {
-    body: new Path2D('M -3,-22 L 3,-22 L 10,-8 L 3,22 L -3,22 L -10,-8 Z'),
-    lines: new Path2D('M -10,-8 L 10,-8 M -7,0 L 7,0 M -5,9 L 5,9 M 0,-22 L 0,22'),
+    // Довгий конус із закругленим верхом і характерним низом
+    body: new Path2D('M -8,-20 C 0,-25 8,-20 6,-15 L 12,15 C 10,25 -10,25 -12,15 L -6,-15 Z'),
+    // Спіральні смуги поперек конуса
+    lines: new Path2D('M -7,-10 Q 0,-5 8,-10 M -9,0 Q 0,5 10,0 M -11,10 Q 0,15 11,10')
   },
+
   // 5. Морська зірка (Starfish)
   {
-    body: new Path2D('M 0,-20 L 5,-5 L 20,-5 L 8,4 L 13,19 L 0,10 L -13,19 L -8,4 L -20,-5 L -5,-5 Z'),
-    lines: new Path2D('M 0,0 L 0,-20 M 0,0 L 13,19 M 0,0 L -13,19 M 0,0 L 20,-5 M 0,0 L -20,-5'),
-  },
+    // Згладжені, більш органічні щупальця
+    body: new Path2D('M 0,-22 C 2,-15 5,-8 18,-6 C 10,0 5,5 12,18 C 5,12 0,8 -12,18 C -5,5 -10,0 -18,-6 C -5,-8 -2,-15 0,-22 Z'),
+    // Центральні лінії щупалець та крапки
+    lines: new Path2D('M 0,0 L 0,-20 M 0,0 L 16,-5 M 0,0 L -16,-5 M 0,0 L 10,16 M 0,0 L -10,16')
+  }
 ];
 
-/**
- * Анімація падіння мушель-конфеті на елементі canvas.
- * @param {HTMLCanvasElement} canvas
- */
 export function startConfetti(canvas) {
   if (confettiFrameId) cancelAnimationFrame(confettiFrameId);
   if (confettiTimeoutId) clearTimeout(confettiTimeoutId);
@@ -59,15 +68,15 @@ export function startConfetti(canvas) {
 
   const COLORS = ['#c8553d', '#6b7d3a', '#c9a64b', '#5a7d8c', '#8a5a44'];
 
-  const pieces = Array.from({ length: 100 }, () => ({
+  const pieces = Array.from({ length: 80 }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * -canvas.height,
-    r: (Math.random() * 1.1 + 0.7) * dpr,
+    r: (Math.random() * 1.0 + 0.6) * dpr, // Трохи зменшив масштаб, щоб не здавались велетенськими
     color: COLORS[Math.floor(Math.random() * COLORS.length)],
     vx: (Math.random() - 0.5) * 4 * dpr,
     vy: (Math.random() * 3 + 2.5) * dpr,
     rot: Math.random() * 360,
-    vr: (Math.random() - 0.5) * 4,
+    vr: (Math.random() - 0.5) * 3, // Трохи сповільнив обертання
     shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
   }));
 
@@ -83,20 +92,26 @@ export function startConfetti(canvas) {
       ctx.rotate((p.rot * Math.PI) / 180);
       ctx.scale(p.r, p.r);
 
-      // прозорий силует: майже без заливки, колір тільки в контурі
+      // Прозорий силует (залишаємо вашу ідею, вона гарна для UI)
       ctx.fillStyle = p.color;
-      ctx.globalAlpha = 0.12;
+      ctx.globalAlpha = 0.15; // Трохи яскравіше
       ctx.fill(p.shape.body);
 
-      ctx.globalAlpha = 0.9;
+      // Контури
+      ctx.globalAlpha = 0.8;
       ctx.strokeStyle = p.color;
-      ctx.lineWidth = 1.4;
+
+      // Роблю лінію обводки м'якшою
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.lineWidth = 1.5;
+
       ctx.stroke(p.shape.body);
       ctx.stroke(p.shape.lines);
 
       ctx.restore();
 
-      p.x += p.vx + Math.sin(p.y / 30) * 0.5;
+      p.x += p.vx + Math.sin(p.y / 40) * 0.8; // Трохи сильніше погойдування на вітрі
       p.y += p.vy;
       p.rot += p.vr;
 
@@ -124,5 +139,5 @@ export function startConfetti(canvas) {
     document.addEventListener('touchstart', stopConfetti, { passive: true });
   }, 300);
 
-  confettiTimeoutId = setTimeout(stopConfetti, 22000);
+  confettiTimeoutId = setTimeout(stopConfetti, 10000); // Зменшив до 10с (22с це занадто довго для UI анімації)
 }
