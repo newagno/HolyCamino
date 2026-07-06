@@ -35,12 +35,7 @@ export function showCompostela(name) {
         успішно завершив повну підготовку та зібрав необхідне спорядження для проходження Шляху Святого Якова (Camino de Santiago).
       </div>
 
-      <div class="compostela-wax-seal" style="
-        display: inline-flex; align-items: center; justify-content: center;
-        background: radial-gradient(circle at 30% 30%, #c8553d, #9c3e2c);
-        border-radius: 48% 52% 51% 49% / 50% 48% 52% 50%;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset -3px -3px 8px rgba(0,0,0,0.3), inset 2px 2px 6px rgba(255,255,255,0.2);
-        border: 1px solid #4a3825; z-index: 10;">
+      <div class="compostela-wax-seal">
         <svg viewBox="0 0 100 100" style="width: 55%; height: 55%; fill: #e8cca0; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));">
           <path d="M50,85 C20,85 5,55 15,35 C20,25 35,20 50,20 C65,20 80,25 85,35 C95,55 80,85 50,85 Z" />
           <path d="M50,83 L50,22 M50,83 L40,24 M50,83 L30,30 M50,83 L22,40 M50,83 L18,52 M50,83 L60,24 M50,83 L70,30 M50,83 L78,40 M50,83 L82,52" stroke="#630d22" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5"/>

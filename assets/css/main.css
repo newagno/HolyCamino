@@ -4551,11 +4551,22 @@ body.night-mode .route-warning-banner {
 
 .compostela-wax-seal {
   position: absolute;
-  bottom: -30px;
+  bottom: -35px;
   left: 50%;
   transform: translateX(-50%);
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
+  border-radius: 48% 52% 51% 49% / 50% 48% 52% 50%;
+  background: radial-gradient(circle at 30% 30%, #c8553d, #9c3e2c);
+  box-shadow:
+    0 8px 15px rgba(0,0,0,0.4),
+    inset -4px -4px 10px rgba(0,0,0,0.35),
+    inset 3px 3px 8px rgba(255,255,255,0.25);
+  border: 1px solid #4a3825;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (max-height: 700px) {
