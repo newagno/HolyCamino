@@ -3228,6 +3228,22 @@ body.the-way-mode .the-way-link {
     font-size: 17px;
   }
 
+.compostela-certificate {
+    background: radial-gradient(circle, #fdfbf7 0%, #ede0c2 100%);
+    color: #2c1810;
+    text-align: center;
+    padding: 40px 30px 60px 30px;
+    border: 6px solid #9c3e2c !important;
+    outline: 2px solid #c9a64b !important;
+    outline-offset: -12px !important;
+    border-radius: 2px;
+    max-width: 520px;
+    width: 100%;
+    position: relative;
+    font-family: 'Cormorant Garamond', 'Georgia', serif;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
   /* Nav: smaller tabs */
   .nav-tab {
     padding: 10px 10px;
@@ -4476,4 +4492,71 @@ body.night-mode .offline-badge {
 
 body.night-mode .route-warning-banner {
   background-color: rgba(200, 85, 61, 0.2);
-}
+}
+
+
+.modal.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.compostela-certificate {
+  background: radial-gradient(circle, #fdfbf7 0%, #ede0c2 100%);
+  color: #2c1810;
+  text-align: center;
+  padding: 28px 20px 50px 20px;
+  border: 5px solid #9c3e2c !important;
+  outline: 2px solid #c9a64b !important;
+  outline-offset: -10px !important;
+  border-radius: 2px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 92vh;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+
+.compostela-certificate h1 {
+  font-size: 26px;
+  letter-spacing: 4px;
+  margin: 4px 0 0 0;
+}
+
+.compostela-certificate .divider {
+  margin: 10px 0 16px 0;
+}
+
+.compostela-certificate .pilgrim-name {
+  font-size: 36px;
+  margin: 10px 0 16px 0;
+}
+
+.compostela-certificate .body-text {
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0 auto 30px auto;
+}
+
+.compostela-wax-seal {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 70px;
+}
+
+@media (max-height: 700px) {
+  .compostela-certificate {
+    padding: 20px 16px 40px 16px;
+  }
+  .compostela-certificate h1 { font-size: 22px; margin-top: 0; }
+  .compostela-certificate .pilgrim-name { font-size: 30px; margin: 6px 0 10px 0; }
+  .compostela-certificate .divider { margin: 6px 0 10px 0; }
+  .compostela-wax-seal { width: 56px; height: 56px; bottom: -24px; }
+}
+

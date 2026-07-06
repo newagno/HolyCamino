@@ -11,114 +11,45 @@ export function showCompostela(name) {
   const canvas = document.getElementById('confettiCanvas');
   if (canvas) startConfetti(canvas);
 
-  const noiseSVG = `data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.05"/></svg>`;
-
   const modalHTML = `
-    <div id="compostelaModal" class="modal show" role="dialog" aria-modal="true" style="display:flex; align-items:center; justify-content:center; padding:16px;">
-      <div class="modal-content" style="
-        background: url('${noiseSVG}'), radial-gradient(circle, #fdfbf7 0%, #e8dcc4 100%);
-        color: #2c2523;
-        text-align: center;
-        padding: 50px 40px;
-        box-shadow: inset 0 0 0 4px #e8dcc4, inset 0 0 0 6px #8a1538, inset 0 0 0 10px #e8dcc4, inset 0 0 0 11px #c9a64b, 0 15px 40px rgba(0,0,0,0.4);
-        border: none;
-        border-radius: 2px;
-        max-width: 560px;
-        width: 100%;
-        position: relative;
-        font-family: 'Georgia', 'Times New Roman', serif;
-      ">
-        <button class="modal-close" onclick="this.closest('.modal').remove()" aria-label="Закрити" style="
-          position: absolute;
-          top: 15px;
-          right: 15px;
-          background: transparent;
-          border: none;
-          font-size: 20px;
-          color: #8a1538;
-          cursor: pointer;
-          opacity: 0.6;
-          transition: opacity 0.2s;
-        " onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">✕</button>
+  <div id="compostelaModal" class="modal show" role="dialog" aria-modal="true">
+    <div class="modal-content compostela-certificate">
+      <button class="modal-close" onclick="this.closest('.modal').remove()" aria-label="Закрити" style="
+        position: absolute; top: 10px; right: 10px; background: transparent; border: none;
+        font-size: 18px; color: #9c3e2c; cursor: pointer; opacity: 0.6; transition: opacity 0.2s;
+      " onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">✕</button>
 
-        <h1 style="
-          font-size: 32px;
-          color: #8a1538;
-          letter-spacing: 6px;
-          margin: 10px 0 0 0;
-          text-transform: uppercase;
-          font-weight: normal;
-        ">Compostela</h1>
-        
-        <!-- Decorative Divider -->
-        <div style="display: flex; align-items: center; justify-content: center; margin: 15px 0 25px 0;">
-          <div style="height: 1px; width: 60px; background: #8a1538; opacity: 0.5;"></div>
-          <div style="width: 8px; height: 8px; background: #c9a64b; transform: rotate(45deg); margin: 0 10px;"></div>
-          <div style="height: 1px; width: 60px; background: #8a1538; opacity: 0.5;"></div>
-        </div>
-        
-        <div style="
-          font-size: 14px;
-          color: #554a46;
-          margin: 0 0 10px 0;
-          font-style: italic;
-          letter-spacing: 0.5px;
-        ">Цим підтверджується, що паломник</div>
+      <h1>COMPOSTELA</h1>
 
-        <div style="
-          font-size: 56px;
-          font-family: 'Great Vibes', 'Caveat', 'Brush Script MT', cursive;
-          color: #110d0c;
-          margin: 15px 0 25px 0;
-          font-weight: normal;
-          line-height: 1.1;
-          text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
-        ">${name}</div>
+      <div class="divider" style="display: flex; align-items: center; justify-content: center;">
+        <div style="height: 1px; width: 45px; background: #9c3e2c; opacity: 0.5;"></div>
+        <div style="width: 6px; height: 6px; background: #c9a64b; transform: rotate(45deg); margin: 0 8px;"></div>
+        <div style="height: 1px; width: 45px; background: #9c3e2c; opacity: 0.5;"></div>
+      </div>
 
-        <div style="
-          font-size: 15px;
-          color: #38302d;
-          line-height: 1.6;
-          margin: 0 auto 35px auto;
-          max-width: 420px;
-          font-style: italic;
-        ">
-          успішно завершив повну підготовку та зібрав необхідне спорядження для проходження Шляху Святого Якова (Camino de Santiago).
-        </div>
+      <div style="font-size: 13px; color: #554a46; font-style: italic;">Цим підтверджується, що паломник</div>
 
-        <!-- Realistic 3D Wax Seal -->
-        <div style="
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 86px;
-          height: 86px;
-          background: radial-gradient(circle at 30% 30%, #d32036 0%, #8a1538 50%, #4a0b1d 100%);
-          border-radius: 48% 52% 51% 49% / 50% 48% 52% 50%;
-          box-shadow: 2px 5px 8px rgba(0,0,0,0.4), inset -3px -5px 10px rgba(0,0,0,0.5), inset 2px 4px 6px rgba(255,255,255,0.3);
-          position: relative;
-        ">
-          <!-- Glare Reflection -->
-          <div style="
-            position: absolute;
-            top: 5px; left: 10px;
-            width: 40px; height: 15px;
-            background: linear-gradient(110deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
-            border-radius: 50%;
-            transform: rotate(-15deg);
-            pointer-events: none;
-          "></div>
-          
-          <!-- Camino Scallop Shell SVG (Proper Ridges) -->
-          <svg viewBox="0 0 100 100" style="width: 48px; height: 48px; fill: #e8cca0; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5)); position: relative; z-index: 1;">
-            <path d="M50,85 C20,85 5,55 15,35 C20,25 35,20 50,20 C65,20 80,25 85,35 C95,55 80,85 50,85 Z" />
-            <path d="M50,83 L50,22 M50,83 L40,24 M50,83 L30,30 M50,83 L22,40 M50,83 L18,52 M50,83 L60,24 M50,83 L70,30 M50,83 L78,40 M50,83 L82,52" stroke="#630d22" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5"/>
-            <path d="M38,82 L62,82 L64,90 L36,90 Z" fill="#e8cca0" stroke="#630d22" stroke-width="1.5" stroke-linejoin="round" opacity="0.8"/>
-          </svg>
-        </div>
+      <div class="pilgrim-name" style="font-family: 'Caveat', cursive; color: #2c1810;">${name}</div>
+
+      <div class="body-text" style="max-width: 380px; font-style: italic; color: #38302d;">
+        успішно завершив повну підготовку та зібрав необхідне спорядження для проходження Шляху Святого Якова (Camino de Santiago).
+      </div>
+
+      <div class="compostela-wax-seal" style="
+        display: inline-flex; align-items: center; justify-content: center;
+        background: radial-gradient(circle at 30% 30%, #c8553d, #9c3e2c);
+        border-radius: 48% 52% 51% 49% / 50% 48% 52% 50%;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset -3px -3px 8px rgba(0,0,0,0.3), inset 2px 2px 6px rgba(255,255,255,0.2);
+        border: 1px solid #4a3825; z-index: 10;">
+        <svg viewBox="0 0 100 100" style="width: 55%; height: 55%; fill: #e8cca0; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));">
+          <path d="M50,85 C20,85 5,55 15,35 C20,25 35,20 50,20 C65,20 80,25 85,35 C95,55 80,85 50,85 Z" />
+          <path d="M50,83 L50,22 M50,83 L40,24 M50,83 L30,30 M50,83 L22,40 M50,83 L18,52 M50,83 L60,24 M50,83 L70,30 M50,83 L78,40 M50,83 L82,52" stroke="#630d22" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+          <path d="M38,82 L62,82 L64,90 L36,90 Z" fill="#e8cca0" stroke="#630d22" stroke-width="1.5" stroke-linejoin="round" opacity="0.8"/>
+        </svg>
       </div>
     </div>
-  `;
+  </div>
+`;
   document.getElementById('modal-root').innerHTML = modalHTML;
 }
 
