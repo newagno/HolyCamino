@@ -218,9 +218,15 @@ export function buildCheck() {
   const saved = getChecklistState();
 
   const cats = CHECKLIST.map((cat, ci) => {
-    const items = cat.items.map((it, ii) => {
+    const itemsData = cat.items.map((it, ii) => {
       const k = `${ci}-${ii}`;
       const done = saved[k] ?? false;
+      return { it, ii, k, done };
+    });
+
+    itemsData.sort((a, b) => a.done - b.done);
+
+    const items = itemsData.map(({ it, ii, k, done }) => {
       const urgClass = it.u === 'critical' ? 'urg-critical' : it.u === 'important' ? 'urg-important' : 'urg-nice';
       const urgLabel = it.u === 'critical' ? 'ТЕРМІНОВО' : it.u === 'important' ? 'ВАЖЛИВО' : 'ПРИЄМНО';
 
@@ -266,6 +272,21 @@ export function handleCheckItem(el) {
   el.setAttribute('aria-checked', String(done));
   const cb = el.querySelector('.check-cb');
   if (cb) cb.textContent = done ? '✓' : '';
+  
+  // Reorder visually within the category
+  const catContainer = el.closest('.check-category');
+  if (catContainer) {
+    if (done) {
+      catContainer.appendChild(el);
+    } else {
+      const firstDone = Array.from(catContainer.querySelectorAll('.check-item')).find(x => x.classList.contains('done'));
+      if (firstDone) {
+        catContainer.insertBefore(el, firstDone);
+      } else {
+        catContainer.appendChild(el);
+      }
+    }
+  }
   
   // update progress
   const items = [...document.querySelectorAll('.check-item')];

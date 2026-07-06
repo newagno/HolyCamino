@@ -79,11 +79,20 @@ function handleGlobalClick(e) {
   if (navTab) { handleTabSwitch(navTab); handled = true; }
 
   const albBtn = e.target.closest('.alb-toggle-btn');
+  const completeStageBtn = e.target.closest('.complete-stage-btn');
   const dayCard = e.target.closest('.day-card');
   
   if (albBtn && !handled) { 
     import('./booking.js').then(m => m.handleBookingToggle(albBtn)).catch(console.error);
     handled = true; 
+  } else if (completeStageBtn && !handled) {
+    const canvas = document.getElementById('confettiCanvas');
+    if (canvas) {
+      import('../utils.js').then(m => m.startConfetti(canvas));
+    }
+    completeStageBtn.innerHTML = '<svg class="icon" style="margin-right:5px;"><use href="#icon-check"></use></svg> Етап завершено!';
+    completeStageBtn.style.opacity = '0.7';
+    handled = true;
   } else if (dayCard && !handled) {
     if (e.target.tagName !== 'A' && !e.target.closest('a')) {
       handleDayCardClick(dayCard);

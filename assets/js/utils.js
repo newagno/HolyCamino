@@ -43,9 +43,9 @@ export function startConfetti(canvas) {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const COLORS = ['#c8553d', '#6b7d3a', '#c9a64b', '#5a7d8c', '#faf4e3', '#ff69b4', '#ffd700'];
+  const COLORS = ['#c8553d', '#6b7d3a', '#c9a64b', '#5a7d8c', '#faf4e3'];
 
-  /** @type {{ x:number, y:number, r:number, color:string, vx:number, vy:number, rot:number, vr:number }[]} */
+  /** @type {{ x:number, y:number, r:number, color:string, vx:number, vy:number, rot:number, vr:number, shape:string }[]} */
   const pieces = Array.from({ length: 90 }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height - canvas.height,
@@ -55,10 +55,13 @@ export function startConfetti(canvas) {
     vy: Math.random() * 3 + 2,
     rot: Math.random() * 360,
     vr: (Math.random() - 0.5) * 5,
-    shape: ['star', 'arrow', 'shell'][Math.floor(Math.random() * 3)]
+    shape: ['shell1', 'shell2', 'shell3'][Math.floor(Math.random() * 3)]
   }));
 
+  let isRunning = true;
+
   function draw() {
+    if (!isRunning) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (const p of pieces) {
       ctx.save();
@@ -67,24 +70,22 @@ export function startConfetti(canvas) {
       ctx.fillStyle = p.color;
       ctx.beginPath();
       const r = p.r;
-      if (p.shape === 'star') {
-        for (let i = 0; i < 5; i++) {
-          ctx.lineTo(Math.cos((18+i*72)*Math.PI/180)*r, -Math.sin((18+i*72)*Math.PI/180)*r);
-          ctx.lineTo(Math.cos((54+i*72)*Math.PI/180)*(r/2), -Math.sin((54+i*72)*Math.PI/180)*(r/2));
-        }
-      } else if (p.shape === 'arrow') {
-        ctx.moveTo(0, -r);
-        ctx.lineTo(r, 0);
-        ctx.lineTo(r/2, 0);
-        ctx.lineTo(r/2, r);
-        ctx.lineTo(-r/2, r);
-        ctx.lineTo(-r/2, 0);
-        ctx.lineTo(-r, 0);
-      } else {
-        // shell
+      if (p.shape === 'shell1') {
+        // Classic scallop shell shape (half circle with base)
         ctx.arc(0, 0, r, 0, Math.PI, true);
         ctx.lineTo(-r/2, r/2);
         ctx.lineTo(r/2, r/2);
+      } else if (p.shape === 'shell2') {
+        // Clam shell (ellipse)
+        ctx.ellipse(0, 0, r, r * 0.7, 0, 0, Math.PI * 2);
+      } else {
+        // Simple snail shell (spiral approximation with circle)
+        ctx.arc(0, 0, r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(0, 0, r * 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
       }
       ctx.closePath();
       ctx.fill();
@@ -101,8 +102,23 @@ export function startConfetti(canvas) {
     confettiFrameId = requestAnimationFrame(draw);
   }
 
+  const stopConfetti = () => {
+    isRunning = false;
+    cancelAnimationFrame(confettiFrameId);
+    clearTimeout(confettiTimeoutId);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    document.removeEventListener('click', stopConfetti);
+    document.removeEventListener('touchstart', stopConfetti);
+  };
+
   draw();
-  confettiTimeoutId = setTimeout(() => cancelAnimationFrame(confettiFrameId), 12_000);
+  // Prevent immediate click from triggering stop
+  setTimeout(() => {
+    document.addEventListener('click', stopConfetti);
+    document.addEventListener('touchstart', stopConfetti, {passive:true});
+  }, 300);
+  
+  confettiTimeoutId = setTimeout(stopConfetti, 5000);
 }
 
 // ─────────────────────────────────────────────
@@ -417,6 +433,10 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
           waterTemp = cachedMarine.data;
         }
       }
+    }
+    // Fallback if the date is out of forecast range
+    if (waterTemp === null) {
+      waterTemp = '~16';
     }
   }
 

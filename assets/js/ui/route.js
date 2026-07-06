@@ -165,6 +165,13 @@ export async function buildRoute() {
         </div>`;
     })() : '';
 
+    const completeBtnHTML = `
+      <div style="margin-top: 15px; text-align: center;">
+        <button class="tool-btn complete-stage-btn" type="button" data-idx="${i}" style="width:100%; font-weight:bold; background:var(--olive); color:#fff; border:none; padding:10px; border-radius:8px;">
+          <svg class="icon" style="margin-right:5px;"><use href="#icon-check"></use></svg> Завершити етап
+        </button>
+      </div>`;
+
     return `
     <div class="day-card${specialClass}" data-i="${i}" role="button" tabindex="0"
          aria-expanded="false" aria-label="${d.date} ${d.title}">
@@ -186,6 +193,7 @@ export async function buildRoute() {
         ${stampsHTML}
         ${weatherHTML}
         ${secretTip}
+        ${completeBtnHTML}
       </div>
     </div>`;
   }).join('');
