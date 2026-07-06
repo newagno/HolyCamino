@@ -71,7 +71,7 @@
 # Якщо є Python
 python -m http.server 8080
 
-# Якщо є Node.js
+# Якщо є  Node.js
 npx serve .
 ```
 
