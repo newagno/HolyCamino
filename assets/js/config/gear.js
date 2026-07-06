@@ -4,7 +4,7 @@ export const GLOBAL_GEAR = [
   { name: 'Рюкзак', comment: 'Pinguin / Osprey / Forclaz 28-35L (макс 5-6 кг!)', category: 'gear' },
   { name: 'Кросівки трейлові', comment: 'Розношувати 50-100 км вдома!', category: 'clothing' },
   { name: 'Дощовик-пончо', comment: 'Decathlon Forclaz', category: 'clothing' },
-  { name: 'Палиці трекінгові', comment: 'Купимо в Порту Forclaz MT100', category: 'gear' },
+  { name: 'Палиці трекінгові', comment: 'Купимо в Порту Forclaz MT100 + обов\'язково купити резинові насадки!', category: 'gear' },
   { name: 'Silk liner', comment: 'Для сну в альберге', category: 'gear' },
   { name: 'Шльопанці/Крокси', comment: 'Для душу та відпочинку', category: 'clothing' },
   { name: 'Футболка синтетична (2 шт)', comment: 'Швидкосохнучі', category: 'clothing' },

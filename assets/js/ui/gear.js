@@ -111,9 +111,20 @@ export async function openGearModal(pid) {
     `;
   }).join('');
 
+  const total = GLOBAL_GEAR.length;
+  const doneCount = Object.values(state).filter(Boolean).length;
+  const pct = Math.round((doneCount / Math.max(total, 1)) * 100);
+
   document.getElementById('pilgrimModalContent').innerHTML = `
     <h2 class="modal-title">${p.name}</h2>
     <div class="modal-subtitle">загальний список речей · відмічай чекбоксами</div>
+    <div class="check-progress" id="pilgrimProgress-${pid}">
+      <div class="check-progress-bar"><span style="width:${pct}%"></span></div>
+      <div class="check-progress-text">${doneCount}/${total} готово · ${pct}%</div>
+      <div class="compostela-prep" id="compostelaPrep-${pid}">
+        ${pct === 100 ? `<button class="compostela-btn-gold" id="getCompostelaBtn-${pid}">🏆 Отримати Compostela</button>` : 'Збери всі речі, щоб отримати сертифікат.'}
+      </div>
+    </div>
     <div class="blister-meter">
       <div class="blister-label" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
         <span style="display:flex; align-items:center;"><svg class="icon" style="margin-right:5px; vertical-align:middle;"><use href="#icon-bandage"></use></svg> Blister Meter</span>
@@ -160,6 +171,11 @@ export async function openGearModal(pid) {
       setBlisterValue(pid, 0);
       display.textContent = getBlisterText(0);
     });
+  }
+
+  const compBtn = document.getElementById(`getCompostelaBtn-${pid}`);
+  if (compBtn) {
+    compBtn.addEventListener('click', () => showCompostela(p.name));
   }
 
   // Filter and search logic
@@ -236,6 +252,39 @@ export function handleGearCheck(el) {
   if (row) {
     row.style.borderLeftColor = newChecked ? 'var(--olive)' : 'var(--terracotta)';
   }
+  updateGearProgress(p2);
+}
+
+export function updateGearProgress(pid) {
+  const p = PILGRIMS[pid];
+  if (!p) return;
+  const state = getGearState(pid);
+  import('../config/gear.js').then(({ GLOBAL_GEAR }) => {
+    const total = GLOBAL_GEAR.length;
+    const doneCount = Object.values(state).filter(Boolean).length;
+    const pct = Math.round((doneCount / Math.max(total, 1)) * 100);
+    
+    const container = document.getElementById(`pilgrimProgress-${pid}`);
+    if (!container) return;
+    
+    const bar = container.querySelector('.check-progress-bar span');
+    const text = container.querySelector('.check-progress-text');
+    const prep = document.getElementById(`compostelaPrep-${pid}`);
+    
+    if (bar) bar.style.width = `${pct}%`;
+    if (text) text.textContent = `${doneCount}/${total} готово · ${pct}%`;
+    
+    if (prep) {
+      if (pct === 100) {
+        prep.innerHTML = `<button class="compostela-btn-gold" id="getCompostelaBtn-${pid}">🏆 Отримати Compostela</button>`;
+        document.getElementById(`getCompostelaBtn-${pid}`)?.addEventListener('click', () => {
+          showCompostela(p.name);
+        });
+      } else {
+        prep.textContent = 'Збери всі речі, щоб отримати сертифікат.';
+      }
+    }
+  });
 }
 
 export function buildCheck() {
@@ -281,10 +330,8 @@ export function buildCheck() {
   return `
     <h2 class="section-title">Чекліст</h2>
     <div class="section-subtitle">що зробити до вильоту</div>
-    <div class="check-progress" id="checkProgress">
-      <div class="check-progress-bar"><span style="width:${pct}%"></span></div>
-      <div class="check-progress-text">${doneCount}/${total} готово · ${pct}%</div>
-      <div class="compostela-prep" id="compostelaPrep">${pct === 100 ? '<button class="compostela-btn-gold" id="getCompostelaBtn">🏆 Отримати Compostela</button>' : 'Фініш чекліста відкриє маленьку нагороду.'}</div>
+    <div class="check-progress" id="checkProgress" style="background:transparent; border:none; margin-bottom:10px;">
+      <div class="check-progress-text" style="text-align:right; margin:0;">${doneCount}/${total} готово</div>
     </div>
     ${cats}`;
 }
@@ -297,28 +344,10 @@ export function handleCheckItem(el) {
   const cb = el.querySelector('.check-cb');
   if (cb) cb.textContent = done ? '✓' : '';
   
-  // Removed visual reordering to prevent Layout Shift
-  // The item will just toggle its styling (gray out / checkmark)
-  // update progress
+  // update progress text only
   const items = [...document.querySelectorAll('.check-item')];
   const doneCount = items.filter(item => item.classList.contains('done')).length;
   const total = items.length;
-  const pct = Math.round((doneCount / Math.max(total, 1)) * 100);
-  const bar = document.querySelector('.check-progress-bar span');
   const text = document.querySelector('.check-progress-text');
-  const prize = document.getElementById('compostelaPrep');
-  if (bar) bar.style.width = `${pct}%`;
-  if (text) text.textContent = `${doneCount}/${total} готово · ${pct}%`;
-  if (prize) {
-    if (pct === 100) {
-      prize.innerHTML = '<button class="compostela-btn-gold" id="getCompostelaBtn">🏆 Отримати Compostela</button>';
-      document.getElementById('getCompostelaBtn')?.addEventListener('click', () => {
-        const badge = document.getElementById('userBadge');
-        const name = badge ? badge.getAttribute('data-name') : 'Паломнику';
-        showCompostela(name);
-      });
-    } else {
-      prize.textContent = 'Фініш чекліста відкриє маленьку нагороду.';
-    }
-  }
+  if (text) text.textContent = `${doneCount}/${total} готово`;
 }

@@ -318,7 +318,7 @@ export const CHECKLIST = [
       { t: '🟡 Налобний ліхтарик 4 паломникам', d: 'Petzl Tikkina €15-25. Старт о 6:00 у темряві', u: 'important' },
       { t: '🟡 Silk liner-и для альберге', d: 'Cocoon Silk €25. У липні без спальника', u: 'important' },
       { t: '🟡 Шкарпетки мерінос ×3 пари кожному', d: 'Smartwool PhD або Darn Tough — захист #1 від пухирів', u: 'important' },
-      { t: '🟡 Замовити палиці в Decathlon Norteshopping Порту (Click & Collect)', d: 'MT500 (Миколі, Євгену), MT100 Comfort (Ганні), MT100 Junior (Олексі)', u: 'important' },
+      { t: '🟡 Замовити палиці в Decathlon Norteshopping Порту (Click & Collect)', d: 'MT500 (Миколі, Євгену), MT100 Comfort (Ганні), MT100 Junior (Олексі) + резинові насадки всім!', u: 'important' },
       { t: '🔴 Навісний замок (кодовий, малий)', d: 'Критично! Більшість альберге мають шафки, без замка не заселять або не зможете убезпечити речі.', u: 'critical' },
       { t: '🟡 Аптечка', d: 'Compeed, Leukotape P, Vaseline, Ibuprofen, Німесил, Voltaren Gel, голка стерильна', u: 'important' },
     ],
