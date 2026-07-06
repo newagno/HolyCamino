@@ -434,10 +434,6 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
         }
       }
     }
-    // Fallback if the date is out of forecast range
-    if (waterTemp === null) {
-      waterTemp = '~16';
-    }
   }
 
   // ── Render weather widget ────────────────────────────────────
@@ -489,7 +485,7 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
   };
 
   const waterCellClass = waterTemp !== null ? 'weather-cell water' : 'weather-cell water missing-water';
-  const waterCellValue = waterTemp !== null ? `${waterTemp}°` : '—';
+  const waterCellValue = waterTemp !== null ? `${waterTemp}°` : 'Н/Д';
 
   let offlineBadge = '';
   if (isOfflineFallback) {
