@@ -1,84 +1,48 @@
 let confettiFrameId = null;
 let confettiTimeoutId = null;
 
-// 1. Scallop / Vieira — ribbed fan, single closed path (no stray subpaths)
-function buildScallopPath() {
-  const p = new Path2D();
-  p.moveTo(-10, 0);
-  // ribbed top edge (hinge side), zig-zag ridges
-  const ridges = 6;
-  for (let i = 0; i <= ridges; i++) {
-    const x = -10 + (20 / ridges) * i;
-    const y = i % 2 === 0 ? -2 : 1;
-    p.lineTo(x, y);
+function spiralPathString(turns = 2.5, steps = 60, a = 0.6, b = 0.55) {
+  let d = '';
+  for (let i = 0; i <= steps; i++) {
+    const t = (i / steps) * turns * Math.PI * 2;
+    const r = a * Math.exp(b * t * 0.15);
+    const x = r * Math.cos(t);
+    const y = r * Math.sin(t);
+    d += i === 0 ? `M ${x},${y} ` : `L ${x},${y} `;
   }
-  // rounded ribbed body back to start
-  p.quadraticCurveTo(10, 8, 0, 11);
-  p.quadraticCurveTo(-10, 8, -10, 0);
-  p.closePath();
-  return p;
-}
-
-// 2. Spiral / Nautilus — coil built from decreasing arcs, explicitly closed
-function buildSpiralPath() {
-  const p = new Path2D();
-  p.moveTo(0, 0);
-  p.arc(1.5, 0, 1.5, Math.PI, 0.2 * Math.PI, false);
-  p.arc(1.0, -1.0, 3.2, 0.2 * Math.PI, 1.4 * Math.PI, true);
-  p.arc(-1.0, 0.5, 4.8, 1.4 * Math.PI, 0.6 * Math.PI, false);
-  p.lineTo(0, 0);
-  p.closePath();
-  return p;
-}
-
-// 3. Clam / simple shell
-function buildClamPath() {
-  const p = new Path2D();
-  p.moveTo(-10, 0);
-  p.bezierCurveTo(-10, -8, 10, -8, 10, 0);
-  p.bezierCurveTo(5, 5, -5, 5, -10, 0);
-  p.closePath();
-  return p;
-}
-
-// 4. Mussel — elongated teardrop
-function buildMusselPath() {
-  const p = new Path2D();
-  p.moveTo(0, -12);
-  p.bezierCurveTo(6, -8, 7, 4, 3, 10);
-  p.bezierCurveTo(1, 12, -1, 12, -3, 10);
-  p.bezierCurveTo(-7, 4, -6, -8, 0, -12);
-  p.closePath();
-  return p;
-}
-
-// 5. Starfish — 5-pointed star
-function buildStarPath() {
-  const p = new Path2D();
-  const spikes = 5, outerR = 10, innerR = 4;
-  let rot = -Math.PI / 2;
-  const step = Math.PI / spikes;
-  p.moveTo(Math.cos(rot) * outerR, Math.sin(rot) * outerR);
-  for (let i = 0; i < spikes; i++) {
-    rot += step;
-    p.lineTo(Math.cos(rot) * innerR, Math.sin(rot) * innerR);
-    rot += step;
-    p.lineTo(Math.cos(rot) * outerR, Math.sin(rot) * outerR);
-  }
-  p.closePath();
-  return p;
+  return d;
 }
 
 const SHAPES = [
-  buildScallopPath(),
-  buildSpiralPath(),
-  buildClamPath(),
-  buildMusselPath(),
-  buildStarPath(),
+  // 1. Гребінець (Scallop) — віяло з радіальними ребрами
+  {
+    body: new Path2D('M -18,10 C -18,-10 -8,-22 0,-22 C 8,-22 18,-10 18,10 C 12,16 6,19 0,19 C -6,19 -12,16 -18,10 Z'),
+    lines: new Path2D('M 0,19 L 0,-22 M -6,18 L -9,-18 M 6,18 L 9,-18 M -12,15 L -15,-10 M 12,15 L 15,-10'),
+  },
+  // 2. Спіральна мушля равлика (Nautilus)
+  {
+    body: new Path2D(spiralPathString(2.3, 70, 0.8, 0.5) + ' Z'),
+    lines: new Path2D(spiralPathString(2.3, 70, 0.8, 0.5)),
+  },
+  // 3. Двостулкова мушля (Clam) — концентричні дуги росту
+  {
+    body: new Path2D('M -20,0 C -20,-14 -10,-22 0,-22 C 10,-22 20,-14 20,0 C 20,10 10,20 0,20 C -10,20 -20,10 -20,0 Z'),
+    lines: new Path2D('M -20,0 C -12,-4 12,-4 20,0 M -16,8 C -8,4 8,4 16,8 M -11,14 C -5,11 5,11 11,14'),
+  },
+  // 4. Конічна мушля (Cone shell)
+  {
+    body: new Path2D('M -3,-22 L 3,-22 L 10,-8 L 3,22 L -3,22 L -10,-8 Z'),
+    lines: new Path2D('M -10,-8 L 10,-8 M -7,0 L 7,0 M -5,9 L 5,9 M 0,-22 L 0,22'),
+  },
+  // 5. Морська зірка (Starfish)
+  {
+    body: new Path2D('M 0,-20 L 5,-5 L 20,-5 L 8,4 L 13,19 L 0,10 L -13,19 L -8,4 L -20,-5 L -5,-5 Z'),
+    lines: new Path2D('M 0,0 L 0,-20 M 0,0 L 13,19 M 0,0 L -13,19 M 0,0 L 20,-5 M 0,0 L -20,-5'),
+  },
 ];
 
 /**
- * Animate Camino shell confetti on a canvas element for ~5 seconds.
+ * Анімація падіння мушель-конфеті на елементі canvas.
  * @param {HTMLCanvasElement} canvas
  */
 export function startConfetti(canvas) {
@@ -86,25 +50,25 @@ export function startConfetti(canvas) {
   if (confettiTimeoutId) clearTimeout(confettiTimeoutId);
 
   const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  canvas.style.width = `${window.innerWidth}px`;
+  canvas.style.height = `${window.innerHeight}px`;
   canvas.style.pointerEvents = 'none';
 
-  const COLORS = ['#c8553d', '#6b7d3a', '#c9a64b', '#5a7d8c', '#faf4e3'];
+  const COLORS = ['#c8553d', '#6b7d3a', '#c9a64b', '#5a7d8c', '#8a5a44'];
 
-  const pieces = Array.from({ length: 110 }, () => ({
+  const pieces = Array.from({ length: 100 }, () => ({
     x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height - canvas.height,
-    r: Math.random() * 1.6 + 1.0,
+    y: Math.random() * -canvas.height,
+    r: (Math.random() * 1.1 + 0.7) * dpr,
     color: COLORS[Math.floor(Math.random() * COLORS.length)],
-    vx: (Math.random() - 0.5) * 2,
-    vy: Math.random() * 2.5 + 1.8,
+    vx: (Math.random() - 0.5) * 4 * dpr,
+    vy: (Math.random() * 3 + 2.5) * dpr,
     rot: Math.random() * 360,
-    vr: (Math.random() - 0.5) * 5,
-    wobble: Math.random() * Math.PI * 2,
-    wobbleSpeed: 0.02 + Math.random() * 0.03,
-    opacity: 0.75 + Math.random() * 0.25,
-    path: SHAPES[Math.floor(Math.random() * SHAPES.length)],
+    vr: (Math.random() - 0.5) * 4,
+    shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
   }));
 
   let isRunning = true;
@@ -115,27 +79,29 @@ export function startConfetti(canvas) {
 
     for (const p of pieces) {
       ctx.save();
-      ctx.globalAlpha = p.opacity;
       ctx.translate(p.x, p.y);
       ctx.rotate((p.rot * Math.PI) / 180);
       ctx.scale(p.r, p.r);
 
+      // прозорий силует: майже без заливки, колір тільки в контурі
       ctx.fillStyle = p.color;
-      ctx.fill(p.path);
+      ctx.globalAlpha = 0.12;
+      ctx.fill(p.shape.body);
 
-      ctx.strokeStyle = 'rgba(0,0,0,0.2)';
-      ctx.lineWidth = 1 / p.r;
-      ctx.stroke(p.path);
+      ctx.globalAlpha = 0.9;
+      ctx.strokeStyle = p.color;
+      ctx.lineWidth = 1.4;
+      ctx.stroke(p.shape.body);
+      ctx.stroke(p.shape.lines);
 
       ctx.restore();
 
-      p.wobble += p.wobbleSpeed;
-      p.x += p.vx + Math.sin(p.wobble) * 0.6;
+      p.x += p.vx + Math.sin(p.y / 30) * 0.5;
       p.y += p.vy;
       p.rot += p.vr;
 
-      if (p.y > canvas.height + 20) {
-        p.y = -20;
+      if (p.y > canvas.height + 40) {
+        p.y = -40;
         p.x = Math.random() * canvas.width;
       }
     }
@@ -158,5 +124,5 @@ export function startConfetti(canvas) {
     document.addEventListener('touchstart', stopConfetti, { passive: true });
   }, 300);
 
-  confettiTimeoutId = setTimeout(stopConfetti, 9000);
+  confettiTimeoutId = setTimeout(stopConfetti, 22000);
 }
