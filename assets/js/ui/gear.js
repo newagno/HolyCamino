@@ -1,6 +1,7 @@
 import { PILGRIMS, CHECKLIST, BLISTER_TEXTS } from '../config.js';
 import { getGearState, toggleGearItem, getChecklistState, toggleChecklistItem, getBlisterValue, setBlisterValue } from '../storage.js';
-import { injectIcons, startConfetti } from '../utils.js';
+import { injectIcons } from '../utils.js';
+import { startConfetti } from '../confetti.js';
 
 function getBlisterText(val) {
   return BLISTER_TEXTS[Math.min(val, BLISTER_TEXTS.length - 1)];

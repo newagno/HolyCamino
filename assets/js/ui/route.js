@@ -279,7 +279,7 @@ export function handleDayCardClick(card) {
       htip?.classList.add('revealed');
       const canvas = document.getElementById('confettiCanvas');
       if (canvas) {
-        import('../utils.js').then(m => m.startConfetti(canvas));
+        import('../confetti.js').then(m => m.startConfetti(canvas));
       }
     } else {
       htip?.classList.remove('revealed');

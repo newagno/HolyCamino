@@ -88,7 +88,7 @@ function handleGlobalClick(e) {
   } else if (completeStageBtn && !handled) {
     const canvas = document.getElementById('confettiCanvas');
     if (canvas) {
-      import('../utils.js').then(m => m.startConfetti(canvas));
+      import('../confetti.js').then(m => m.startConfetti(canvas));
     }
     completeStageBtn.innerHTML = '<svg class="icon" style="margin-right:5px;"><use href="#icon-check"></use></svg> Етап завершено!';
     completeStageBtn.style.opacity = '0.7';

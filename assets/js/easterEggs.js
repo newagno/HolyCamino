@@ -9,7 +9,7 @@
  * @module easterEggs
  */
 
-import { startConfetti } from './utils.js';
+import { startConfetti } from './confetti.js';
 
 // ─────────────────────────────────────────────
 // THE WAY MODE  (film-noir Easter egg)
@@ -97,30 +97,6 @@ function startLightningLoop() {
   }, nextFlash);
 }
 
-export function initTheWayAudio() {
-  const btn = document.getElementById('theWayToggle');
-  const audio = /** @type {HTMLAudioElement} */ (document.getElementById('theWayAudio'));
-  if (!btn || !audio) return;
-
-  btn.addEventListener('click', () => {
-    if (audio.paused) {
-      audio.volume = 0.4;
-      audio.play().then(() => {
-        btn.innerHTML = '<svg class="icon"><use href="#icon-storm"></svg>';
-        btn.title = 'Вимкнути звук шторму';
-        btn.setAttribute('aria-label', 'Вимкнути звук шторму');
-        btn.classList.add('playing');
-      }).catch(() => { });
-    } else {
-      audio.pause();
-      audio.currentTime = 0;
-      btn.innerHTML = '<svg class="icon"><use href="#icon-storm"></svg>';
-      btn.title = 'Увімкнути звук шторму';
-      btn.setAttribute('aria-label', 'Увімкнути звук шторму');
-      btn.classList.remove('playing');
-    }
-  });
-}
 
 // ─────────────────────────────────────────────
 // KONAMI / SHELL RAIN

@@ -26,7 +26,6 @@ import {
   startCountdown,
   initParallax,
   initScrollTop,
-  initOcean,
   initPeixeLightbox,
   applyTheme,
   applyNightMode,
@@ -34,15 +33,19 @@ import {
   log
 } from './utils.js';
 import {
+  initOcean,
+  initTheWayAudio
+} from './audio.js';
+import {
   initKonamiCode,
   initLogoLongPress,
   initMemesModal,
   initBirthdayOverlay,
   maybeShowBirthday,
   activateTheWayMode,
-  isTheWayActive,
-  initTheWayAudio,
+  isTheWayActive
 } from './easterEggs.js';
+
 
 // ─────────────────────────────────────────────────────────────
 // Global Error Interceptors (Field Debugger)
