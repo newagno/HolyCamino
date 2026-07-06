@@ -10,19 +10,20 @@ function getBlisterText(val) {
 export function showCompostela(name) {
   const canvas = document.getElementById('confettiCanvas');
   if (canvas) startConfetti(canvas);
+
+  const noiseSVG = `data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.05"/></svg>`;
+
   const modalHTML = `
     <div id="compostelaModal" class="modal show" role="dialog" aria-modal="true" style="display:flex; align-items:center; justify-content:center; padding:16px;">
       <div class="modal-content" style="
-        background: radial-gradient(circle, #fdfbf7 0%, #f4ecd8 100%);
+        background: url('${noiseSVG}'), radial-gradient(circle, #fdfbf7 0%, #e8dcc4 100%);
         color: #2c2523;
         text-align: center;
-        padding: 45px 30px;
-        border: 5px solid #8a1538;
-        outline: 1px solid #c9a64b;
-        outline-offset: -12px;
-        border-radius: 4px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 0 50px rgba(139,94,60,0.15);
-        max-width: 520px;
+        padding: 50px 40px;
+        box-shadow: inset 0 0 0 4px #e8dcc4, inset 0 0 0 6px #8a1538, inset 0 0 0 10px #e8dcc4, inset 0 0 0 11px #c9a64b, 0 15px 40px rgba(0,0,0,0.4);
+        border: none;
+        border-radius: 2px;
+        max-width: 560px;
         width: 100%;
         position: relative;
         font-family: 'Georgia', 'Times New Roman', serif;
@@ -41,62 +42,78 @@ export function showCompostela(name) {
         " onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">✕</button>
 
         <h1 style="
-          font-size: 28px;
+          font-size: 32px;
           color: #8a1538;
-          letter-spacing: 5px;
-          margin: 10px 0 5px 0;
+          letter-spacing: 6px;
+          margin: 10px 0 0 0;
           text-transform: uppercase;
           font-weight: normal;
-          border-bottom: 1px solid rgba(138, 21, 56, 0.15);
-          display: inline-block;
-          padding-bottom: 6px;
         ">Compostela</h1>
         
+        <!-- Decorative Divider -->
+        <div style="display: flex; align-items: center; justify-content: center; margin: 15px 0 25px 0;">
+          <div style="height: 1px; width: 60px; background: #8a1538; opacity: 0.5;"></div>
+          <div style="width: 8px; height: 8px; background: #c9a64b; transform: rotate(45deg); margin: 0 10px;"></div>
+          <div style="height: 1px; width: 60px; background: #8a1538; opacity: 0.5;"></div>
+        </div>
+        
         <div style="
-          font-size: 13px;
-          color: #665;
-          margin: 24px 0 8px 0;
+          font-size: 14px;
+          color: #554a46;
+          margin: 0 0 10px 0;
           font-style: italic;
           letter-spacing: 0.5px;
         ">Цим підтверджується, що паломник</div>
 
         <div style="
-          font-size: 38px;
-          font-family: 'Caveat', 'Georgia', cursive, serif;
-          color: #1c1514;
-          margin: 10px 0 20px 0;
-          font-weight: bold;
-          line-height: 1.2;
+          font-size: 56px;
+          font-family: 'Great Vibes', 'Caveat', 'Brush Script MT', cursive;
+          color: #110d0c;
+          margin: 15px 0 25px 0;
+          font-weight: normal;
+          line-height: 1.1;
+          text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
         ">${name}</div>
 
         <div style="
-          font-size: 14px;
-          color: #4a423e;
+          font-size: 15px;
+          color: #38302d;
           line-height: 1.6;
           margin: 0 auto 35px auto;
-          max-width: 400px;
+          max-width: 420px;
           font-style: italic;
         ">
           успішно завершив повну підготовку та зібрав необхідне спорядження для проходження Шляху Святого Якова (Camino de Santiago).
         </div>
 
-        <!-- Refined Wax Seal -->
+        <!-- Realistic 3D Wax Seal -->
         <div style="
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 80px;
-          height: 80px;
-          background: radial-gradient(circle, #b21c2e 0%, #750e18 100%);
-          border-radius: 50%;
-          box-shadow: 0 5px 12px rgba(0,0,0,0.3), inset 0 0 10px rgba(0,0,0,0.4);
-          border: 2px solid #6b0c15;
+          width: 86px;
+          height: 86px;
+          background: radial-gradient(circle at 30% 30%, #d32036 0%, #8a1538 50%, #4a0b1d 100%);
+          border-radius: 48% 52% 51% 49% / 50% 48% 52% 50%;
+          box-shadow: 2px 5px 8px rgba(0,0,0,0.4), inset -3px -5px 10px rgba(0,0,0,0.5), inset 2px 4px 6px rgba(255,255,255,0.3);
           position: relative;
         ">
-          <!-- Camino Shell SVG inside the seal -->
-          <svg viewBox="0 0 100 100" style="width: 44px; height: 44px; fill: #e5c158; filter: drop-shadow(1px 2px 2px rgba(0,0,0,0.4));">
-            <path d="M 50,90 C 47,88 44,70 42,60 C 32,58 15,48 10,40 C 13,38 35,46 45,52 C 45,40 38,20 35,10 C 40,15 45,35 50,45 C 55,35 60,15 65,10 C 62,20 55,40 55,52 C 65,46 87,38 90,40 C 85,48 68,58 58,60 C 56,70 53,88 50,90 Z"/>
-            <path d="M 50,45 L 50,90 M 45,52 C 46,65 47,80 50,90 M 55,52 C 54,65 53,80 50,90 M 42,60 C 44,70 47,80 50,90 M 58,60 C 56,70 53,80 50,90" stroke="#750e18" stroke-width="1.8" fill="none"/>
+          <!-- Glare Reflection -->
+          <div style="
+            position: absolute;
+            top: 5px; left: 10px;
+            width: 40px; height: 15px;
+            background: linear-gradient(110deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+            border-radius: 50%;
+            transform: rotate(-15deg);
+            pointer-events: none;
+          "></div>
+          
+          <!-- Camino Scallop Shell SVG (Proper Ridges) -->
+          <svg viewBox="0 0 100 100" style="width: 48px; height: 48px; fill: #e8cca0; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5)); position: relative; z-index: 1;">
+            <path d="M50,85 C20,85 5,55 15,35 C20,25 35,20 50,20 C65,20 80,25 85,35 C95,55 80,85 50,85 Z" />
+            <path d="M50,83 L50,22 M50,83 L40,24 M50,83 L30,30 M50,83 L22,40 M50,83 L18,52 M50,83 L60,24 M50,83 L70,30 M50,83 L78,40 M50,83 L82,52" stroke="#630d22" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+            <path d="M38,82 L62,82 L64,90 L36,90 Z" fill="#e8cca0" stroke="#630d22" stroke-width="1.5" stroke-linejoin="round" opacity="0.8"/>
           </svg>
         </div>
       </div>
