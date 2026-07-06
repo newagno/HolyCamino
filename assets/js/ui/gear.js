@@ -27,11 +27,11 @@ export function showCompostela(name) {
         <div style="height: 1px; width: 45px; background: #9c3e2c; opacity: 0.5;"></div>
       </div>
 
-      <div style="font-size: 13px; color: #554a46; font-style: italic;">Цим підтверджується, що паломник</div>
+      <div class="body-text" style="margin-bottom: 0;">Цим підтверджується, що паломник</div>
 
-      <div class="pilgrim-name" style="font-family: 'Caveat', cursive; color: #2c1810;">${name}</div>
+      <div class="pilgrim-name">${name}</div>
 
-      <div class="body-text" style="max-width: 380px; font-style: italic; color: #38302d;">
+      <div class="body-text" style="max-width: 380px;">
         успішно завершив повну підготовку та зібрав необхідне спорядження для проходження Шляху Святого Якова (Camino de Santiago).
       </div>
 
