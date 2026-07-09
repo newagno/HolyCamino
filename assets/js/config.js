@@ -267,13 +267,13 @@ export const EXERCISES = {
 export const APPS = [
   { n: 'Buen Camino', d: 'Офлайн карти, етапи, альберге', i: 'shell', img: 'assets/files/BuenCaminoApp.jpg', ios: 'https://apps.apple.com/us/app/buen-camino-de-santiago-app/id858222947', and: 'https://play.google.com/store/apps/details?id=com.editorialbuencamino.buencamino' },
   { n: 'Camino Ninja', d: 'Детальні карти і альберге', i: 'ninja', img: 'assets/files/CaminoNinjaApp.jpg', ios: 'https://apps.apple.com/us/app/camino-ninja-app/id1491232190', and: 'https://play.google.com/store/apps/details?id=ninja.camino.app' },
-  { n: 'Wise Pilgrim Portugués', d: '€6 — найдетальніші карти PT маршруту', i: 'pin', img: 'assets/files/WisePilgrimApp.jpg', ios: 'https://apps.apple.com/ua/app/wise-pilgrim-camino-portugu%C3%A9s/id983056779', and: 'https://play.google.com/store/apps/details?id=com.wisepilgrim.portuguese' },
+  { n: 'Wise Pilgrim Portugués', d: '€6 — найдетальніші карти PT маршруту', i: 'pin', img: 'assets/files/WisePilgrimApp.jpg', ios: 'https://apps.apple.com/ua/app/wise-pilgrim-camino-portugu%C3%A9s/id983056779', and: 'https://play.google.com/store/apps/details?id=com.wisepilgrim.portugues' },
   { n: 'Komoot', d: 'GPS трекінг, офлайн маршрути', i: 'map', img: 'assets/files/KomootApp.jpg', ios: 'https://apps.apple.com/us/app/komoot-hike-bike-run/id447374873', and: 'https://play.google.com/store/apps/details?id=de.komoot.android' },
   { n: 'Google Translate', d: 'Завантажити офлайн пакети PT + ES!', i: 'globe', img: 'assets/files/GoogleTranslateApp.jpg', ios: 'https://apps.apple.com/us/app/google-translate/id414706506', and: 'https://play.google.com/store/apps/details?id=com.google.android.apps.translate' },
   { n: 'Maps.me', d: 'Офлайн карти всього маршруту', i: 'pin', img: 'assets/files/MapsMeApp.jpg', ios: 'https://apps.apple.com/us/app/maps-me-offline-maps-gps-nav/id510623322', and: 'https://play.google.com/store/apps/details?id=com.mapswithme.maps.pro' },
   { n: 'ALSA автобуси', d: 'Іспанські автобуси — бронювати заздалезідь', i: 'bus', img: 'assets/files/AlsaApp.jpg', ios: 'https://apps.apple.com/us/app/alsa-buy-coach-tickets/id444511709', and: 'https://play.google.com/store/apps/details?id=com.mo2o.alsa&hl=uk' },
   { n: 'AlertCops', d: "Прямий зв'язок з іспанською поліцією", i: 'sos', img: 'assets/files/AlertCopsApp.jpg', ios: 'https://apps.apple.com/us/app/alertcops/id1273718252', and: 'https://play.google.com/store/search?q=AlertCops&c=apps' },
-  { n: 'Geocaching', d: 'Схованки на маршруті — квест для Олекси', i: 'target', img: 'assets/files/GeocachingApp.jpg', ios: 'https://apps.apple.com/us/iphone/search?term=Geocaching', and: 'https://play.google.com/store/apps/details?id=com.groundspeak.geocaching.intro' },
+  { n: 'Geocaching', d: 'Схованки на маршруті — квест для Олекси', i: 'target', img: 'assets/files/GeocachingApp.jpg', ios: 'https://apps.apple.com/us/app/geocaching/id329541503', and: 'https://play.google.com/store/apps/details?id=com.groundspeak.geocaching.intro' },
 ];
 
 // ─────────────────────────────────────────────
