@@ -319,7 +319,7 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
     if (cachedMarine && cachedMarine.timestamp && (Date.now() - cachedMarine.timestamp < TTL)) {
       waterTemp = cachedMarine.data;
     } else {
-      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${effectiveLat}&longitude=${effectiveLon}&daily=sea_surface_temperature&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
+      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${effectiveLat}&longitude=${effectiveLon}&hourly=sea_surface_temperature&timezone=Europe%2FLisbon&start_date=${isoDate}&end_date=${isoDate}`;
       const marineController = new AbortController();
       const marineTimeoutId = setTimeout(() => marineController.abort(), 8000);
       try {
@@ -327,9 +327,11 @@ export async function loadWeatherForDay(dayIdx, dateStr, coords, coordKey) {
         clearTimeout(marineTimeoutId);
         if (marineResp.ok) {
           const marineData = await marineResp.json();
-          if (!marineData || !marineData.daily || !marineData.daily.sea_surface_temperature) throw new Error("Malformed Marine API response");
-          if (marineData.daily.sea_surface_temperature[0] !== null) {
-            waterTemp = Math.round(marineData.daily.sea_surface_temperature[0]);
+          if (!marineData || !marineData.hourly || !marineData.hourly.sea_surface_temperature) throw new Error("Malformed Marine API response");
+          // Take temperature at 14:00 (index 14) or fallback to 0
+          const tempIndex = marineData.hourly.sea_surface_temperature.length > 14 ? 14 : 0;
+          if (marineData.hourly.sea_surface_temperature[tempIndex] !== null) {
+            waterTemp = Math.round(marineData.hourly.sea_surface_temperature[tempIndex]);
             await setCache(marineCacheKey, { timestamp: Date.now(), data: waterTemp });
           }
         } else {

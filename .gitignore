@@ -29,4 +29,14 @@ build/
 
 tests/
 
-.agents
+.agents/
+.claude/
+.cursor/
+.gemini/
+.gitnexus/ 
+.tests
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+OLLAMA.md
+REWRITER.md
